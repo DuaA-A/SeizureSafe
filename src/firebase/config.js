@@ -12,6 +12,23 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+let app, auth, db, isPreviewMode = false;
+
+if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined") {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+} else {
+  console.warn("Firebase API key is missing. Authentication and database features will be disabled.");
+  isPreviewMode = true;
+  // Mock objects to prevent crashes in components
+  auth = { 
+    onAuthStateChanged: (callback) => {
+      callback(null); // Call immediately to stop loading state
+      return () => {}; 
+    } 
+  };
+  db = {};
+}
+
+export { auth, db, isPreviewMode };

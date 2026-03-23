@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { Mail, Lock, User, X } from 'lucide-react';
+import { Mail, Lock, User, X, Shield } from 'lucide-react';
 
 const AuthWindow = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -35,8 +35,11 @@ const AuthWindow = ({ onClose }) => {
         <button className="btn-close" onClick={onClose}><X size={20} /></button>
         
         <div className="auth-header">
-          <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
-          <p>{isLogin ? 'Login to access your seizure history' : 'Start tracking your symptoms safely'}</p>
+          <div className="auth-logo">
+            <Shield size={32} className="logo-icon" />
+          </div>
+          <h2>{isLogin ? 'Welcome Back' : 'Join SeizureSafe'}</h2>
+          <p>{isLogin ? 'Access your secure dashboard' : 'Your safe space for epilepsy care'}</p>
         </div>
 
         {error && <div className="error-message">{error}</div>}
@@ -60,7 +63,7 @@ const AuthWindow = ({ onClose }) => {
             <input 
               type="email" 
               className="input-field" 
-              placeholder="Email" 
+              placeholder="Email address" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -79,14 +82,14 @@ const AuthWindow = ({ onClose }) => {
           </div>
 
           <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-            {loading ? 'Authenticating...' : (isLogin ? 'Login' : 'Sign Up')}
+            {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
           </button>
         </form>
 
         <div className="auth-footer">
-          <span>{isLogin ? "Don't have an account?" : "Already have an account?"}</span>
+          <span>{isLogin ? "New to SeizureSafe?" : "Already a member?"}</span>
           <button className="btn-text" onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? 'Sign Up' : 'Login'}
+            {isLogin ? 'Sign Up' : 'Sign In'}
           </button>
         </div>
       </div>
@@ -98,17 +101,18 @@ const AuthWindow = ({ onClose }) => {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(4px);
+          background: rgba(44, 62, 80, 0.4);
+          backdrop-filter: blur(8px);
           display: flex;
           justify-content: center;
           align-items: center;
           z-index: 2000;
         }
         .auth-modal {
-          width: 400px;
-          padding: 3rem 2rem;
+          width: 440px;
+          padding: 3.5rem 2.5rem;
           position: relative;
+          background: white;
         }
         .btn-close {
           position: absolute;
@@ -116,63 +120,78 @@ const AuthWindow = ({ onClose }) => {
           right: 1.5rem;
           background: none;
           border: none;
-          color: var(--text-secondary);
+          color: var(--text-muted);
           cursor: pointer;
+          transition: color 0.2s;
         }
+        .btn-close:hover { color: var(--error); }
+        
         .auth-header {
           text-align: center;
-          margin-bottom: 2rem;
+          margin-bottom: 2.5rem;
+        }
+        .auth-logo {
+          width: 60px;
+          height: 60px;
+          background: #f4f1ff;
+          border-radius: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 1.5rem;
+          color: var(--primary);
         }
         .auth-header h2 {
           font-size: 1.75rem;
           margin-bottom: 0.5rem;
         }
         .auth-header p {
-          color: var(--text-secondary);
-          font-size: 0.9rem;
+          color: var(--text-muted);
+          font-size: 0.95rem;
         }
         .auth-form {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 1.25rem;
         }
         .input-group {
           position: relative;
-          display: flex;
-          align-items: center;
         }
         .input-icon {
           position: absolute;
-          left: 1rem;
-          color: var(--text-secondary);
+          left: 1.25rem;
+          top: 50%;
+          transform: translateY(-50%);
+          color: var(--text-muted);
         }
         .input-group .input-field {
-          padding-left: 3rem;
+          padding-left: 3.5rem;
         }
         .w-full {
           width: 100%;
           margin-top: 1rem;
         }
         .error-message {
-          background: rgba(239, 68, 68, 0.1);
-          color: var(--error);
-          padding: 0.75rem;
-          border-radius: 8px;
+          background: #fdedec;
+          color: #c0392b;
+          padding: 1rem;
+          border-radius: 10px;
           font-size: 0.85rem;
-          margin-bottom: 1rem;
-          border-left: 4px solid var(--error);
+          margin-bottom: 1.5rem;
+          border: 1px solid #f1948a;
+          text-align: center;
         }
         .auth-footer {
-          margin-top: 2rem;
+          margin-top: 2.5rem;
           text-align: center;
-          font-size: 0.9rem;
-          color: var(--text-secondary);
+          font-size: 0.95rem;
+          color: var(--text-muted);
         }
         .btn-text {
           background: none;
           border: none;
           color: var(--primary);
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
           margin-left: 0.5rem;
         }
@@ -181,8 +200,8 @@ const AuthWindow = ({ onClose }) => {
         }
         @media (max-width: 480px) {
           .auth-modal {
-            width: 90%;
-            padding: 2rem 1.5rem;
+            width: 95%;
+            padding: 2.5rem 1.5rem;
           }
         }
       `}</style>

@@ -1,244 +1,248 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { db } from '../../firebase/config';
-import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { db, isPreviewMode } from '../../firebase/config';
+import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { 
   User, 
   History, 
   Pill, 
+  LogOut, 
   ChevronRight, 
-  Calendar,
-  AlertCircle
+  Shield,
+  Plus,
+  Trash2,
+  Loader2,
+  Calendar
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { getRxCUI } from '../../services/rxnav';
 
 const UserProfile = () => {
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
-  const [history, setHistory] = useState([]);
-  const [meds, setMeds] = useState([]);
+  const { currentUser, logout } = useAuth();
+  const [assessmentHistory, setAssessmentHistory] = useState([]);
+  const [medications, setMedications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [medInput, setMedInput] = useState('');
+  const [addingMed, setAddingMed] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) {
-      navigate('/');
-      return;
+    if (currentUser) {
+      fetchUserData();
     }
-    loadUserData();
   }, [currentUser]);
 
-  const loadUserData = async () => {
+  const fetchUserData = async () => {
     setLoading(true);
     try {
-      // Load Questionnaire History
-      const q = query(
-        collection(db, 'questionnaire_results'),
-        where('userId', '==', currentUser.uid),
-        orderBy('timestamp', 'desc'),
-        limit(5)
-      );
-      const querySnapshot = await getDocs(q);
-      const historyData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setHistory(historyData);
+      if (isPreviewMode) {
+        // Read from localStorage in preview mode
+        const history = JSON.parse(localStorage.getItem('preview_history') || '[]');
+        setAssessmentHistory(history);
+        
+        const meds = JSON.parse(localStorage.getItem('preview_meds') || '[]');
+        setMedications(meds);
+      } else {
+        const historyRef = doc(db, 'user_history', currentUser.uid);
+        const historySnap = await getDoc(historyRef);
+        if (historySnap.exists()) {
+          setAssessmentHistory(historySnap.data().assessments || []);
+        }
 
-      // Load Medications (from the checker collection)
-      const medRef = collection(db, 'user_medications');
-      const medSnap = await getDocs(query(medRef, where('__name__', '==', currentUser.uid)));
-      if (!medSnap.empty) {
-        setMeds(medSnap.docs[0].data().medications || []);
+        const medRef = doc(db, 'user_medications', currentUser.uid);
+        const medSnap = await getDoc(medRef);
+        if (medSnap.exists()) {
+          setMedications(medSnap.data().medications || []);
+        }
       }
     } catch (err) {
-      console.error('Error loading user data:', err);
+      console.error('Error fetching dashboard data:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) return <div className="loading">Loading your profile...</div>;
+  const handleAddMed = async (e) => {
+    e.preventDefault();
+    if (!medInput.trim()) return;
+    setAddingMed(true);
+    
+    try {
+      const rxcui = await getRxCUI(medInput);
+      const newMed = { name: medInput, rxcui: rxcui || 'unknown', addedAt: new Date().toISOString() };
+      
+      if (isPreviewMode) {
+        const meds = JSON.parse(localStorage.getItem('preview_meds') || '[]');
+        meds.push(newMed);
+        localStorage.setItem('preview_meds', JSON.stringify(meds));
+        setMedications(meds);
+      } else {
+        const medRef = doc(db, 'user_medications', currentUser.uid);
+        const medSnap = await getDoc(medRef);
+        if (!medSnap.exists()) {
+          await setDoc(medRef, { medications: [newMed] });
+        } else {
+          await updateDoc(medRef, { medications: arrayUnion(newMed) });
+        }
+        setMedications(prev => [...prev, newMed]);
+      }
+      setMedInput('');
+    } catch (err) {
+      console.error('Error adding medication:', err);
+    } finally {
+      setAddingMed(false);
+    }
+  };
+
+  const removeMed = async (index) => {
+    const updated = medications.filter((_, i) => i !== index);
+    setMedications(updated);
+    if (isPreviewMode) {
+      localStorage.setItem('preview_meds', JSON.stringify(updated));
+    } else {
+      try {
+        const medRef = doc(db, 'user_medications', currentUser.uid);
+        await updateDoc(medRef, { medications: updated });
+      } catch (err) {
+        console.error('Error removing medication:', err);
+      }
+    }
+  };
+
+  if (!currentUser) {
+    return (
+      <div className="container section-padding text-center">
+        <Shield size={64} className="icon-muted mb-4" />
+        <h1>Secure Dashboard</h1>
+        <p>Please log in to view your seizure history and medication list.</p>
+        <button onClick={() => navigate('/')} className="btn btn-primary mt-4">Return Home</button>
+      </div>
+    );
+  }
 
   return (
-    <div className="profile-page animate-fade-in">
-      <div className="profile-header glass-card">
-        <div className="profile-avatar">
-          <User size={48} />
-        </div>
-        <div className="profile-info">
-          <h1>{currentUser.displayName}</h1>
-          <p>{currentUser.email}</p>
-        </div>
-        <div className="profile-stats">
-          <div className="stat">
-            <span className="stat-value">{history.length}</span>
-            <span className="stat-label">Assessments</span>
-          </div>
-          <div className="stat">
-            <span className="stat-value">{meds.length}</span>
-            <span className="stat-label">Medications</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="profile-grid">
-        <div className="history-section glass-card">
-          <div className="section-header">
-            <History size={20} />
-            <h3>Recent Assessments</h3>
-          </div>
-
-          <div className="history-list">
-            {history.length === 0 ? (
-              <div className="empty-history">
-                <p>No assessments yet.</p>
-                <button className="btn btn-primary btn-small" onClick={() => navigate('/questionnaire')}>Take First Assessment</button>
+    <div className="profile-page container section-padding animate-fade-in">
+      <div className="dashboard-grid">
+        {/* Sidebar */}
+        <aside className="profile-sidebar">
+          <div className="profile-card glass-card">
+            <div className="avatar">{currentUser.email[0].toUpperCase()}</div>
+            <h2>{currentUser.displayName || currentUser.email.split('@')[0]}</h2>
+            <p className="email">{currentUser.email}</p>
+            {isPreviewMode && <span className="badge badge-warning">Preview Mode</span>}
+            <div className="profile-stats">
+              <div className="stat">
+                <strong>{assessmentHistory.length}</strong>
+                <span>Results</span>
               </div>
-            ) : (
-              history.map((item) => (
-                <div key={item.id} className="history-item glass-card">
-                  <div className="item-main">
-                    <span className="item-date">
+              <div className="stat">
+                <strong>{medications.length}</strong>
+                <span>Drugs</span>
+              </div>
+            </div>
+            <button onClick={logout} className="btn btn-ghost full-width logout-btn">
+              <LogOut size={18} /> Logout
+            </button>
+          </div>
+        </aside>
+
+        {/* Main */}
+        <main className="dashboard-main">
+          <section className="dashboard-section">
+            <div className="section-header">
+              <h3><History size={20} /> Seizure Check History</h3>
+              <button className="btn-text" onClick={() => navigate('/questionnaire')}>New Check</button>
+            </div>
+            
+            <div className="history-list">
+              {assessmentHistory.length > 0 ? assessmentHistory.map((item, i) => (
+                <div key={i} className="history-card glass-card">
+                  <div className="history-info">
+                    <h4>{item.resultName}</h4>
+                    <div className="meta">
                       <Calendar size={14} /> 
-                      {item.timestamp?.toDate().toLocaleDateString()}
-                    </span>
-                    <h4>{item.result.name}</h4>
+                      {new Date(item.timestamp).toLocaleDateString()} at {new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                    </div>
                   </div>
-                  <div className="item-badge badge badge-low">
-                    {item.result.category}
+                  <ChevronRight size={20} className="icon-muted" />
+                </div>
+              )) : (
+                <div className="empty-state glass-card">
+                  <p>No assessment history yet.</p>
+                  <button className="btn btn-primary btn-sm mt-4" onClick={() => navigate('/questionnaire')}>Start First Check</button>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section className="dashboard-section">
+            <div className="section-header">
+              <h3><Pill size={20} /> My Current Medications</h3>
+            </div>
+            <div className="med-manager-card glass-card">
+              <form onSubmit={handleAddMed} className="med-input-compact">
+                <input 
+                  type="text" 
+                  value={medInput}
+                  onChange={(e) => setMedInput(e.target.value)}
+                  placeholder="Add a new drug..."
+                  disabled={addingMed}
+                />
+                <button type="submit" disabled={addingMed}>
+                  {addingMed ? <Loader2 className="animate-spin" /> : <Plus />}
+                </button>
+              </form>
+              <div className="med-list-dashboard">
+                {medications.length > 0 ? medications.map((med, i) => (
+                  <div key={i} className="med-item-mini">
+                    <span>{med.name}</span>
+                    <button onClick={() => removeMed(i)}><Trash2 size={16} /></button>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-
-        <div className="meds-snapshot glass-card">
-          <div className="section-header">
-            <Pill size={20} />
-            <h3>Your Medications</h3>
-          </div>
-          <div className="meds-list-simple">
-            {meds.length === 0 ? (
-              <p className="empty-text">No medications listed.</p>
-            ) : (
-              meds.map((med, index) => (
-                <div key={index} className="med-tag">
-                  {med.name}
-                </div>
-              ))
-            )}
-          </div>
-          <button className="btn btn-secondary w-full" onClick={() => navigate('/checker')}>
-            Manage Medications <ChevronRight size={16} />
-          </button>
-        </div>
-
-        <div className="tips-section glass-card full-width">
-          <div className="section-header">
-            <AlertCircle size={20} className="warning-icon" />
-            <h3>Personalized Recommendations</h3>
-          </div>
-          <div className="tips-grid">
-            {history.length > 0 ? (
-              <div className="tip-card">
-                <p>Based on your last assessment ({history[0].result.name}), we recommend:</p>
-                <p className="tip-text">{history[0].result.lifestyle}</p>
+                )) : <p className="empty-mini">No medications added.</p>}
               </div>
-            ) : (
-              <p>Take the questionnaire to get personalized safety tips.</p>
-            )}
-          </div>
-        </div>
+            </div>
+          </section>
+        </main>
       </div>
 
       <style>{`
-        .profile-page {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-        .profile-header {
-          padding: 2.5rem;
-          display: flex;
-          align-items: center;
-          gap: 2rem;
-          position: relative;
-        }
-        .profile-avatar {
-          width: 100px;
-          height: 100px;
-          background: linear-gradient(135deg, var(--primary), var(--secondary));
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          color: white;
-        }
-        .profile-info h1 { margin-bottom: 0.25rem; }
-        .profile-info p { color: var(--text-secondary); }
-        .profile-stats {
-          margin-left: auto;
-          display: flex;
-          gap: 2rem;
-        }
-        .stat { text-align: center; }
-        .stat-value { display: block; font-size: 1.5rem; font-weight: 700; color: var(--primary); }
-        .stat-label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; }
+        .profile-page { padding-top: 2rem; padding-bottom: 8rem; }
+        .dashboard-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; }
+        .profile-sidebar { position: sticky; top: 100px; height: fit-content; }
+        .profile-card { padding: 3rem 2rem; text-align: center; }
+        .avatar { width: 64px; height: 64px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem; font-weight: 800; }
+        .profile-card h2 { font-size: 1.25rem; margin-bottom: 0.25rem; }
+        .email { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        .badge-warning { background: #fffbeb; color: #92400e; font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; font-weight: 700; margin-bottom: 2rem; display: inline-block; }
         
-        .profile-grid {
-          display: grid;
-          grid-template-columns: 1fr 350px;
-          gap: 2rem;
-        }
-        .section-header {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          margin-bottom: 1.5rem;
-          color: var(--primary);
-        }
-        .history-section, .meds-snapshot, .tips-section { padding: 2rem; }
-        .full-width { grid-column: span 2; }
+        .profile-stats { display: flex; justify-content: space-around; padding: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1.5rem 0; }
+        .stat { display: flex; flex-direction: column; gap: 4px; }
+        .stat strong { font-size: 1.15rem; }
+        .stat span { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+        .logout-btn { color: #c0392b !important; }
+
+        .dashboard-main { display: flex; flex-direction: column; gap: 4rem; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .section-header h3 { display: flex; align-items: center; gap: 10px; font-size: 1.15rem; }
         
         .history-list { display: flex; flex-direction: column; gap: 1rem; }
-        .history-item {
-          padding: 1.25rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          background: rgba(255, 255, 255, 0.02);
-        }
-        .item-date { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
-        .empty-history { text-align: center; padding: 2rem; color: var(--text-secondary); }
+        .history-card { padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .history-info h4 { font-size: 1.1rem; margin-bottom: 4px; }
+        .meta { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-muted); }
         
-        .meds-list-simple {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-          margin-bottom: 2rem;
-        }
-        .med-tag {
-          padding: 0.5rem 1rem;
-          background: var(--glass);
-          border: 1px solid var(--glass-border);
-          border-radius: 8px;
-          font-size: 0.9rem;
-        }
-        .tip-card {
-          padding: 1.5rem;
-          background: rgba(99, 102, 241, 0.05);
-          border-radius: 12px;
-          border-left: 4px solid var(--primary);
-        }
-        .tip-text { margin-top: 1rem; color: var(--text-secondary); line-height: 1.6; }
-        .loading { text-align: center; padding: 5rem; font-size: 1.2rem; color: var(--text-secondary); }
-        
+        .med-manager-card { padding: 2rem; }
+        .med-input-compact { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+        .med-input-compact input { flex: 1; height: 44px; border: 1.5px solid var(--border); border-radius: 8px; padding: 0 1rem; }
+        .med-input-compact button { width: 44px; height: 44px; background: var(--primary); color: white; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .med-list-dashboard { display: flex; flex-direction: column; gap: 8px; }
+        .med-item-mini { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: white; border: 1px solid var(--border); border-radius: 8px; }
+        .med-item-mini span { font-weight: 600; font-size: 0.9rem; }
+        .med-item-mini button { background: none; border: none; color: var(--text-muted); cursor: pointer; }
+        .empty-mini { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 1rem; }
+
         @media (max-width: 900px) {
-          .profile-grid { grid-template-columns: 1fr; }
-          .full-width { grid-column: span 1; }
-          .profile-header { flex-direction: column; text-align: center; }
-          .profile-stats { margin-left: 0; margin-top: 1rem; }
+          .dashboard-grid { grid-template-columns: 1fr; }
+          .profile-sidebar { position: relative; top: 0; }
         }
       `}</style>
     </div>

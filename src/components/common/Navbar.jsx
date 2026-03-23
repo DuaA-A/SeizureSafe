@@ -1,66 +1,97 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Shield, User, LogOut, LayoutDashboard, PlusCircle } from 'lucide-react';
+import { 
+  Shield, 
+  User, 
+  LogOut, 
+  Activity, 
+  Pill, 
+  Menu, 
+  X,
+  CreditCard
+} from 'lucide-react';
 
 const Navbar = ({ onOpenAuth }) => {
   const { currentUser, logout } = useAuth();
-  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const location = useLocation();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="navbar glass-card">
-      <div className="nav-container">
+    <nav className="navbar fixed-top">
+      <div className="container nav-content">
         <Link to="/" className="nav-logo">
-          <Shield className="logo-icon" />
-          <span>SeizureSafe</span>
+          <Shield className="logo-icon" size={28} />
+          <span className="logo-text">Seizure<span className="safe-text">Safe</span></span>
         </Link>
 
+        {/* Desktop Nav */}
         <div className="nav-links">
-          <Link to="/questionnaire" className="nav-link">Questionnaire</Link>
-          <Link to="/checker" className="nav-link">Interaction Checker</Link>
+          <Link to="/questionnaire" className={`nav-link ${isActive('/questionnaire') ? 'active' : ''}`}>
+            <Activity size={18} /> Questionnaire
+          </Link>
+          <Link to="/checker" className={`nav-link ${isActive('/checker') ? 'active' : ''}`}>
+            <Pill size={18} /> Interaction Checker
+          </Link>
+          <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
+             About the Team
+          </Link>
           
+          <div className="nav-divider"></div>
+
           {currentUser ? (
             <div className="user-menu">
-              <Link to="/profile" className="nav-link profile-link">
-                <User size={18} />
-                <span>{currentUser.displayName || 'Profile'}</span>
+              <Link to="/profile" className={`nav-link profile-link ${isActive('/profile') ? 'active' : ''}`}>
+                <User size={18} /> My Dashboard
               </Link>
-              <button onClick={handleLogout} className="btn-icon logout-btn" title="Logout">
+              <button onClick={logout} className="btn-icon" title="Logout">
                 <LogOut size={18} />
               </button>
             </div>
           ) : (
-            <button onClick={onOpenAuth} className="btn btn-primary">
-              Login / Sign Up
+            <button onClick={onOpenAuth} className="btn btn-primary btn-sm">
+              Sign In
             </button>
           )}
         </div>
+
+        {/* Mobile Toggle */}
+        <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X /> : <Menu />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="mobile-menu animate-fade-in">
+          <Link to="/questionnaire" onClick={() => setIsOpen(false)}>Questionnaire</Link>
+          <Link to="/checker" onClick={() => setIsOpen(false)}>Interaction Checker</Link>
+          {currentUser ? (
+            <>
+              <Link to="/profile" onClick={() => setIsOpen(false)}>My Dashboard</Link>
+              <button onClick={() => { logout(); setIsOpen(false); }}>Logout</button>
+            </>
+          ) : (
+            <button className="btn btn-primary" onClick={() => { onOpenAuth(); setIsOpen(false); }}>Sign In</button>
+          )}
+        </div>
+      )}
 
       <style>{`
         .navbar {
-          position: fixed;
-          top: 1rem;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 90%;
-          max-width: 1200px;
-          z-index: 1000;
-          padding: 0.75rem 2rem;
-          border-radius: 20px;
+          height: 80px;
+          width: 100%;
+          background: rgba(253, 250, 245, 0.9) !important;
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid var(--border);
           display: flex;
           align-items: center;
+          z-index: 1000;
+          transition: all 0.3s;
         }
-        .nav-container {
+        .nav-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -69,62 +100,50 @@ const Navbar = ({ onOpenAuth }) => {
         .nav-logo {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 12px;
           text-decoration: none;
-          color: white;
-          font-weight: 700;
-          font-size: 1.25rem;
+          color: var(--text-main);
         }
-        .logo-icon {
-          color: var(--primary);
-        }
-        .nav-links {
-          display: flex;
-          align-items: center;
-          gap: 2rem;
-        }
+        .logo-icon { color: var(--primary); }
+        .logo-text { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+        .safe-text { color: var(--primary); }
+        
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
         .nav-link {
           text-decoration: none;
-          color: var(--text-secondary);
-          font-weight: 500;
+          color: var(--text-muted);
+          font-weight: 600;
+          font-size: 0.95rem;
+          display: flex;
+          align-items: center;
+          gap: 8px;
           transition: color 0.2s;
         }
-        .nav-link:hover {
-          color: var(--text-primary);
-        }
-        .user-menu {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-        }
-        .profile-link {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          background: rgba(255, 255, 255, 0.05);
-          padding: 0.5rem 1rem;
-          border-radius: 12px;
-        }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        
+        .nav-divider { width: 1px; height: 24px; background: var(--border); }
+        
+        .user-menu { display: flex; align-items: center; gap: 1.5rem; }
         .btn-icon {
-          background: none;
-          border: none;
-          color: var(--text-secondary);
-          cursor: pointer;
-          padding: 8px;
-          border-radius: 50%;
-          transition: all 0.2s;
+          background: none; border: none; color: var(--text-muted); cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: color 0.2s;
         }
-        .btn-icon:hover {
-          background: rgba(239, 68, 68, 0.1);
-          color: var(--error);
-        }
-        @media (max-width: 768px) {
-          .nav-links {
-            gap: 1rem;
+        .btn-icon:hover { color: var(--error); }
+        
+        .mobile-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--text-main); }
+        
+        .btn-sm { padding: 10px 24px; font-size: 0.9rem; }
+
+        @media (max-width: 900px) {
+          .nav-links { display: none; }
+          .mobile-toggle { display: block; }
+          .mobile-menu {
+            position: absolute; top: 80px; left: 0; right: 0; background: white;
+            padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem;
+            border-bottom: 1px solid var(--border); box-shadow: var(--shadow);
           }
-          .nav-link span {
-            display: none;
-          }
+          .mobile-menu a { text-decoration: none; color: var(--text-main); font-weight: 600; }
         }
       `}</style>
     </nav>

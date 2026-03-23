@@ -1,146 +1,119 @@
+export const DRUGS_DATA = [
+  {
+    id: 1,
+    name: "Sodium Valproate / Valproic Acid",
+    image: "/drugs/1.jpg",
+    uses: "Treatment of generalized and partial epilepsy in adults and children (weighing over 20 kg) and management of manic episodes associated with bipolar disorder. Migraine prevention (off-label).",
+    administration: "Swallow whole with water—do not crush or chew. Take 1–2 times daily, preferably during or after meals.",
+    warning: "Do not crush or chew tablets as it destroys the sustained-release coating.",
+    dosageInfo: "See doctor advice for specific dosage."
+  },
+  {
+    id: 2,
+    name: "Topiramate",
+    image: "/drugs/2.jpg",
+    uses: "Used alone or with other medications to treat various types of seizures (partial onset, primary generalized tonic-clonic) in adults and children 2+ years.",
+    administration: "Orally, usually divided into two doses.",
+    dosageInfo: "Starting: 25mg-50mg daily. Maintenance: 100mg-400mg daily. See doctor for adjustment.",
+  },
+  {
+    id: 3,
+    name: "Anticonvulsant Medication",
+    image: "/drugs/3.jpeg",
+    uses: "Anticonvulsant used to help control certain types of seizures in the treatment of epilepsy.",
+    administration: "As prescribed by your neurologist.",
+    dosageInfo: "See doctor advice."
+  },
+  {
+    id: 4,
+    name: "Levetiracetam (1000 mg)",
+    image: "/drugs/4.jpeg",
+    uses: "Manage partial-onset, myoclonic, or tonic-clonic seizures.",
+    quantity: "20 film-coated tablets",
+    administration: "Taken orally.",
+    dosageInfo: "1000 mg per tablet. Consult doctor for specific frequency."
+  },
+  {
+    id: 5,
+    name: "Phenobarbital (50 mg)",
+    image: "/drugs/5.jpg",
+    uses: "Long-acting barbiturate used as a sedative and anticonvulsant. Prevents and controls generalized and partial seizures.",
+    warning: "Habit-forming and a controlled substance due to the risk of dependence.",
+    dosageInfo: "Strength: 50 mg. Consult doctor for dosage."
+  }
+];
+
 export const EPILEPSY_TYPES = {
-  FOCAL_AWARE: {
-    id: 'focal_aware',
-    name: 'Focal Aware Seizures',
-    category: 'Focal Epilepsy',
-    symptoms: ['Awareness preserved', 'Localized motor movements', 'Sensory symptoms (strange smell, taste, tingling)'],
-    commonAge: 'Any age (often adults)',
-    firstLineDrugs: ['Carbamazepine', 'Lamotrigine', 'Levetiracetam'],
-    lifestyle: 'Avoid stress & sleep deprivation, identify and avoid individual triggers, strict adherence to medications.'
+  GENERALIZED: {
+    name: "Generalized Epilepsy",
+    category: "Involves both hemispheres",
+    symptoms: ["Loss of consciousness", "Muscle stiffening", "Rhythmic jerking"],
+    treatmentIds: [1, 2, 3, 4, 5],
+    lifestyle: "Focus on consistent sleep schedules and avoiding known sensory triggers."
   },
-  FOCAL_IMPAIRED: {
-    id: 'focal_impaired',
-    name: 'Focal Impaired Awareness Seizures',
-    category: 'Focal Epilepsy',
-    symptoms: ['Impaired consciousness', 'Automatisms (lip smacking, hand movements)', 'Postictal confusion'],
-    commonAge: 'Adolescents & adults',
-    firstLineDrugs: ['Carbamazepine', 'Levetiracetam'],
-    lifestyle: 'Avoid stress & sleep deprivation, identify and avoid individual triggers, strict adherence to medications.'
-  },
-  ABSENCE: {
-    id: 'absence',
-    name: 'Absence Seizures',
-    category: 'Generalized Epilepsy',
-    symptoms: ['Brief loss of awareness (seconds)', 'Staring spells', 'No fall'],
-    commonAge: 'Children (4–10 years)',
-    firstLineDrugs: ['Ethosuximide', 'Valproic acid'],
-    lifestyle: 'Maintain regular sleep, limit screen exposure (flashing lights), monitor school performance.'
-  },
-  TONIC_CLONIC: {
-    id: 'tonic_clonic',
-    name: 'Tonic-Clonic Seizures',
-    category: 'Generalized Epilepsy',
-    symptoms: ['Loss of consciousness', 'Tonic stiffening → clonic jerking', 'Tongue biting / urinary incontinence'],
-    commonAge: 'Any age',
-    firstLineDrugs: ['Valproic acid', 'Levetiracetam', 'Lamotrigine'],
-    lifestyle: 'Avoid sleep deprivation & alcohol, take precautions during swimming/heights, ensure someone knows first aid.'
-  },
-  TONIC: {
-    id: 'tonic',
-    name: 'Tonic Seizures',
-    category: 'Generalized Epilepsy',
-    symptoms: ['Sudden muscle stiffening', 'Possible fall'],
-    commonAge: 'Mostly children',
-    firstLineDrugs: ['Valproic acid'],
-    lifestyle: 'Same precautions as tonic-clonic, focus on injury prevention.'
-  },
-  CLONIC: {
-    id: 'clonic',
-    name: 'Clonic Seizures',
-    category: 'Generalized Epilepsy',
-    symptoms: ['Repetitive rhythmic jerking'],
-    commonAge: 'Rare, usually children',
-    firstLineDrugs: ['Valproic acid'],
-    lifestyle: 'Same precautions as tonic-clonic, focus on injury prevention.'
+  FOCAL: {
+    name: "Focal (Partial) Epilepsy",
+    category: "Starts in one area of the brain",
+    symptoms: ["Twitching", "Changes in sensation", "Repetitive movements"],
+    treatmentIds: [1, 2, 4, 5],
+    lifestyle: "Identify specific local triggers and maintain a descriptive seizure diary."
   },
   MYOCLONIC: {
-    id: 'myoclonic',
-    name: 'Myoclonic Seizures',
-    category: 'Generalized Epilepsy',
-    symptoms: ['Sudden brief jerks (especially arms)'],
-    commonAge: 'Adolescents',
-    firstLineDrugs: ['Valproic acid', 'Levetiracetam'],
-    lifestyle: 'Strongly linked to sleep deprivation, ensure good sleep routine, avoid sudden light exposure.'
+    name: "Myoclonic Epilepsy",
+    category: "Generalized type",
+    symptoms: ["Brief, shock-like jerks", "Sudden muscle contractions"],
+    treatmentIds: [4, 1],
+    lifestyle: "Avoid sudden wake-ups; prioritize stress management."
   },
-  ATONIC: {
-    id: 'atonic',
-    name: 'Atonic Seizures',
-    category: 'Generalized Epilepsy',
-    symptoms: ['Sudden loss of muscle tone', 'Drop attacks (sudden falls)'],
-    commonAge: 'Children',
-    firstLineDrugs: ['Valproic acid'],
-    lifestyle: 'Use protective helmet (especially children), safe environment (avoid sharp edges).'
-  },
-  SYNDROMES: {
-    id: 'syndromes',
-    name: 'Epileptic Syndromes',
-    category: 'Special Syndromes',
-    symptoms: ['Combination of different seizure types', 'May include developmental delay'],
-    commonAge: 'Usually childhood',
-    firstLineDrugs: ['Valproic acid'],
-    lifestyle: 'Monitor growth and development, may benefit from Ketogenic diet (under medical supervision).'
+  UNKNOWN: {
+    name: "Underspecified Seizure Patterns",
+    category: "Requires further clinical diagnosis",
+    symptoms: ["Mixed patterns reported", "Inconsistent frequency"],
+    treatmentIds: [3],
+    lifestyle: "Detailed log of all episodes is essential for your next neurologist visit."
   }
 };
 
 export const QUESTIONS = [
   {
-    id: 'age',
-    text: 'What is your age?',
-    type: 'number',
-    section: 'Profile'
-  },
-  {
-    id: 'awareness',
-    text: 'Do you remain fully aware during the seizure?',
-    type: 'boolean',
+    id: 'consciousness',
     section: 'Symptoms',
-    icon: 'Activity'
-  },
-  {
-    id: 'staring',
-    text: 'Do you experience brief staring spells (just a few seconds)?',
-    type: 'boolean',
-    section: 'Symptoms',
-    icon: 'Eye'
-  },
-  {
-    id: 'stiffening',
-    text: 'Do you experience sudden muscle stiffening?',
-    type: 'boolean',
-    section: 'Symptoms',
-    icon: 'Zap'
+    text: 'Did the person lose consciousness?',
+    icon: 'Brain',
+    image: '/question_images/consciousness.png'
   },
   {
     id: 'jerking',
-    text: 'Do you experience repetitive rhythmic jerking?',
-    type: 'boolean',
     section: 'Symptoms',
-    icon: 'Move'
+    text: 'Was there rhythmic jerking of limbs?',
+    icon: 'Activity',
+    image: '/question_images/jerking.png'
   },
   {
-    id: 'muscle_tone',
-    text: 'Do you experience a sudden loss of muscle tone (potentially causing falls)?',
-    type: 'boolean',
+    id: 'stiffening',
     section: 'Symptoms',
-    icon: 'ArrowDownCircle'
+    text: 'Did the body suddenly stiffen (tonic)?',
+    icon: 'Zap',
+    image: '/question_images/stiffening.png'
   },
   {
-    id: 'automatisms',
-    text: 'Do you perform automatic movements like lip smacking or hand movements?',
-    type: 'boolean',
+    id: 'duration',
     section: 'Symptoms',
-    icon: 'Hand'
+    text: 'Did the seizure last more than 2 minutes?',
+    icon: 'Clock',
+    image: '/question_images/duration.png'
   }
 ];
 
 export const analyzeResult = (answers) => {
-  // Simple heuristic for demonstration based on the provided data
-  if (answers.staring && answers.age < 12) return EPILEPSY_TYPES.ABSENCE;
-  if (answers.awareness && (answers.stiffening || answers.jerking)) return EPILEPSY_TYPES.FOCAL_AWARE;
-  if (!answers.awareness && answers.automatisms) return EPILEPSY_TYPES.FOCAL_IMPAIRED;
-  if (answers.stiffening && answers.jerking && !answers.awareness) return EPILEPSY_TYPES.TONIC_CLONIC;
-  if (answers.muscle_tone) return EPILEPSY_TYPES.ATONIC;
-  if (answers.jerking && answers.age >= 12 && answers.age <= 20) return EPILEPSY_TYPES.MYOCLONIC;
-  
-  return EPILEPSY_TYPES.SYNDROMES; // Default/Complex
+  if (answers.consciousness && answers.jerking && answers.stiffening) {
+    return EPILEPSY_TYPES.GENERALIZED;
+  }
+  if (answers.jerking && !answers.consciousness) {
+    return EPILEPSY_TYPES.FOCAL;
+  }
+  if (answers.jerking) {
+    return EPILEPSY_TYPES.MYOCLONIC;
+  }
+  return EPILEPSY_TYPES.UNKNOWN;
 };
