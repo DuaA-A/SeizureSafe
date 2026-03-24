@@ -5,47 +5,7 @@ import AuthWindow from './components/auth/AuthWindow';
 import SeizureCheck from './components/questionnaire/SeizureCheck';
 import InteractionChecker from './components/checker/InteractionChecker';
 import UserProfile from './components/profile/UserProfile';
-import { Shield, Activity, Pill, User, ChevronRight, GraduationCap, Users, Award, Heart } from 'lucide-react';
-
-const App = () => {
-  const [showAuth, setShowAuth] = useState(false);
-
-  return (
-    <div className="app-container">
-      <Navbar onOpenAuth={() => setShowAuth(true)} />
-      
-      {showAuth && <AuthWindow onClose={() => setShowAuth(false)} />}
-
-      <main className="main-content">
-        <Routes>
-          <Route path="/" element={<Home onOpenAuth={() => setShowAuth(true)} />} />
-          <Route path="/questionnaire" element={<SeizureCheck onOpenAuth={() => setShowAuth(true)} />} />
-          <Route path="/checker" element={<InteractionChecker onOpenAuth={() => setShowAuth(true)} />} />
-          <Route path="/profile" element={<UserProfile />} />
-        </Routes>
-      </main>
-
-      <footer className="footer glass-card">
-        <div className="footer-content">
-          <p>© 2026 SeizureSafe. Pharmacy Graduation Project • MTI University.</p>
-          <p className="disclaimer">Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosage, consult your doctor.</p>
-        </div>
-      </footer>
-
-      <style>{`
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; background: #fafafc; }
-        .main-content { flex: 1; padding-top: 80px; width: 100%; }
-        .footer { margin-top: auto; padding: 4rem 2rem; text-align: center; border-radius: 0; background: white; border-top: 1px solid var(--border); }
-        .footer-content { max-width: 800px; margin: 0 auto; }
-        .disclaimer { font-size: 0.8rem; color: var(--text-muted); margin-top: 1.5rem; line-height: 1.6; }
-        
-        .section-header { text-align: center; margin-bottom: 5rem; max-width: 700px; margin-inline: auto; }
-        .section-header h2 { font-size: 2.75rem; font-weight: 900; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-        .section-header p { font-size: 1.15rem; color: var(--text-muted); }
-      `}</style>
-    </div>
-  );
-};
+import { Shield, Activity, Pill, User, ChevronRight, GraduationCap, Users, Award, Heart, CheckCircle2 } from 'lucide-react';
 
 const Home = ({ onOpenAuth }) => {
   const teamMembers = [
@@ -134,7 +94,7 @@ const Home = ({ onOpenAuth }) => {
                </div>
             </div>
             <div className="context-image">
-               <img src="/public/Team member names and ID.jpg" alt="Team Group" onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1576091160550-217359f42f8c?auto=format&fit=crop&q=80&w=1000'} />
+               <img src="/Team member names and ID.jpg" alt="Team Group" onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1576091160550-217359f42f8c?auto=format&fit=crop&q=80&w=1000'} />
             </div>
           </div>
         </div>
@@ -171,7 +131,7 @@ const Home = ({ onOpenAuth }) => {
           display: flex;
           align-items: center;
           overflow: hidden;
-          background-image: url('https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=2000');
+          background-image: url('/hero.png');
           background-size: cover;
           background-position: center;
           color: white;
@@ -219,6 +179,46 @@ const Home = ({ onOpenAuth }) => {
           .hero-title { font-size: 2.5rem; }
           .context-text { padding: 3rem 2rem; }
         }
+      `}</style>
+    </div>
+  );
+};
+
+const App = () => {
+  const [showAuth, setShowAuth] = useState(false);
+
+  return (
+    <div className="app-container">
+      <Navbar onOpenAuth={() => setShowAuth(true)} />
+      
+      {showAuth && <AuthWindow onClose={() => setShowAuth(false)} />}
+
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home onOpenAuth={() => setShowAuth(true)} />} />
+          <Route path="/questionnaire" element={<SeizureCheck onOpenAuth={() => setShowAuth(true)} />} />
+          <Route path="/checker" element={<InteractionChecker onOpenAuth={() => setShowAuth(true)} />} />
+          <Route path="/profile" element={<UserProfile />} />
+        </Routes>
+      </main>
+
+      <footer className="footer glass-card">
+        <div className="footer-content">
+          <p>© 2026 SeizureSafe. Pharmacy Graduation Project • MTI University.</p>
+          <p className="disclaimer">Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosage, consult your doctor.</p>
+        </div>
+      </footer>
+
+      <style>{`
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; background: #fafafc; }
+        .main-content { flex: 1; padding-top: 80px; width: 100%; }
+        .footer { margin-top: auto; padding: 4rem 2rem; text-align: center; border-radius: 0; background: white; border-top: 1px solid var(--border); }
+        .footer-content { max-width: 800px; margin: 0 auto; }
+        .disclaimer { font-size: 0.8rem; color: var(--text-muted); margin-top: 1.5rem; line-height: 1.6; }
+        
+        .section-header { text-align: center; margin-bottom: 5rem; max-width: 700px; margin-inline: auto; }
+        .section-header h2 { font-size: 2.75rem; font-weight: 900; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+        .section-header p { font-size: 1.15rem; color: var(--text-muted); }
       `}</style>
     </div>
   );

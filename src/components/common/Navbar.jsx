@@ -23,7 +23,7 @@ const Navbar = ({ onOpenAuth }) => {
     <nav className="navbar fixed-top">
       <div className="container nav-content">
         <Link to="/" className="nav-logo">
-          <Shield className="logo-icon" size={28} />
+          <img src="/logo.png" alt="SeizureSafe Logo" className="logo-img" />
           <span className="logo-text">Seizure<span className="safe-text">Safe</span></span>
         </Link>
 
@@ -104,7 +104,7 @@ const Navbar = ({ onOpenAuth }) => {
           text-decoration: none;
           color: var(--text-main);
         }
-        .logo-icon { color: var(--primary); }
+        .logo-img { height: 40px; width: auto; border-radius: 8px; }
         .logo-text { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
         .safe-text { color: var(--primary); }
         
