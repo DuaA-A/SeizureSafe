@@ -23,13 +23,11 @@
 }
 
 body {
-  background-color: var(--neutral-bg);
+  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+  background-attachment: fixed;
   color: var(--text-main);
   line-height: 1.6;
   min-height: 100vh;
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(157, 141, 241, 0.05) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(162, 217, 206, 0.05) 0px, transparent 50%);
 }
 
 .glass-card {
@@ -43,6 +41,16 @@ body {
 .glass-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.glass-screen-layer {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(24px);
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 4rem 2rem;
+  margin-bottom: 4rem;
 }
 
 .btn {
@@ -124,9 +132,9 @@ h1, h2, h3 {
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 15px;
 }
 
 /* Specific Section Styles */

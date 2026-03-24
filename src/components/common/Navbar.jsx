@@ -110,9 +110,10 @@ const Navbar = ({ onOpenAuth }) => {
         }
 
         .navbar-scrolled {
-          background: rgba(255, 255, 255, 0.9) !important;
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.25) !important;
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         }
 

@@ -55,7 +55,7 @@ const Home = ({ onOpenAuth }) => {
               <div className="hero-img-container">
                 <img src="/hero.png" alt="Epilepsy Awareness" className="hero-main-img" />
 
-                {/* Smooth Brain Waves Animation Overlay - Denser and overlapping */}
+                {/* Smooth Brain Waves Animation Overlay */}
                 <div className="brain-flow-overlay">
                   <svg viewBox="0 0 1000 400" className="brain-flow-svg">
                     <defs>
@@ -87,81 +87,86 @@ const Home = ({ onOpenAuth }) => {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="services-section container">
-        <div className="section-header">
-          <h2>Clinical Support Services</h2>
-          <p>SeizureSafe provides specialized modules developed for high-precision patient care.</p>
-        </div>
-        <div className="services-grid">
-          <div className="service-card glass-card">
-            <div className="service-icon purple"><Activity size={36} /></div>
-            <h3>Seizure Check</h3>
-            <p>Step-by-step diagnostic guide based on clinical observation patterns.</p>
-            <Link to="/questionnaire" className="service-link">Access Tool <ChevronRight size={16} /></Link>
-          </div>
-          <div className="service-card glass-card">
-            <div className="service-icon blue"><Pill size={36} /></div>
-            <h3>Interaction Screening</h3>
-            <p>Real-time cross-checking of medications using the RxNav global database.</p>
-            <Link to="/checker" className="service-link">Access Tool <ChevronRight size={16} /></Link>
-          </div>
-          <div className="service-card glass-card">
-            <div className="service-icon teal"><Shield size={36} /></div>
-            <h3>Medical Archives</h3>
-            <p>Securely store and track your pharmacological history and assessments.</p>
-            <Link to="/profile" className="service-link">View Dashboard <ChevronRight size={16} /></Link>
-          </div>
-        </div>
-      </section>
+      {/* Main Glass Screen Layer wrapping content below Hero */}
+      <div className="container">
+        <div className="glass-screen-layer">
 
-      {/* Project Background */}
-      <section className="project-context">
-        <div className="container">
-          <div className="context-grid glass-card">
-            <div className="context-text">
-              <span className="badge-purple">Medical Foundation</span>
-              <h3>Bridging Pharmacy & Technology</h3>
-              <p>
-                This project was initiated as a medical graduation requirement at <b>MTI University - Faculty of Pharmacy</b>.
-                It represents our commitment to improving patient compliance and safety in epilepsy treatment.
-              </p>
-              <div className="context-features">
-                <div className="c-feat"><CheckCircle2 size={18} /> Pharmacist Verified</div>
-                <div className="c-feat"><CheckCircle2 size={18} /> Patient Centric UI</div>
-                <div className="c-feat"><CheckCircle2 size={18} /> Global Medical APIs</div>
+          {/* Services Section */}
+          <section className="services-section">
+            <div className="section-header">
+              <h2>Clinical Support Services</h2>
+              <p>SeizureSafe provides specialized modules developed for high-precision patient care.</p>
+            </div>
+            <div className="services-grid">
+              <div className="service-card glass-card">
+                <div className="service-icon purple"><Activity size={36} /></div>
+                <h3>Seizure Check</h3>
+                <p>Step-by-step diagnostic guide based on clinical observation patterns.</p>
+                <Link to="/questionnaire" className="service-link">Access Tool <ChevronRight size={16} /></Link>
+              </div>
+              <div className="service-card glass-card">
+                <div className="service-icon blue"><Pill size={36} /></div>
+                <h3>Interaction Screening</h3>
+                <p>Real-time cross-checking of medications using the RxNav global database.</p>
+                <Link to="/checker" className="service-link">Access Tool <ChevronRight size={16} /></Link>
+              </div>
+              <div className="service-card glass-card">
+                <div className="service-icon teal"><Shield size={36} /></div>
+                <h3>Medical Archives</h3>
+                <p>Securely store and track your pharmacological history and assessments.</p>
+                <Link to="/profile" className="service-link">View Dashboard <ChevronRight size={16} /></Link>
               </div>
             </div>
-            <div className="context-image">
-              <img src="/Team member names and ID.jpg" alt="Team Group" onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1576091160550-217359f42f8c?auto=format&fit=crop&q=80&w=1000'} />
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Team Section */}
-      <section id="team" className="team-section container">
-        <div className="section-header">
-          <h2>The Research Team</h2>
-          <p>The dedicated clinical pharmacists behind SeizureSafe.</p>
-        </div>
-        <div className="team-grid">
-          {teamMembers.map((name, i) => (
-            <div key={i} className="team-card glass-card">
-              <div className="member-icon">
-                <Users size={24} />
+          {/* Project Background */}
+          <section className="project-context">
+            <div className="context-grid glass-card" style={{ marginTop: '4rem', marginBottom: '4rem' }}>
+              <div className="context-text">
+                <span className="badge-purple">Medical Foundation</span>
+                <h3>Bridging Pharmacy & Technology</h3>
+                <p>
+                  This project was initiated as a medical graduation requirement at <b>MTI University - Faculty of Pharmacy</b>.
+                  It represents our commitment to improving patient compliance and safety in epilepsy treatment.
+                </p>
+                <div className="context-features">
+                  <div className="c-feat"><CheckCircle2 size={18} /> Pharmacist Verified</div>
+                  <div className="c-feat"><CheckCircle2 size={18} /> Patient Centric UI</div>
+                  <div className="c-feat"><CheckCircle2 size={18} /> Global Medical APIs</div>
+                </div>
               </div>
-              <div className="member-info">
-                <h4>{name}</h4>
-                <span className="member-label">Clinical Pharmacist</span>
+              <div className="context-image">
+                <img src="/Team member names and ID.jpg" alt="Team Group" onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1576091160550-217359f42f8c?auto=format&fit=crop&q=80&w=1000'} />
               </div>
             </div>
-          ))}
+          </section>
+
+          {/* Team Section */}
+          <section id="team" className="team-section">
+            <div className="section-header">
+              <h2>The Research Team</h2>
+              <p>The dedicated clinical pharmacists behind SeizureSafe.</p>
+            </div>
+            <div className="team-grid">
+              {teamMembers.map((name, i) => (
+                <div key={i} className="team-card glass-card">
+                  <div className="member-icon">
+                    <Users size={24} />
+                  </div>
+                  <div className="member-info">
+                    <h4>{name}</h4>
+                    <span className="member-label">Clinical Pharmacist</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
         </div>
-      </section>
+      </div>
 
       <style>{`
-        .home-container { display: flex; flex-direction: column; gap: 4rem; padding-bottom: 10rem; position: relative; }
+        .home-container { display: flex; flex-direction: column; gap: 0rem; padding-bottom: 2rem; position: relative; }
         
         /* Final Hero Section Styles */
         .modern-hero {
@@ -169,10 +174,10 @@ const Home = ({ onOpenAuth }) => {
           min-height: 90vh;
           display: flex;
           align-items: center;
-          /* Calm smooth shades of the same colors */
-          background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+          /* Background gradient removed from here, now in index.css body */
           margin-top: -80px;
           padding-top: 100px;
+          margin-bottom: -50px; /* Overlap with global glass layer */
           overflow: hidden;
         }
 
@@ -184,14 +189,14 @@ const Home = ({ onOpenAuth }) => {
         }
 
         .hero-text-side {
-          flex: 1.4; /* Expanded for better text wrap space */
+          flex: 1.4;
           z-index: 10;
           text-align: left;
           padding-right: 4rem;
         }
 
         .hero-image-side {
-          flex: 1.8; /* Significantly larger side */
+          flex: 1.8;
           display: flex;
           justify-content: flex-end;
           align-items: center;
@@ -208,13 +213,14 @@ const Home = ({ onOpenAuth }) => {
 
         .hero-main-img {
           width: 100%;
-          max-width: 1100px; /* Even bigger image as requested */
+          max-width: 1100px;
           height: auto;
           filter: drop-shadow(0 0 50px rgba(0, 0, 0, 0.1));
           z-index: 2;
+          mix-blend-mode: multiply; /* Makes white backgrounds transparent */
         }
 
-        /* Smooth Brain Flow Animation - Expanding over text region */
+        /* Smooth Brain Flow Animation */
         .brain-flow-overlay {
           position: absolute;
           inset: -300px -600px; 
@@ -337,15 +343,25 @@ const Home = ({ onOpenAuth }) => {
         }
 
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .service-card { padding: 4rem 2.5rem; text-align: left; background: white; border-radius: 30px; }
+        .service-card { padding: 4rem 2.5rem; text-align: left; background: rgba(255, 255, 255, 0.85); border-radius: 30px; }
         .service-icon { margin-bottom: 2rem; color: var(--primary); }
         .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; font-weight: 800; }
         .service-card p { color: var(--text-muted); line-height: 1.6; }
         .service-link { display: flex; align-items: center; gap: 8px; margin-top: 2rem; text-decoration: none !important; color: var(--primary); font-weight: 800; font-size: 0.95rem; }
 
-        .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; overflow: hidden; background: white; border-radius: 40px; }
+        .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; overflow: hidden; background: rgba(255, 255, 255, 0.85); border-radius: 40px; }
         .context-text { padding: 5rem; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 1.5rem; }
         .context-image img { width: 100%; height: 100%; object-fit: cover; min-height: 500px; display: block; }
+        .context-features { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .c-feat { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--text-main); }
+        .badge-purple { background: rgba(126, 34, 206, 0.1); color: #7e22ce; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; }
+
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .team-card { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.85); border-radius: 20px; }
+        .member-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(126, 34, 206, 0.1); color: #7e22ce; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .member-info h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text-main); line-height: 1.2; }
+        .member-label { font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 4px; }
+
 
         @media (max-width: 1000px) {
           .hero-flex-wrapper { flex-direction: column; text-align: center; gap: 3rem; }
@@ -377,23 +393,26 @@ const App = () => {
         </Routes>
       </main>
 
-      <footer className="footer glass-card">
-        <div className="footer-content">
-          <p>© 2026 SeizureSafe. Pharmacy Graduation Project • MTI University.</p>
-          <p className="disclaimer">Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosage, consult your doctor.</p>
-        </div>
-      </footer>
+      {/* Global Glass Footer */}
+      <div className="container" style={{ marginTop: 'auto', paddingBottom: '2rem' }}>
+        <footer className="footer glass-screen-layer" style={{ marginBottom: 0, padding: '2rem', textAlign: 'center', background: 'rgba(255, 255, 255, 0.35)' }}>
+          <div className="footer-content">
+            <p style={{ fontWeight: 600, color: 'var(--text-main)' }}>© 2026 SeizureSafe. Pharmacy Graduation Project • MTI University.</p>
+            <p className="disclaimer" style={{ color: 'rgba(0,0,0,0.6)' }}>Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosage, consult your doctor.</p>
+          </div>
+        </footer>
+      </div>
 
       <style>{`
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; background: #fafafc; position: relative; }
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; position: relative; } /* background color removed to expose global gradient */
         .main-content { flex: 1; padding-top: 80px; width: 100%; position: relative; z-index: 1; }
-        .footer { margin-top: auto; padding: 4rem 2rem; text-align: center; border-radius: 0; background: white; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+        /* Footer styles updated inline to use glassmorphism */
         .footer-content { max-width: 800px; margin: 0 auto; }
-        .disclaimer { font-size: 0.8rem; color: var(--text-muted); margin-top: 1.5rem; line-height: 1.6; }
+        .disclaimer { font-size: 0.8rem; margin-top: 1rem; line-height: 1.6; }
         
-        .section-header { text-align: center; margin-bottom: 5rem; max-width: 700px; margin-inline: auto; }
+        .section-header { text-align: center; margin-bottom: 5rem; max-width: 700px; margin-inline: auto; color: var(--text-main); }
         .section-header h2 { font-size: 2.75rem; font-weight: 900; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-        .section-header p { font-size: 1.15rem; color: var(--text-muted); }
+        .section-header p { font-size: 1.15rem; color: rgba(0,0,0,0.7); font-weight: 500;}
       `}</style>
     </div>
   );
