@@ -25,25 +25,64 @@ const Home = ({ onOpenAuth }) => {
     <div className="home-container animate-fade-in">
       {/* Hero Section */}
       <section className="hero-section modern-hero">
-        <div className="hero-bg-overlay"></div>
         <div className="hero-content container">
-          <div className="graduation-badge">
-             <GraduationCap size={20} />
-             <span>Pharmacy Graduation Project 2026</span>
-          </div>
-          <h1 className="hero-title">A Professional Approach to <br/> <span className="text-primary italic">Epilepsy Safety</span></h1>
-          <p className="hero-description">
-            Expertly-crafted tools by medical students for identifying seizure patterns, 
-            verifying drug interactions, and maintaining safe pharmacological history.
-          </p>
-          
-          <div className="hero-cta-group">
-            <Link to="/questionnaire" className="btn btn-primary btn-large catch-button">
-               Start Scientific Check <ChevronRight size={20} />
-            </Link>
-            <a href="#team" className="btn btn-secondary btn-large">
-               Meet The Medical Team
-            </a>
+          <div className="hero-flex-wrapper">
+            <div className="hero-text-side">
+              {/* <div className="graduation-badge">
+                 <GraduationCap size={20} />
+                 <span>Pharmacy Graduation Project 2026</span>
+              </div> */}
+              <h1 className="hero-title white-text">
+                A Professional Approach to <br />
+                <span className="text-glow italic">Epilepsy Safety</span>
+              </h1>
+              <p className="hero-description white-text">
+                Expertly-crafted tools by medical students for identifying seizure patterns,
+                verifying drug interactions, and maintaining safe pharmacological history.
+              </p>
+
+              <div className="hero-cta-group">
+                <Link to="/questionnaire" className="btn btn-premium btn-large">
+                  Start Scientific Check <ChevronRight size={20} />
+                </Link>
+                <a href="#team" className="btn btn-outline-white btn-large">
+                  Meet The Medical Team
+                </a>
+              </div>
+            </div>
+
+            <div className="hero-image-side">
+              <div className="hero-img-container">
+                <img src="/hero.png" alt="Epilepsy Awareness" className="hero-main-img" />
+
+                {/* Smooth Brain Waves Animation Overlay - Denser and overlapping */}
+                <div className="brain-flow-overlay">
+                  <svg viewBox="0 0 1000 400" className="brain-flow-svg">
+                    <defs>
+                      <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="transparent" />
+                        <stop offset="50%" stopColor="rgba(255, 255, 255, 0.4)" />
+                        <stop offset="100%" stopColor="transparent" />
+                      </linearGradient>
+                      <linearGradient id="waveGradientColor" x1="100%" y1="0%" x2="0%" y2="0%">
+                        <stop offset="0%" stopColor="transparent" />
+                        <stop offset="50%" stopColor="rgba(255, 255, 255, 0.3)" />
+                        <stop offset="100%" stopColor="transparent" />
+                      </linearGradient>
+                    </defs>
+                    {/* Waves overlapping text region */}
+                    <path d="M400,140 C100,40 -400,240 -900,140" className="flow-line flow-left flow-1" />
+                    <path d="M400,160 C50,90 -450,290 -950,190" className="flow-line flow-left flow-2" />
+                    <path d="M420,120 C120,20 -380,220 -880,120" className="flow-line flow-left flow-3" />
+
+                    {/* Right Flowing Waves */}
+                    <path d="M500,150 C700,50 1200,250 1700,150" className="flow-line flow-right flow-4" />
+                    <path d="M500,170 C750,100 1250,300 1750,200" className="flow-line flow-right flow-5" />
+                    <path d="M520,130 C720,30 1220,230 1720,130" className="flow-line flow-right flow-6" />
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -81,20 +120,20 @@ const Home = ({ onOpenAuth }) => {
         <div className="container">
           <div className="context-grid glass-card">
             <div className="context-text">
-               <span className="badge-purple">Medical Foundation</span>
-               <h3>Bridging Pharmacy & Technology</h3>
-               <p>
-                 This project was initiated as a medical graduation requirement at <b>MTI University - Faculty of Pharmacy</b>. 
-                 It represents our commitment to improving patient compliance and safety in epilepsy treatment.
-               </p>
-               <div className="context-features">
-                  <div className="c-feat"><CheckCircle2 size={18} /> Pharmacist Verified</div>
-                  <div className="c-feat"><CheckCircle2 size={18} /> Patient Centric UI</div>
-                  <div className="c-feat"><CheckCircle2 size={18} /> Global Medical APIs</div>
-               </div>
+              <span className="badge-purple">Medical Foundation</span>
+              <h3>Bridging Pharmacy & Technology</h3>
+              <p>
+                This project was initiated as a medical graduation requirement at <b>MTI University - Faculty of Pharmacy</b>.
+                It represents our commitment to improving patient compliance and safety in epilepsy treatment.
+              </p>
+              <div className="context-features">
+                <div className="c-feat"><CheckCircle2 size={18} /> Pharmacist Verified</div>
+                <div className="c-feat"><CheckCircle2 size={18} /> Patient Centric UI</div>
+                <div className="c-feat"><CheckCircle2 size={18} /> Global Medical APIs</div>
+              </div>
             </div>
             <div className="context-image">
-               <img src="/Team member names and ID.jpg" alt="Team Group" onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1576091160550-217359f42f8c?auto=format&fit=crop&q=80&w=1000'} />
+              <img src="/Team member names and ID.jpg" alt="Team Group" onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1576091160550-217359f42f8c?auto=format&fit=crop&q=80&w=1000'} />
             </div>
           </div>
         </div>
@@ -122,62 +161,198 @@ const Home = ({ onOpenAuth }) => {
       </section>
 
       <style>{`
-        .home-container { display: flex; flex-direction: column; gap: 10rem; padding-bottom: 10rem; }
+        .home-container { display: flex; flex-direction: column; gap: 4rem; padding-bottom: 10rem; position: relative; }
         
-        /* Modern Hero Fix */
+        /* Final Hero Section Styles */
         .modern-hero {
           position: relative;
-          min-height: 80vh;
+          min-height: 90vh;
           display: flex;
           align-items: center;
-          overflow: hidden;
-          background-image: url('/hero.png');
-          background-size: cover;
-          background-position: center;
-          color: white;
+          /* Calm smooth shades of the same colors */
+          background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
           margin-top: -80px;
+          padding-top: 100px;
+          overflow: hidden;
         }
-        .hero-bg-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(90deg, rgba(44, 62, 80, 0.9) 0%, rgba(44, 62, 80, 0.4) 100%);
-          z-index: 1;
-        }
-        .hero-content { position: relative; z-index: 2; max-width: 850px; padding: 0 20px; }
-        .graduation-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(157, 141, 241, 0.2); padding: 8px 16px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(157, 141, 241, 0.3); margin-bottom: 2rem; color: #dcd6ff; }
-        .hero-title { font-size: 3.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; }
-        .hero-description { font-size: 1.25rem; opacity: 0.9; margin-bottom: 3.5rem; line-height: 1.7; max-width: 650px; }
-        .hero-cta-group { display: flex; gap: 1.5rem; }
-        
-        /* Services */
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .service-card { padding: 4rem 2.5rem; text-align: left; }
-        .service-icon { margin-bottom: 2rem; color: var(--primary); }
-        .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
-        .service-card p { color: var(--text-muted); line-height: 1.6; }
-        .service-link { display: flex; align-items: center; gap: 8px; margin-top: 2rem; text-decoration: none; color: var(--primary); font-weight: 800; font-size: 0.9rem; }
 
-        /* Context Grid - Fixed Overlap */
-        .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; overflow: hidden; }
+        .hero-flex-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 0;
+          width: 100%;
+        }
+
+        .hero-text-side {
+          flex: 1.4; /* Expanded for better text wrap space */
+          z-index: 10;
+          text-align: left;
+          padding-right: 4rem;
+        }
+
+        .hero-image-side {
+          flex: 1.8; /* Significantly larger side */
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          z-index: 5;
+        }
+
+        .hero-img-container {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+        }
+
+        .hero-main-img {
+          width: 100%;
+          max-width: 1100px; /* Even bigger image as requested */
+          height: auto;
+          filter: drop-shadow(0 0 50px rgba(0, 0, 0, 0.1));
+          z-index: 2;
+        }
+
+        /* Smooth Brain Flow Animation - Expanding over text region */
+        .brain-flow-overlay {
+          position: absolute;
+          inset: -300px -600px; 
+          pointer-events: none;
+          z-index: 3;
+          mix-blend-mode: overlay;
+        }
+
+        .brain-flow-svg {
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        .flow-line {
+          fill: none;
+          stroke-width: 2.5;
+          stroke-linecap: round;
+          stroke-dasharray: 200, 1000;
+          animation: smoothFlow 7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .flow-left { stroke: url(#waveGradient); }
+        .flow-right { stroke: url(#waveGradientColor); }
+
+        .flow-1 { animation-duration: 8s; opacity: 0.5; }
+        .flow-2 { animation-duration: 10s; opacity: 0.4; }
+        .flow-3 { animation-duration: 9s; opacity: 0.3; }
+        .flow-4 { animation-duration: 12s; opacity: 0.4; }
+        .flow-5 { animation-duration: 14s; opacity: 0.3; }
+        .flow-6 { animation-duration: 10s; opacity: 0.2; }
+
+        @keyframes smoothFlow {
+          0% { stroke-dashoffset: 1400; transform: translateX(0); }
+          100% { stroke-dashoffset: -1400; transform: translateX(-100px); }
+        }
+
+        .white-text { color: white; }
+        
+        .hero-title { 
+          font-size: 3.25rem; 
+          font-weight: 800; 
+          line-height: 1.1; 
+          margin-bottom: 2rem;
+          letter-spacing: -0.02em;
+        }
+
+        .text-glow {
+          color: white;
+          text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .hero-description { 
+          font-size: 1.15rem; 
+          margin-bottom: 3.5rem; 
+          line-height: 1.6; 
+          max-width: 550px; 
+          opacity: 0.95;
+        }
+
+        /* Aligned buttons container */
+        .hero-cta-group { 
+          display: flex; 
+          gap: 1.25rem; 
+          justify-content: flex-start;
+          width: 100%;
+          max-width: fit-content;
+        }
+
+        /* Compact Buttons Styles */
+        .btn-premium {
+          background: white;
+          color: #7e22ce;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+          text-decoration: none !important;
+          padding: 15px 32px !important;
+          font-size: 1.1rem !important;
+          white-space: nowrap;
+        }
+
+        .btn-premium:hover {
+          background: #f8f9fa;
+          transform: translateY(-3px);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+          color: #7e22ce;
+        }
+
+        .btn-outline-white {
+          background: rgba(255, 255, 255, 0.15);
+          color: white;
+          border: 2px solid rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(10px);
+          text-decoration: none !important;
+          padding: 15px 32px !important;
+          font-size: 1.1rem !important;
+          white-space: nowrap;
+        }
+
+        .btn-outline-white:hover {
+          background: rgba(255, 255, 255, 0.25);
+          border-color: white;
+          transform: translateY(-3px);
+          color: white;
+        }
+        
+        /* Layout Fixes */
+        .graduation-badge { 
+          display: inline-flex; 
+          align-items: center; 
+          gap: 10px; 
+          background: rgba(255, 255, 255, 0.15); 
+          padding: 8px 16px; 
+          border-radius: 40px; 
+          font-weight: 700; 
+          font-size: 0.85rem; 
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.2); 
+          margin-bottom: 2.5rem; 
+          color: white; 
+        }
+
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .service-card { padding: 4rem 2.5rem; text-align: left; background: white; border-radius: 30px; }
+        .service-icon { margin-bottom: 2rem; color: var(--primary); }
+        .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; font-weight: 800; }
+        .service-card p { color: var(--text-muted); line-height: 1.6; }
+        .service-link { display: flex; align-items: center; gap: 8px; margin-top: 2rem; text-decoration: none !important; color: var(--primary); font-weight: 800; font-size: 0.95rem; }
+
+        .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; overflow: hidden; background: white; border-radius: 40px; }
         .context-text { padding: 5rem; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 1.5rem; }
         .context-image img { width: 100%; height: 100%; object-fit: cover; min-height: 500px; display: block; }
-        .badge-purple { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.1em; }
-        .context-text h3 { font-size: 2.25rem; font-weight: 900; }
-        .context-features { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
-        .c-feat { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
-        .c-feat svg { color: var(--primary); }
-
-        /* Team Section - Extract Names */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-        .team-card { padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; border: 1px solid var(--border) !important; background: white !important; }
-        .member-icon { width: 48px; height: 48px; background: #f4f1ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0; }
-        .member-info h4 { font-size: 1.05rem; margin-bottom: 2px; line-height: 1.2; font-weight: 800; }
-        .member-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
 
         @media (max-width: 1000px) {
+          .hero-flex-wrapper { flex-direction: column; text-align: center; gap: 3rem; }
+          .hero-cta-group { justify-content: center; }
+          .hero-text-side { text-align: center; padding-right: 0; }
+          .hero-title { font-size: 2.75rem; }
           .services-grid, .context-grid { grid-template-columns: 1fr; }
-          .hero-title { font-size: 2.5rem; }
-          .context-text { padding: 3rem 2rem; }
         }
       `}</style>
     </div>
@@ -190,7 +365,7 @@ const App = () => {
   return (
     <div className="app-container">
       <Navbar onOpenAuth={() => setShowAuth(true)} />
-      
+
       {showAuth && <AuthWindow onClose={() => setShowAuth(false)} />}
 
       <main className="main-content">
@@ -210,9 +385,9 @@ const App = () => {
       </footer>
 
       <style>{`
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; background: #fafafc; }
-        .main-content { flex: 1; padding-top: 80px; width: 100%; }
-        .footer { margin-top: auto; padding: 4rem 2rem; text-align: center; border-radius: 0; background: white; border-top: 1px solid var(--border); }
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; background: #fafafc; position: relative; }
+        .main-content { flex: 1; padding-top: 80px; width: 100%; position: relative; z-index: 1; }
+        .footer { margin-top: auto; padding: 4rem 2rem; text-align: center; border-radius: 0; background: white; border-top: 1px solid var(--border); position: relative; z-index: 1; }
         .footer-content { max-width: 800px; margin: 0 auto; }
         .disclaimer { font-size: 0.8rem; color: var(--text-muted); margin-top: 1.5rem; line-height: 1.6; }
         

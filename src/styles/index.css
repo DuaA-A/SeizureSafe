@@ -158,17 +158,5 @@ h1, h2, h3 {
   margin: 0 auto 3rem;
 }
 
-/* Navbar Update */
-.navbar {
-  background: rgba(255, 255, 255, 0.8) !important;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
-}
-
-.nav-link {
-  color: var(--text-muted) !important;
-}
-
-.nav-link:hover, .nav-link.active {
-  color: var(--primary) !important;
-}
+.navbar-transparent .safe-text { color: #00d4ff !important; }
+.navbar-scrolled .safe-text { color: var(--primary) !important; }
