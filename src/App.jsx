@@ -5,21 +5,10 @@ import AuthWindow from './components/auth/AuthWindow';
 import SeizureCheck from './components/questionnaire/SeizureCheck';
 import InteractionChecker from './components/checker/InteractionChecker';
 import UserProfile from './components/profile/UserProfile';
+import About from './components/about/About';
 import { Shield, Activity, Pill, User, ChevronRight, GraduationCap, Users, Award, Heart, CheckCircle2 } from 'lucide-react';
 
 const Home = ({ onOpenAuth }) => {
-  const teamMembers = [
-    "Zeinab Hamdy Hassab tayeeb",
-    "Ahmed Ezzat Osman Tantawy",
-    "Diana Yasser AbdAlazim Mohamed Salama",
-    "Mina Talat Shaker Wassef",
-    "Moustafa Khalid Mohamed Taha Bahr",
-    "Nada Mohammed Kamal Abieah",
-    "Seveen Mohamed Ahmed Fouad Elsayoufy",
-    "Abdalla Abouelscoud Hassan Hassoub Soliman",
-    "Yassein Mohamed Mohamed Ali Almaghrabi",
-    "Ahmed Mohamed Ahmed Elgashy"
-  ];
 
   return (
     <div className="home-container animate-fade-in">
@@ -55,7 +44,7 @@ const Home = ({ onOpenAuth }) => {
               <div className="hero-img-container">
                 <img src="/hero.png" alt="Epilepsy Awareness" className="hero-main-img" />
 
-                {/* Smooth Brain Waves Animation Overlay */}
+                {/* Smooth Brain Waves Animation Overlay - Denser and overlapping */}
                 <div className="brain-flow-overlay">
                   <svg viewBox="0 0 1000 400" className="brain-flow-svg">
                     <defs>
@@ -90,6 +79,40 @@ const Home = ({ onOpenAuth }) => {
       {/* Main Glass Screen Layer wrapping content below Hero */}
       <div className="container">
         <div className="glass-screen-layer">
+          
+          {/* Understanding Epilepsy Section */}
+          <section className="epilepsy-info-section">
+            <div className="section-header">
+              <h2>Understanding Epilepsy</h2>
+              <p>
+                Epilepsy is a neurological condition where abnormal brain activity causes seizures. 
+                Seizures are broadly classified into three main types based on where and how they begin in the brain.
+              </p>
+            </div>
+            <div className="types-grid">
+              <div className="type-card glass-card">
+                <div className="type-img-container">
+                  <img src="/focal_seizure.png" alt="Focal Seizure Anatomy" />
+                </div>
+                <h3>Focal Onset Seizures</h3>
+                <p>These start in a specific area or network of cells on one side of the brain. They can occur with or without loss of awareness and may affect movement, sensation, or emotions.</p>
+              </div>
+              <div className="type-card glass-card">
+                <div className="type-img-container">
+                  <img src="/generalized_seizure.png" alt="Generalized Seizure Anatomy" />
+                </div>
+                <h3>Generalized Onset</h3>
+                <p>These engage neural networks across both sides of the brain right from the start. Common forms include sudden loss of awareness (absence) or stiffening and jerking (tonic-clonic).</p>
+              </div>
+              <div className="type-card glass-card">
+                <div className="type-img-container">
+                  <img src="/unknown_seizure.png" alt="Unknown Onset Seizure Anatomy" />
+                </div>
+                <h3>Unknown Onset</h3>
+                <p>When the beginning of a seizure is not witnessed or documented, it is classified as unknown. This classification can help guide doctors toward further neurological testing.</p>
+              </div>
+            </div>
+          </section>
 
           {/* Services Section */}
           <section className="services-section">
@@ -119,54 +142,34 @@ const Home = ({ onOpenAuth }) => {
             </div>
           </section>
 
-          {/* Project Background */}
+          {/* Project Background Banner */}
           <section className="project-context">
-            <div className="context-grid glass-card" style={{ marginTop: '4rem', marginBottom: '4rem' }}>
-              <div className="context-text">
-                <span className="badge-purple">Medical Foundation</span>
-                <h3>Bridging Pharmacy & Technology</h3>
-                <p>
+            <div className="context-banner glass-card" style={{ textAlign: 'center', padding: '6rem 3rem', borderRadius: '40px', background: 'rgba(255, 255, 255, 0.85)', position: 'relative', overflow: 'hidden' }}>
+              {/* Decorative aura */}
+              <div style={{ position: 'absolute', top: '-20%', left: '-5%', width: '300px', height: '300px', background: 'rgba(157, 141, 241, 0.15)', filter: 'blur(80px)', borderRadius: '50%' }} />
+              <div style={{ position: 'absolute', bottom: '-20%', right: '-5%', width: '300px', height: '300px', background: 'rgba(96, 165, 250, 0.15)', filter: 'blur(80px)', borderRadius: '50%' }} />
+              
+              <div style={{ position: 'relative', zIndex: 10, maxWidth: '850px', margin: '0 auto' }}>
+                <span className="badge-purple" style={{ display: 'inline-block', marginBottom: '1.5rem' }}>Medical Foundation</span>
+                <h3 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>Bridging Pharmacy & Technology</h3>
+                <p style={{ fontSize: '1.15rem', color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '3rem' }}>
                   This project was initiated as a medical graduation requirement at <b>MTI University - Faculty of Pharmacy</b>.
-                  It represents our commitment to improving patient compliance and safety in epilepsy treatment.
+                  It represents our commitment to improving patient compliance and safety in epilepsy treatment through accessible digital health tools.
                 </p>
-                <div className="context-features">
-                  <div className="c-feat"><CheckCircle2 size={18} /> Pharmacist Verified</div>
-                  <div className="c-feat"><CheckCircle2 size={18} /> Patient Centric UI</div>
-                  <div className="c-feat"><CheckCircle2 size={18} /> Global Medical APIs</div>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '3rem', flexWrap: 'wrap' }}>
+                  <div className="c-feat"><CheckCircle2 size={24} /> Pharmacist Verified</div>
+                  <div className="c-feat"><CheckCircle2 size={24} /> Patient Centric UI</div>
+                  <div className="c-feat"><CheckCircle2 size={24} /> Global Medical APIs</div>
                 </div>
-              </div>
-              <div className="context-image">
-                <img src="/Team member names and ID.jpg" alt="Team Group" onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1576091160550-217359f42f8c?auto=format&fit=crop&q=80&w=1000'} />
               </div>
             </div>
           </section>
 
-          {/* Team Section */}
-          <section id="team" className="team-section">
-            <div className="section-header">
-              <h2>The Research Team</h2>
-              <p>The dedicated clinical pharmacists behind SeizureSafe.</p>
-            </div>
-            <div className="team-grid">
-              {teamMembers.map((name, i) => (
-                <div key={i} className="team-card glass-card">
-                  <div className="member-icon">
-                    <Users size={24} />
-                  </div>
-                  <div className="member-info">
-                    <h4>{name}</h4>
-                    <span className="member-label">Clinical Pharmacist</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-        </div>
-      </div>
+        </div> {/* End of glass-screen-layer */}
+      </div> {/* End of container */}
 
       <style>{`
-        .home-container { display: flex; flex-direction: column; gap: 0rem; padding-bottom: 2rem; position: relative; }
+        .home-container { display: flex; flex-direction: column; gap: 4rem; padding-bottom: 10rem; position: relative; }
         
         /* Final Hero Section Styles */
         .modern-hero {
@@ -174,10 +177,10 @@ const Home = ({ onOpenAuth }) => {
           min-height: 90vh;
           display: flex;
           align-items: center;
-          /* Background gradient removed from here, now in index.css body */
+          /* Calm smooth shades of the same colors */
+          background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
           margin-top: -80px;
           padding-top: 100px;
-          margin-bottom: -50px; /* Overlap with global glass layer */
           overflow: hidden;
         }
 
@@ -189,14 +192,14 @@ const Home = ({ onOpenAuth }) => {
         }
 
         .hero-text-side {
-          flex: 1.4;
+          flex: 1.4; /* Expanded for better text wrap space */
           z-index: 10;
           text-align: left;
           padding-right: 4rem;
         }
 
         .hero-image-side {
-          flex: 1.8;
+          flex: 1.8; /* Significantly larger side */
           display: flex;
           justify-content: flex-end;
           align-items: center;
@@ -213,14 +216,14 @@ const Home = ({ onOpenAuth }) => {
 
         .hero-main-img {
           width: 100%;
-          max-width: 1100px;
+          max-width: 800px; /* Reduced from 1100px so it is shorter */
           height: auto;
           filter: drop-shadow(0 0 50px rgba(0, 0, 0, 0.1));
           z-index: 2;
           mix-blend-mode: multiply; /* Makes white backgrounds transparent */
         }
 
-        /* Smooth Brain Flow Animation */
+        /* Smooth Brain Flow Animation - Expanding over text region */
         .brain-flow-overlay {
           position: absolute;
           inset: -300px -600px; 
@@ -342,25 +345,77 @@ const Home = ({ onOpenAuth }) => {
           color: white; 
         }
 
+        .glass-screen-layer {
+          background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
+          backdrop-filter: blur(20px); /* Apply blur effect */
+          border-radius: 40px; /* Rounded corners */
+          padding: 6rem; /* Inner padding */
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); /* Soft shadow */
+          border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+          margin-top: -100px; /* Overlap with hero section */
+          position: relative;
+          z-index: 10; /* Ensure it's above other content */
+          display: flex;
+          flex-direction: column;
+          gap: 6rem;
+        }
+
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .service-card { padding: 4rem 2.5rem; text-align: left; background: rgba(255, 255, 255, 0.85); border-radius: 30px; }
+        .service-card { padding: 4rem 2.5rem; text-align: left; background: white; border-radius: 30px; }
         .service-icon { margin-bottom: 2rem; color: var(--primary); }
         .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; font-weight: 800; }
         .service-card p { color: var(--text-muted); line-height: 1.6; }
         .service-link { display: flex; align-items: center; gap: 8px; margin-top: 2rem; text-decoration: none !important; color: var(--primary); font-weight: 800; font-size: 0.95rem; }
 
-        .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; overflow: hidden; background: rgba(255, 255, 255, 0.85); border-radius: 40px; }
-        .context-text { padding: 5rem; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 1.5rem; }
-        .context-image img { width: 100%; height: 100%; object-fit: cover; min-height: 500px; display: block; }
-        .context-features { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
-        .c-feat { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--text-main); }
-        .badge-purple { background: rgba(126, 34, 206, 0.1); color: #7e22ce; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; }
+        .project-context { padding: 0; } /* Remove padding as it's now inside glass-screen-layer */
+        .c-feat { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+        .badge-purple { background: rgba(126, 34, 206, 0.1); color: #7e22ce; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-        .team-card { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.85); border-radius: 20px; }
-        .member-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(126, 34, 206, 0.1); color: #7e22ce; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .member-info h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text-main); line-height: 1.2; }
-        .member-label { font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 4px; }
+        /* Epilepsy Info Section Styles */
+        .epilepsy-info-section {
+          margin-bottom: 6rem;
+        }
+        .types-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+        .type-card {
+          padding: 2rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          /* Inherits .glass-card via index.css for hover state and background */
+        }
+        .type-img-container {
+          width: 100%;
+          height: 180px;
+          border-radius: 20px;
+          overflow: hidden;
+          margin-bottom: 1.5rem;
+          background: rgba(126, 34, 206, 0.05);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .type-img-container img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          mix-blend-mode: multiply;
+        }
+        .type-card h3 {
+          font-size: 1.35rem;
+          margin-bottom: 1rem;
+          color: var(--primary);
+          font-weight: 800;
+        }
+        .type-card p {
+          color: var(--text-muted);
+          font-size: 0.95rem;
+          line-height: 1.6;
+        }
 
 
         @media (max-width: 1000px) {
@@ -368,7 +423,9 @@ const Home = ({ onOpenAuth }) => {
           .hero-cta-group { justify-content: center; }
           .hero-text-side { text-align: center; padding-right: 0; }
           .hero-title { font-size: 2.75rem; }
-          .services-grid, .context-grid { grid-template-columns: 1fr; }
+          .services-grid, .types-grid { grid-template-columns: 1fr; }
+          .glass-screen-layer { padding: 3rem; margin-top: -50px; }
+          .context-banner { padding: 4rem 2rem !important; }
         }
       `}</style>
     </div>
@@ -390,29 +447,27 @@ const App = () => {
           <Route path="/questionnaire" element={<SeizureCheck onOpenAuth={() => setShowAuth(true)} />} />
           <Route path="/checker" element={<InteractionChecker onOpenAuth={() => setShowAuth(true)} />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
 
-      {/* Global Glass Footer */}
-      <div className="container" style={{ marginTop: 'auto', paddingBottom: '2rem' }}>
-        <footer className="footer glass-screen-layer" style={{ marginBottom: 0, padding: '2rem', textAlign: 'center', background: 'rgba(255, 255, 255, 0.35)' }}>
-          <div className="footer-content">
-            <p style={{ fontWeight: 600, color: 'var(--text-main)' }}>© 2026 SeizureSafe. Pharmacy Graduation Project • MTI University.</p>
-            <p className="disclaimer" style={{ color: 'rgba(0,0,0,0.6)' }}>Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosage, consult your doctor.</p>
-          </div>
-        </footer>
-      </div>
+      <footer className="footer glass-card">
+        <div className="footer-content">
+          <p>© 2026 SeizureSafe. Pharmacy Graduation Project • MTI University.</p>
+          <p className="disclaimer">Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosage, consult your doctor.</p>
+        </div>
+      </footer>
 
       <style>{`
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; position: relative; } /* background color removed to expose global gradient */
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; background: #fafafc; position: relative; }
         .main-content { flex: 1; padding-top: 80px; width: 100%; position: relative; z-index: 1; }
-        /* Footer styles updated inline to use glassmorphism */
+        .footer { margin-top: auto; padding: 4rem 2rem; text-align: center; border-radius: 0; background: white; border-top: 1px solid var(--border); position: relative; z-index: 1; }
         .footer-content { max-width: 800px; margin: 0 auto; }
-        .disclaimer { font-size: 0.8rem; margin-top: 1rem; line-height: 1.6; }
+        .disclaimer { font-size: 0.8rem; color: var(--text-muted); margin-top: 1.5rem; line-height: 1.6; }
         
-        .section-header { text-align: center; margin-bottom: 5rem; max-width: 700px; margin-inline: auto; color: var(--text-main); }
+        .section-header { text-align: center; margin-bottom: 5rem; max-width: 700px; margin-inline: auto; }
         .section-header h2 { font-size: 2.75rem; font-weight: 900; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-        .section-header p { font-size: 1.15rem; color: rgba(0,0,0,0.7); font-weight: 500;}
+        .section-header p { font-size: 1.15rem; color: var(--text-muted); }
       `}</style>
     </div>
   );

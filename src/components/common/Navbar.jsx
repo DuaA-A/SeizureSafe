@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { 
-  Shield, 
-  User, 
-  LogOut, 
-  Activity, 
-  Pill, 
-  Menu, 
+import {
+  Shield,
+  User,
+  LogOut,
+  Activity,
+  Pill,
+  Menu,
   X,
   CreditCard
 } from 'lucide-react';
@@ -48,9 +48,9 @@ const Navbar = ({ onOpenAuth }) => {
             <Pill size={18} /> Interaction Checker
           </Link>
           <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
-             About the Team
+            About the Team
           </Link>
-          
+
           <div className="nav-divider"></div>
 
           {currentUser ? (
@@ -110,10 +110,9 @@ const Navbar = ({ onOpenAuth }) => {
         }
 
         .navbar-scrolled {
-          background: rgba(255, 255, 255, 0.25) !important;
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.9) !important;
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid var(--border);
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         }
 
