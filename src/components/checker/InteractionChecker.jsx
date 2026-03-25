@@ -113,26 +113,28 @@ const InteractionChecker = ({ onOpenAuth }) => {
 
   return (
     <div className="checker-page container animate-fade-in">
-      <div className="checker-header glass-card">
-        <div className="header-icon">
-          <Shield size={40} className="icon-purple" />
-        </div>
-        <h1>Medication Safety Center</h1>
-        <p className="subtitle">Pharmacist-verified tool for identifying potential drug-drug interactions.</p>
-        
-        <div className="tab-switcher">
-          <button 
-            className={`tab-btn ${activeTab === 'quick' ? 'active' : ''}`}
-            onClick={() => setActiveTab('quick')}
-          >
-            Quick Safety Check
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === 'saved' ? 'active' : ''}`}
-            onClick={() => setActiveTab('saved')}
-          >
-            My Medication List
-          </button>
+      <div className="checker-header-wrapper">
+        <div className="checker-header glass-card gradient-border-card">
+          <div className="header-icon-box">
+            <Shield size={48} className="icon-purple" />
+          </div>
+          <h1>Medication Safety Center</h1>
+          <p className="subtitle text-center">Pharmacist-verified tool for identifying potential drug-drug interactions.</p>
+          
+          <div className="tab-switcher">
+            <button 
+              className={`tab-btn ${activeTab === 'quick' ? 'active' : ''}`}
+              onClick={() => setActiveTab('quick')}
+            >
+              Safety Analyzer
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === 'saved' ? 'active' : ''}`}
+              onClick={() => setActiveTab('saved')}
+            >
+              My Medication List
+            </button>
+          </div>
         </div>
       </div>
 
@@ -150,7 +152,31 @@ const InteractionChecker = ({ onOpenAuth }) => {
                       <div className="filled-slot">
                         <Pill size={18} className="icon-purple" />
                         <span className="drug-name">{medsToCheck[index].name}</span>
-                        <button onClick={() => removeDrug(index)}><Trash2 size={16} /></button>
+                        <div className="slot-actions">
+                          {currentUser && !savedMeds.some(m => m.name.toLowerCase() === medsToCheck[index].name.toLowerCase()) && (
+                            <button 
+                              className="save-mini-btn" 
+                              title="Save to profile"
+                              onClick={async () => {
+                                const newMed = { 
+                                  name: medsToCheck[index].name, 
+                                  addedAt: new Date().toISOString() 
+                                };
+                                try {
+                                  await updateDoc(doc(db, 'user_medications', currentUser.uid), {
+                                    medications: arrayUnion(newMed)
+                                  });
+                                  fetchSavedMeds();
+                                } catch (e) {
+                                  console.error(e);
+                                }
+                              }}
+                            >
+                              <Plus size={14} />
+                            </button>
+                          )}
+                          <button onClick={() => removeDrug(index)}><Trash2 size={16} /></button>
+                        </div>
                       </div>
                     ) : (
                       <span className="slot-placeholder">Slot {index + 1} {index < 2 ? '(Required)' : '(Optional)'}</span>
@@ -211,28 +237,40 @@ const InteractionChecker = ({ onOpenAuth }) => {
                   onClick={checkInteractions}
                   disabled={loading}
                 >
-                  {loading ? 'Analyzing Databases...' : hasChecked ? 'Update Analysis' : 'Run Safety Analysis'}
+                  {loading ? 'Analyzing Databases...' : hasChecked ? 'Refresh Report' : 'Generate Safety Report'}
                 </button>
               )}
             </div>
 
             <div className="results-panel">
               {hasChecked && interactions.length > 0 ? (
-                <div className="interaction-list animate-fade-in">
-                  <div className="result-stat warning">
-                    <AlertTriangle size={24} />
-                    <span>{interactions.length} Interaction(s) Found</span>
+                <div className="interaction-report animate-fade-in">
+                  <div className="report-header glass-card mb-4">
+                    <div className="active-badge mb-2">Clinical Interaction Report</div>
+                    <div className="report-stat high">
+                      <AlertTriangle size={24} />
+                      <span>{interactions.length} Documented Conflict(s) Identified</span>
+                    </div>
                   </div>
                   {interactions.map((inter, i) => (
                     <div key={i} className={`interaction-card glass-card severity-${inter.severity.toLowerCase()}`}>
-                      <div className="severity-badge">{inter.severity}</div>
+                      <div className="severity-indicator">
+                        <span className="dot"></span>
+                        {inter.severity} Risk
+                      </div>
                       <h4>{inter.drugs[0]} + {inter.drugs[1]}</h4>
-                      <p>{inter.description}</p>
+                      <div className="report-details mt-2">
+                        <strong>Clinical Assessment:</strong>
+                        <p>{inter.description}</p>
+                      </div>
                     </div>
                   ))}
-                  <div className="medical-note glass-card mt-4">
+                  <div className="pharmacist-note glass-card mt-4">
                     <Info size={20} className="shrink-0" />
-                    <p>This report is exactly sourced from the globally standardized RxNav database and local curation. Always verify changes with your primary pharmacist before adjusting dosing.</p>
+                    <div>
+                      <strong>Pharmacist Guidance:</strong>
+                      <p>This report is generated using global medical standards (RxNav). These results indicate pharmacological conflicts that may require dosage adjustment or alternative prescription selection by your doctor.</p>
+                    </div>
                   </div>
                 </div>
               ) : hasChecked && interactions.length === 0 && !loading ? (
@@ -297,104 +335,85 @@ const InteractionChecker = ({ onOpenAuth }) => {
       </div>
 
       <style>{`
-        .checker-page { padding-top: 2rem; padding-bottom: 6rem; max-width: 1200px; margin: 0 auto; }
-        .checker-header { padding: 4rem 2rem; text-align: center; margin-bottom: 3rem; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
-        .icon-purple { color: var(--primary); }
-        .subtitle { color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem; margin-bottom: 3rem; }
+        .checker-page { padding: 4rem 2rem; padding-bottom: 6rem; max-width: 1300px; margin: 0 auto; }
+        .checker-header-wrapper { display: flex; justify-content: center; width: 100%; margin-bottom: 4rem; }
         
-        .tab-switcher { display: flex; justify-content: center; gap: 1rem; }
+        /* Gradient Border Card Utility */
+        .gradient-border-card {
+           padding: 4rem 3rem !important;
+           background: white !important;
+           border: 4px solid transparent !important;
+           background-image: linear-gradient(white, white), linear-gradient(135deg, #4338ca 0%, #3b82f6 100%) !important;
+           background-origin: border-box !important;
+           background-clip: padding-box, border-box !important;
+           max-width: 900px;
+           width: 100%;
+           border-radius: 32px !important;
+           box-shadow: 0 20px 50px rgba(0,0,0,0.1) !important;
+           text-align: center;
+        }
+
+        .checker-header h1 { font-size: 3rem; font-weight: 900; margin-bottom: 1rem; text-align: center; color: var(--text-main); }
+        .header-icon-box { display: flex; justify-content: center; width: 100%; margin-bottom: 1.5rem; }
+        .icon-purple { color: var(--primary); }
+        .subtitle { color: var(--text-muted); font-size: 1.25rem; margin-top: 0.5rem; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; text-align: center; }
+        
+        .tab-switcher { display: flex; justify-content: center; gap: 1.5rem; }
         .tab-btn { 
-          padding: 12px 32px; border: 2px solid var(--border); background: white; 
+          padding: 14px 36px; border: 2px solid var(--border); background: white; 
           border-radius: 30px; font-weight: 700; color: var(--text-muted); cursor: pointer;
-          transition: all 0.2s; font-size: 1rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 1.1rem;
         }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 8px 24px rgba(126, 34, 206, 0.25); }
+        .tab-btn:hover:not(.active) { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
         
-        .quick-check-layout { display: grid; grid-template-columns: 450px 1fr; gap: 3rem; align-items: flex-start; }
-        .input-panel { padding: 2.5rem; background: white; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        .input-panel h3 { margin-bottom: 0.5rem; font-size: 1.5rem; color: var(--text-main); font-weight: 800; }
-        .input-panel p { font-size: 1rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.5; }
+        .quick-check-layout { display: grid; grid-template-columns: 480px 1fr; gap: 4rem; align-items: flex-start; }
+        .input-panel { padding: 3rem; border-radius: 24px; }
+        .input-panel h3 { font-size: 1.8rem; margin-bottom: 1rem; font-weight: 900; }
         
+        .slot-actions { display: flex; gap: 8px; }
+        .save-mini-btn { background: rgba(126, 34, 206, 0.1); border: none; color: var(--primary); padding: 6px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+        .save-mini-btn:hover { background: var(--primary); color: white; }
+
         /* Multi Drug Slots */
-        .multi-drug-slots { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem; }
-        .drug-slot { min-height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(126, 34, 206, 0.25); background: rgba(126, 34, 206, 0.02); transition: all 0.3s; }
-        .drug-slot.filled { border-style: solid; border-color: rgba(126, 34, 206, 0.5); background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .slot-placeholder { color: var(--text-muted); font-weight: 600; font-size: 0.95rem; opacity: 0.6; }
-        .filled-slot { width: 100%; padding: 0 1.25rem; display: flex; align-items: center; gap: 12px; }
-        .filled-slot .drug-name { flex: 1; font-weight: 700; color: var(--text-main); font-size: 1.05rem; }
-        .filled-slot button { background: none; border: none; color: #ef4444; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s; }
-        .filled-slot button:hover { background: #fef2f2; }
+        .multi-drug-slots { display: flex; flex-direction: column; gap: 12px; margin-bottom: 2rem; }
+        .drug-slot { min-height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(126, 34, 206, 0.2); background: rgba(126, 34, 206, 0.02); }
+        .drug-slot.filled { border-style: solid; border-color: rgba(126, 34, 206, 0.3); background: white; }
+        .filled-slot { width: 100%; padding: 0 1.5rem; display: flex; align-items: center; gap: 1rem; }
+        .filled-slot .drug-name { flex: 1; font-weight: 800; color: var(--text-main); font-size: 1.1rem; }
         
-        .drug-input-form { margin-bottom: 1rem; }
+        .drug-input-form { margin-bottom: 1.5rem; }
         .input-group { position: relative; display: flex; align-items: center; }
-        .input-icon { position: absolute; left: 1.2rem; color: var(--text-muted); }
-        .input-group .input-field { padding-left: 3.5rem; padding-right: 4rem; width: 100%; height: 54px; border-radius: 14px; border: 2px solid var(--border); font-weight: 600; font-size: 1rem; transition: border-color 0.3s; background: #fafafa; }
-        .input-group .input-field:focus { border-color: var(--primary); outline: none; background: white; }
-        .add-btn { position: absolute; right: 8px; width: 38px; height: 38px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-        .add-btn:hover:not(:disabled) { background: var(--primary-hover); }
-        .add-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .input-icon { position: absolute; left: 1.5rem; color: var(--text-muted); }
+        .input-group .input-field { padding-left: 3.8rem; height: 60px; border-radius: 18px; font-weight: 700; }
         
-        /* Inline Error */
-        .inline-error-msg { display: flex; align-items: flex-start; gap: 8px; background: #fef2f2; color: #b91c1c; padding: 14px 16px; border-radius: 12px; border-left: 4px solid #ef4444; margin-bottom: 1.5rem; font-size: 0.95rem; font-weight: 600; line-height: 1.4; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1); }
+        /* Interaction Report Styles */
+        .interaction-report { display: flex; flex-direction: column; gap: 1.5rem; }
+        .report-header { padding: 2.5rem !important; }
+        .report-stat { display: flex; align-items: center; gap: 1rem; font-size: 1.4rem; font-weight: 900; }
+        .report-stat.high { color: #e11d48; }
+
+        .interaction-card { padding: 2.5rem !important; position: relative; border-left: 8px solid #cbd5e1 !important; }
+        .severity-indicator { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 0.05em; }
+        .severity-high { border-left-color: #e11d48 !important; }
+        .severity-high .severity-indicator { color: #e11d48; }
+        .severity-high .dot { width: 10px; height: 10px; background: #e11d48; border-radius: 50%; }
         
-        /* Profile Quick Add */
-        .profile-quick-add { margin-top: 1.5rem; border-top: 2px dashed var(--border); padding-top: 1.5rem; }
-        .quick-add-label { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 12px; }
-        .profile-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-        .profile-chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: white; border: 2px solid var(--border); border-radius: 20px; font-size: 0.9rem; font-weight: 700; color: var(--primary); cursor: pointer; transition: all 0.2s; }
-        .profile-chip:hover:not(:disabled) { border-color: var(--primary); background: rgba(126, 34, 206, 0.05); transform: translateY(-1px); }
-        .profile-chip:disabled { opacity: 0.4; cursor: not-allowed; border-color: var(--border); background: #f5f5f5; color: var(--text-muted); }
+        .interaction-card h4 { font-size: 1.5rem; font-weight: 900; margin-bottom: 1.5rem; }
+        .report-details strong { display: block; margin-bottom: 0.5rem; color: var(--text-main); font-size: 1rem; }
+        .report-details p { color: var(--text-muted); line-height: 1.7; font-size: 1.05rem; }
+
+        .pharmacist-note { padding: 2rem !important; display: flex; gap: 1.5rem; background: #eff6ff !important; border: 1px solid #bfdbfe !important; color: #1e40af; }
+        .pharmacist-note strong { font-size: 1.1rem; display: block; margin-bottom: 0.5rem; }
+        .pharmacist-note p { margin: 0; line-height: 1.6; }
+
+        .empty-results-state { padding: 8rem 4rem; height: 600px; }
         
-        /* Run Button */
-        .run-check-btn { padding: 16px; font-size: 1.1rem; border-radius: 14px; }
-        
-        .result-stat { display: flex; align-items: center; gap: 15px; padding: 1.5rem 2rem; border-radius: 16px; margin-bottom: 2rem; font-weight: 800; font-size: 1.25rem; }
-        .result-stat.warning { background: #fff5f5; color: #c53030; border: 1px solid #fed7d7; }
-        .icon-success { color: var(--success); margin-bottom: 1.5rem; }
-        
-        .interaction-card { padding: 2rem; margin-bottom: 1.5rem; position: relative; border-left: 6px solid #ccc; background: white; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-radius: 0 16px 16px 0; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-        .severity-high { border-left-color: #e53e3e; }
-        .severity-moderate { border-left-color: #dd6b20; }
-        .severity-minor { border-left-color: #3182ce; }
-        .severity-badge { position: absolute; top: 1.5rem; right: 2rem; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; padding: 6px 12px; background: #eee; border-radius: 6px; letter-spacing: 0.5px; }
-        .severity-high .severity-badge { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-        .interaction-card h4 { font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 800; padding-right: 80px; }
-        .interaction-card p { font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
-        
-        .empty-results-state, .no-interactions { padding: 6rem 3rem; display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 100%; border: 1px solid var(--border); }
-        .empty-results-state h3 { margin: 1.5rem 0 0.5rem; color: var(--text-main); font-weight: 800; font-size: 1.6rem; }
-        .no-interactions h3 { margin-bottom: 1rem; color: var(--text-main); font-weight: 800; font-size: 1.6rem; }
-        .empty-results-state p { color: var(--text-muted); font-size: 1.1rem; text-align: center; max-width: 400px; line-height: 1.5; }
-        .no-interactions p { color: var(--text-muted); font-size: 1.1rem; text-align: center; max-width: 450px; line-height: 1.6; }
-        
-        .medical-note { padding: 1.5rem; background: #f8fafc; font-size: 0.95rem; color: var(--text-muted); display: flex; gap: 16px; align-items: flex-start; border: 1px solid var(--border); border-radius: 12px; line-height: 1.6; }
-        .shrink-0 { flex-shrink: 0; color: #64748b; margin-top: 2px; }
-        
-        .saved-meds-layout { padding: 5rem 4rem; min-height: 500px; border-radius: 20px; }
-        .login-prompt h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
-        .login-prompt p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
-        
-        .med-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-        .saved-med-card { padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; border: 2px solid var(--border); transition: transform 0.2s, border-color 0.2s; border-radius: 14px; background: white; }
-        .saved-med-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-        .med-details { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-        .med-details strong { font-size: 1.15rem; color: var(--text-main); font-weight: 800; }
-        .med-details span { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
-        .btn-icon { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: color 0.2s; }
-        .btn-icon:hover { color: #ef4444; }
-        
-        .empty-text { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--text-muted); font-size: 1.1rem; background: #fafafa; border-radius: 12px; border: 2px dashed var(--border); }
-        
-        .mt-4 { margin-top: 1rem; }
-        .mt-6 { margin-top: 1.5rem; }
-        .mt-8 { margin-top: 2rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .w-full { width: 100%; }
-        
-        @media (max-width: 1000px) {
+        .med-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+        .saved-med-card { padding: 2rem !important; border-radius: 20px; }
+
+        @media (max-width: 1100px) {
           .quick-check-layout { grid-template-columns: 1fr; }
-          .saved-meds-layout { padding: 3rem 2rem; }
         }
       `}</style>
     </div>

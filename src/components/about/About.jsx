@@ -6,13 +6,13 @@ import '../../styles/about.css';
 
 // Using the team members defined in your project
 const teamMembers = [
-    { id: 1, name: "Zeinab Hamdy Hassab tayeeb", role: "Team Leader", isLeader: true, bio: "Coordinates clinical integration and leads the pharmacy presentation board structure." },
+    { id: 1, name: "Seveen Mohamed Ahmed Fouad Elsayoufy", role: "Team Leader", isLeader: true, bio: "Coordinates clinical integration and leads the pharmacy presentation board structure." },
     { id: 2, name: "Ahmed Ezzat Osman Tantawy", role: "Clinical Pharmacist", isLeader: false, bio: "Specializes in antiepileptic drug interactions and metabolic profiling." },
     { id: 3, name: "Diana Yasser AbdAlazim Mohamed Salama", role: "Clinical Pharmacist", isLeader: false, bio: "Focuses on patient compliance and seizure trigger correlation data." },
     { id: 4, name: "Mina Talat Shaker Wassef", role: "Clinical Pharmacist", isLeader: false, bio: "Ensures the accuracy of the Interaction Checker API integration." },
     { id: 5, name: "Moustafa Khalid Mohamed Taha Bahr", role: "Clinical Pharmacist", isLeader: false, bio: "Develops the seizure pattern algorithms used in the Seizure Check tool." },
     { id: 6, name: "Nada Mohammed Kamal Abieah", role: "Clinical Pharmacist", isLeader: false, bio: "Curates the medical terminology and user instructions for clarity." },
-    { id: 7, name: "Seveen Mohamed Ahmed Fouad Elsayoufy", role: "Clinical Pharmacist", isLeader: false, bio: "Evaluates application usability against pharmacy standards." },
+    { id: 7, name: "Zeinab Hamdy Hassab tayeeb", role: "Clinical Pharmacist", isLeader: false, bio: "Evaluates application usability against pharmacy standards." },
     { id: 8, name: "Abdalla Abouelscoud Hassan Hassoub Soliman", role: "Clinical Pharmacist", isLeader: false, bio: "Researches up-to-date medication interactions and contraindications." },
     { id: 9, name: "Yassein Mohamed Mohamed Ali Almaghrabi", role: "Clinical Pharmacist", isLeader: false, bio: "Structures the medical history tracking and compliance database logic." },
     { id: 10, name: "Ahmed Mohamed Ahmed Elgashy", role: "Clinical Pharmacist", isLeader: false, bio: "Validates final clinical safety recommendations for the graduation board." }
@@ -82,11 +82,10 @@ const About = () => {
                             position: 'relative', zIndex: 10, width: '160px', height: '160px', borderRadius: '50%',
                             overflow: 'hidden', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
                             boxShadow: '0 0 0 3px rgba(157, 141, 241, 0.6), 0 0 24px rgba(100, 100, 200, 0.2)',
-                            animation: 'border-glow 2.8s ease-in-out infinite',
+                            animation: 'border-glow 2.8s ease-in-out infinite', padding: '20px'
                         }}
                     >
-                        {/* Optionally replace with a real MTI logo path */}
-                        <GraduationCap style={{ width: '80px', height: '80px', color: 'var(--primary)' }} />
+                        <img src="/mti_logo.jpeg" alt="SeizureSafe Logo" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
                     </div>
                 </div>
                 <h3 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.5rem' }}>MTI University</h3>

@@ -1,3 +1,17 @@
+a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+button {
+  text-decoration: none !important;
+  outline: none;
+}
+
+.btn, .btn-premium, .btn-secondary, .btn-large, .white-link, .nav-link {
+  text-decoration: none !important;
+}
+
 :root {
   /* Calm & Safe Palette */
   --primary: #9d8df1;
@@ -67,6 +81,7 @@ body {
   justify-content: center;
   gap: 10px;
   font-size: 1rem;
+  text-decoration: none !important;
 }
 
 .btn-premium {
@@ -131,13 +146,57 @@ body {
   color: #e74c3c;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 h1,
 h2,
 h3 {
   color: var(--text-main);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(126, 34, 206, 0.1);
+  border-color: rgba(126, 34, 206, 0.2);
+}
+
+/* Section Utilities */
+.full-screen-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-spacing {
+  padding: 120px 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+  position: relative;
+  z-index: 10;
+}
+
 
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out forwards;
