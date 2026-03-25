@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Navbar from './components/common/Navbar';
 import AuthWindow from './components/auth/AuthWindow';
 import SeizureCheck from './components/questionnaire/SeizureCheck';
 import InteractionChecker from './components/checker/InteractionChecker';
 import UserProfile from './components/profile/UserProfile';
 import About from './components/about/About';
-import { Shield, Activity, Pill, User, ChevronRight, GraduationCap, Users, Award, Heart, CheckCircle2 } from 'lucide-react';
+import { Shield, Activity, Pill, User, ChevronRight, Heart, ClipboardList, ArrowRight, ShieldCheck, FileText } from 'lucide-react';
 
 const Home = ({ onOpenAuth }) => {
 
@@ -17,26 +18,22 @@ const Home = ({ onOpenAuth }) => {
         <div className="hero-content container">
           <div className="hero-flex-wrapper">
             <div className="hero-text-side">
-              {/* <div className="graduation-badge">
-                 <GraduationCap size={20} />
-                 <span>Pharmacy Graduation Project 2026</span>
-              </div> */}
               <h1 className="hero-title white-text">
                 A Professional Approach to <br />
-                <span className="text-glow italic">Epilepsy Safety</span>
+                <span className="text-glow italic" style={{color:'#eebef1'}}>Epilepsy Safety</span>
               </h1>
               <p className="hero-description white-text">
                 Expertly-crafted tools by medical students for identifying seizure patterns,
-                verifying drug interactions, and maintaining safe pharmacological history.
+                verifying drug interactions, and maintaining safe pharmacological history for your loved one.
               </p>
 
               <div className="hero-cta-group">
                 <Link to="/questionnaire" className="btn btn-premium btn-large">
                   Start Scientific Check <ChevronRight size={20} />
                 </Link>
-                <a href="#team" className="btn btn-outline-white btn-large">
+                <Link to="/about" className="btn btn-outline-white btn-large">
                   Meet The Medical Team
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -44,27 +41,24 @@ const Home = ({ onOpenAuth }) => {
               <div className="hero-img-container">
                 <img src="/hero.png" alt="Epilepsy Awareness" className="hero-main-img" />
 
-                {/* Smooth Brain Waves Animation Overlay - Denser and overlapping */}
+                {/* Smooth Brain Waves Animation Overlay */}
                 <div className="brain-flow-overlay">
                   <svg viewBox="0 0 1000 400" className="brain-flow-svg">
                     <defs>
                       <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stopColor="transparent" />
-                        <stop offset="50%" stopColor="rgba(255, 255, 255, 0.4)" />
+                        <stop offset="50%" stopColor="rgba(255, 255, 255, 0.3)" />
                         <stop offset="100%" stopColor="transparent" />
                       </linearGradient>
                       <linearGradient id="waveGradientColor" x1="100%" y1="0%" x2="0%" y2="0%">
                         <stop offset="0%" stopColor="transparent" />
-                        <stop offset="50%" stopColor="rgba(255, 255, 255, 0.3)" />
+                        <stop offset="50%" stopColor="rgba(255, 255, 255, 0.2)" />
                         <stop offset="100%" stopColor="transparent" />
                       </linearGradient>
                     </defs>
-                    {/* Waves overlapping text region */}
                     <path d="M400,140 C100,40 -400,240 -900,140" className="flow-line flow-left flow-1" />
                     <path d="M400,160 C50,90 -450,290 -950,190" className="flow-line flow-left flow-2" />
                     <path d="M420,120 C120,20 -380,220 -880,120" className="flow-line flow-left flow-3" />
-
-                    {/* Right Flowing Waves */}
                     <path d="M500,150 C700,50 1200,250 1700,150" className="flow-line flow-right flow-4" />
                     <path d="M500,170 C750,100 1250,300 1750,200" className="flow-line flow-right flow-5" />
                     <path d="M520,130 C720,30 1220,230 1720,130" className="flow-line flow-right flow-6" />
@@ -76,356 +70,254 @@ const Home = ({ onOpenAuth }) => {
         </div>
       </section>
 
-      {/* Main Glass Screen Layer wrapping content below Hero */}
-      <div className="container">
-        <div className="glass-screen-layer">
+      {/* Main Content Container */}
+      <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '5rem', zIndex: 10, position: 'relative' }}>
           
-          {/* Understanding Epilepsy Section */}
-          <section className="epilepsy-info-section">
-            <div className="section-header">
-              <h2>Understanding Epilepsy</h2>
-              <p>
-                Epilepsy is a neurological condition where abnormal brain activity causes seizures. 
-                Seizures are broadly classified into three main types based on where and how they begin in the brain.
-              </p>
-            </div>
-            <div className="types-grid">
-              <div className="type-card glass-card">
-                <div className="type-img-container">
-                  <img src="/focal_seizure.png" alt="Focal Seizure Anatomy" />
-                </div>
-                <h3>Focal Onset Seizures</h3>
-                <p>These start in a specific area or network of cells on one side of the brain. They can occur with or without loss of awareness and may affect movement, sensation, or emotions.</p>
-              </div>
-              <div className="type-card glass-card">
-                <div className="type-img-container">
-                  <img src="/generalized_seizure.png" alt="Generalized Seizure Anatomy" />
-                </div>
-                <h3>Generalized Onset</h3>
-                <p>These engage neural networks across both sides of the brain right from the start. Common forms include sudden loss of awareness (absence) or stiffening and jerking (tonic-clonic).</p>
-              </div>
-              <div className="type-card glass-card">
-                <div className="type-img-container">
-                  <img src="/unknown_seizure.png" alt="Unknown Onset Seizure Anatomy" />
-                </div>
-                <h3>Unknown Onset</h3>
-                <p>When the beginning of a seizure is not witnessed or documented, it is classified as unknown. This classification can help guide doctors toward further neurological testing.</p>
-              </div>
-            </div>
-          </section>
+        {/* 1. Empathy Introduction Section (Compacted) */}
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="empathy-section"
+        >
+          <div className="empathy-content">
+            <Heart className="empathy-icon" size={36} />
+            <h2>You Are Not Alone</h2>
+            <p className="empathy-lead">
+              Managing an epilepsy diagnosis can be overwhelming. We're here to provide professional, pharmacist-verified tools to help you track symptoms, verify medications, and care for them with absolute confidence.
+            </p>
+          </div>
+        </motion.section>
 
-          {/* Services Section */}
-          <section className="services-section">
-            <div className="section-header">
-              <h2>Clinical Support Services</h2>
-              <p>SeizureSafe provides specialized modules developed for high-precision patient care.</p>
-            </div>
-            <div className="services-grid">
-              <div className="service-card glass-card">
-                <div className="service-icon purple"><Activity size={36} /></div>
-                <h3>Seizure Check</h3>
-                <p>Step-by-step diagnostic guide based on clinical observation patterns.</p>
-                <Link to="/questionnaire" className="service-link">Access Tool <ChevronRight size={16} /></Link>
+        {/* 2. Understanding Epilepsy Types (Compacted to fit 100vh) */}
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="epilepsy-info-section"
+        >
+          <div className="section-header tight-header">
+            <h2>Understanding Epilepsy</h2>
+            <p>
+              As a caregiver, understanding these main classifications helps you accurately document their patterns for doctors.
+            </p>
+          </div>
+          <div className="types-grid">
+            <motion.div whileHover={{ scale: 1.02 }} className="type-card glass-card">
+              <div className="type-img-wrapper">
+                <img src="/focal%20Aware.jpg" alt="Focal Aware Seizure Anatomy" />
               </div>
-              <div className="service-card glass-card">
-                <div className="service-icon blue"><Pill size={36} /></div>
-                <h3>Interaction Screening</h3>
-                <p>Real-time cross-checking of medications using the RxNav global database.</p>
-                <Link to="/checker" className="service-link">Access Tool <ChevronRight size={16} /></Link>
+              <div className="type-card-content">
+                <h3>Focal Aware Seizures</h3>
+                <p>Start in a specific brain network. The individual remains fully or partially aware of what is happening during the episode.</p>
               </div>
-              <div className="service-card glass-card">
-                <div className="service-icon teal"><Shield size={36} /></div>
-                <h3>Medical Archives</h3>
-                <p>Securely store and track your pharmacological history and assessments.</p>
-                <Link to="/profile" className="service-link">View Dashboard <ChevronRight size={16} /></Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} className="type-card glass-card">
+              <div className="type-img-wrapper">
+                <img src="/absence.jpg" alt="Absence Seizure Anatomy" />
               </div>
-            </div>
-          </section>
+              <div className="type-card-content">
+                <h3>Absence Seizures</h3>
+                <p>A specific generalized seizure causing a sudden, brief lapse in consciousness, often safely appearing as staring into space.</p>
+              </div>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} className="type-card glass-card">
+              <div className="type-img-wrapper">
+                <img src="/tonic-clonic.jpg" alt="Tonic-Clonic Seizure" />
+              </div>
+              <div className="type-card-content">
+                <h3>Tonic-Clonic Seizures</h3>
+                <p>A generalized seizure involving sudden stiffening (tonic phase) followed directly by sustained rhythmic jerking (clonic phase).</p>
+              </div>
+            </motion.div>
+          </div>
+        </motion.section>
 
-          {/* Project Background Banner */}
-          <section className="project-context">
-            <div className="context-banner glass-card" style={{ textAlign: 'center', padding: '6rem 3rem', borderRadius: '40px', background: 'rgba(255, 255, 255, 0.85)', position: 'relative', overflow: 'hidden' }}>
-              {/* Decorative aura */}
-              <div style={{ position: 'absolute', top: '-20%', left: '-5%', width: '300px', height: '300px', background: 'rgba(157, 141, 241, 0.15)', filter: 'blur(80px)', borderRadius: '50%' }} />
-              <div style={{ position: 'absolute', bottom: '-20%', right: '-5%', width: '300px', height: '300px', background: 'rgba(96, 165, 250, 0.15)', filter: 'blur(80px)', borderRadius: '50%' }} />
-              
-              <div style={{ position: 'relative', zIndex: 10, maxWidth: '850px', margin: '0 auto' }}>
-                <span className="badge-purple" style={{ display: 'inline-block', marginBottom: '1.5rem' }}>Medical Foundation</span>
-                <h3 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>Bridging Pharmacy & Technology</h3>
-                <p style={{ fontSize: '1.15rem', color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '3rem' }}>
-                  This project was initiated as a medical graduation requirement at <b>MTI University - Faculty of Pharmacy</b>.
-                  It represents our commitment to improving patient compliance and safety in epilepsy treatment through accessible digital health tools.
-                </p>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '3rem', flexWrap: 'wrap' }}>
-                  <div className="c-feat"><CheckCircle2 size={24} /> Pharmacist Verified</div>
-                  <div className="c-feat"><CheckCircle2 size={24} /> Patient Centric UI</div>
-                  <div className="c-feat"><CheckCircle2 size={24} /> Global Medical APIs</div>
-                </div>
-              </div>
+        {/* 3. The App Flow Section */}
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="app-flow-section"
+        >
+          <div className="section-header tight-header">
+            <h2>How SeizureSafe Protects Them</h2>
+          </div>
+          <div className="flow-grid">
+            <div className="flow-step glass-card">
+              <div className="step-number">1</div>
+              <ClipboardList className="step-icon" size={28} />
+              <h3>Take the Questionnaire</h3>
+              <p>Answer 4 guided diagnostic questions to categorize their symptoms.</p>
             </div>
-          </section>
+            <ArrowRight className="flow-arrow" size={28} />
+            <div className="flow-step glass-card">
+              <div className="step-number">2</div>
+              <Pill className="step-icon" size={28} />
+              <h3>Log Medications</h3>
+              <p>Add their active anti-epileptic drugs to their secure medical archive.</p>
+            </div>
+            <ArrowRight className="flow-arrow" size={28} />
+            <div className="flow-step glass-card">
+              <div className="step-number">3</div>
+              <ShieldCheck className="step-icon" size={28} />
+              <h3>Check Interactions</h3>
+              <p>Instantly cross-check their daily regimen against the global RxNav database.</p>
+            </div>
+          </div>
+        </motion.section>
 
-        </div> {/* End of glass-screen-layer */}
-      </div> {/* End of container */}
+        {/* 4. Support Services (Pastel Gradient Cards) */}
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="services-section"
+        >
+          <div className="section-header tight-header">
+            <h2>Clinical Support Tools</h2>
+          </div>
+          <div className="services-grid">
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="service-card gradient-card purple">
+              <div className="service-icon"><Activity size={32} /></div>
+              <h3>Seizure Check</h3>
+              <p>Diagnostic auxiliary guide utilizing clinical observation patterns to safely document their exact episodes.</p>
+              <Link to="/questionnaire" className="service-link">Access Tool <ChevronRight size={16} /></Link>
+            </motion.div>
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="service-card gradient-card blue">
+              <div className="service-icon"><Pill size={32} /></div>
+              <h3>Interaction Screening</h3>
+              <p>High-precision API safety tool leveraging global RxNav standard data to check their prescriptions.</p>
+              <Link to="/checker" className="service-link">Access Tool <ChevronRight size={16} /></Link>
+            </motion.div>
+            <motion.div whileHover={{ y: -6, scale: 1.02 }} className="service-card gradient-card teal">
+              <div className="service-icon"><FileText size={32} /></div>
+              <h3>Medical Archives</h3>
+              <p>Securely store their pharmacological history and ongoing medical assessments in your private, secure dashboard.</p>
+              <Link to="/profile" className="service-link">View Dashboard <ChevronRight size={16} /></Link>
+            </motion.div>
+          </div>
+        </motion.section>
+
+        {/* 5. Sign-Up CTA Section */}
+        <motion.section 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="cta-section glass-card"
+        >
+          <h2>Ready to Take Control?</h2>
+          <p>Join SeizureSafe today to build a secure, pharmacist-verified archive for your loved one.</p>
+          <motion.button 
+            whileHover={{ scale: 1.05 }} 
+            whileTap={{ scale: 0.95 }}
+            className="btn btn-premium btn-large cta-btn"
+            onClick={onOpenAuth}
+          >
+            Create Your Free Account <ChevronRight size={20} />
+          </motion.button>
+        </motion.section>
+
+      </div>
 
       <style>{`
-        .home-container { display: flex; flex-direction: column; gap: 4rem; padding-bottom: 10rem; position: relative; }
+        .home-container { display: flex; flex-direction: column; gap: 3rem; padding-bottom: 0rem; position: relative; }
         
-        /* Final Hero Section Styles */
+        /* Hero Section Snapped to 100vh */
         .modern-hero {
           position: relative;
-          min-height: 90vh;
+          height: 100vh;
           display: flex;
           align-items: center;
-          /* Calm smooth shades of the same colors */
-          background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
           margin-top: -80px;
-          padding-top: 100px;
+          padding-top: 80px; /* Accounts for navbar so content is perfectly centered */
           overflow: hidden;
+          background: linear-gradient(135deg, #5b21b6 0%, #3b82f6 100%); /* Vibrant but calm purple to blue */
+          box-sizing: border-box;
         }
+        .hero-flex-wrapper { display: flex; align-items: center; gap: 0; width: 100%; }
+        .hero-text-side { flex: 1.4; z-index: 10; text-align: left; padding-right: 4rem; }
+        .hero-title { font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.1; }
+        .hero-description { font-size: 1.15rem; color: rgba(255,255,255,0.85); max-width: 650px; margin: 0 auto 2.5rem; }
+        .hero-cta-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .hero-image-side { flex: 1.8; display: flex; justify-content: flex-end; align-items: center; z-index: 5; }
+        .hero-img-container { position: relative; display: flex; justify-content: center; align-items: center; width: 100%; }
+        .hero-main-img { width: 100%; max-width: 600px; height: auto; z-index: 2; mix-blend-mode: screen; }
 
-        .hero-flex-wrapper {
-          display: flex;
-          align-items: center;
-          gap: 0;
-          width: 100%;
-        }
-
-        .hero-text-side {
-          flex: 1.4; /* Expanded for better text wrap space */
-          z-index: 10;
-          text-align: left;
-          padding-right: 4rem;
-        }
-
-        .hero-image-side {
-          flex: 1.8; /* Significantly larger side */
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          z-index: 5;
-        }
-
-        .hero-img-container {
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-        }
-
-        .hero-main-img {
-          width: 100%;
-          max-width: 800px; /* Reduced from 1100px so it is shorter */
-          height: auto;
-          filter: drop-shadow(0 0 50px rgba(0, 0, 0, 0.1));
-          z-index: 2;
-          mix-blend-mode: multiply; /* Makes white backgrounds transparent */
-        }
-
-        /* Smooth Brain Flow Animation - Expanding over text region */
-        .brain-flow-overlay {
-          position: absolute;
-          inset: -300px -600px; 
-          pointer-events: none;
-          z-index: 3;
-          mix-blend-mode: overlay;
-        }
-
-        .brain-flow-svg {
-          width: 100%;
-          height: 100%;
-          overflow: visible;
-        }
-
-        .flow-line {
-          fill: none;
-          stroke-width: 2.5;
-          stroke-linecap: round;
-          stroke-dasharray: 200, 1000;
-          animation: smoothFlow 7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
+        /* Brain Flow svg */
+        .brain-flow-overlay { position: absolute; inset: -300px -600px; pointer-events: none; z-index: 3; mix-blend-mode: overlay; opacity: 0.6; }
+        .brain-flow-svg { width: 100%; height: 100%; overflow: visible; }
+        .flow-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 200, 1000; animation: smoothFlow 7s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         .flow-left { stroke: url(#waveGradient); }
         .flow-right { stroke: url(#waveGradientColor); }
+        @keyframes smoothFlow { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
 
-        .flow-1 { animation-duration: 8s; opacity: 0.5; }
-        .flow-2 { animation-duration: 10s; opacity: 0.4; }
-        .flow-3 { animation-duration: 9s; opacity: 0.3; }
-        .flow-4 { animation-duration: 12s; opacity: 0.4; }
-        .flow-5 { animation-duration: 14s; opacity: 0.3; }
-        .flow-6 { animation-duration: 10s; opacity: 0.2; }
+        /* Section Headers */
+        .section-header { text-align: center; margin-bottom: 3rem; max-width: 800px; margin-inline: auto; }
+        .section-header h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem; letter-spacing: -0.02em; color: var(--text-main); }
+        .section-header p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; }
+        .tight-header { margin-bottom: 2rem !important; }
 
-        @keyframes smoothFlow {
-          0% { stroke-dashoffset: 1400; transform: translateX(0); }
-          100% { stroke-dashoffset: -1400; transform: translateX(-100px); }
-        }
+        /* Empathy Section - Colored Gradient Shade */
+        .empathy-section { padding: 2.5rem 3rem; text-align: center; background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(96, 165, 250, 0.1)); border-radius: 20px; border: 1px solid rgba(167, 139, 250, 0.3); margin-top: -1.5rem; }
+        .empathy-content { max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; }
+        .empathy-icon { color: var(--primary); margin-bottom: 0; }
+        .empathy-section h2 { font-size: 1.75rem; font-weight: 800; color: var(--text-main); margin-bottom: 0; }
+        .empathy-lead { font-size: 1.15rem; font-weight: 500; color: var(--text-main); margin-bottom: 0; line-height: 1.5; }
 
-        .white-text { color: white; }
+        /* Types Grid (Compacted) */
+        .types-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .type-card { display: flex; flex-direction: column; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border); }
+        .type-img-wrapper { width: 100%; height: 180px; background: rgba(126, 34, 206, 0.05); }
+        .type-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .type-card-content { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+        .type-card h3 { font-size: 1.25rem; color: var(--primary); margin-bottom: 0.5rem; font-weight: 800; }
+        .type-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+
+        /* App Flow Section (Compacted) */
+        .flow-grid { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+        .flow-step { flex: 1; position: relative; padding: 2rem 1.5rem; text-align: center; background: white; border-radius: 16px; display: flex; flex-direction: column; align-items: center; min-height: 220px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border); }
+        .step-number { position: absolute; top: -15px; left: -15px; width: 40px; height: 40px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; border-radius: 50%; box-shadow: 0 5px 10px rgba(126, 34, 206, 0.2); }
+        .step-icon { color: var(--primary); margin-bottom: 1rem; }
+        .flow-step h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-main); font-weight: 800; }
+        .flow-step p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+        .flow-arrow { color: rgba(126, 34, 206, 0.3); flex-shrink: 0; }
+
+        /* Services Pastel Gradient Cards with Dark Buttons/Text */
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .service-card { padding: 2rem; text-align: left; border-radius: 16px; border: 1px solid transparent; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         
-        .hero-title { 
-          font-size: 3.25rem; 
-          font-weight: 800; 
-          line-height: 1.1; 
-          margin-bottom: 2rem;
-          letter-spacing: -0.02em;
-        }
-
-        .text-glow {
-          color: white;
-          text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
-        }
-
-        .hero-description { 
-          font-size: 1.15rem; 
-          margin-bottom: 3.5rem; 
-          line-height: 1.6; 
-          max-width: 550px; 
-          opacity: 0.95;
-        }
-
-        /* Aligned buttons container */
-        .hero-cta-group { 
-          display: flex; 
-          gap: 1.25rem; 
-          justify-content: flex-start;
-          width: 100%;
-          max-width: fit-content;
-        }
-
-        /* Compact Buttons Styles */
-        .btn-premium {
-          background: white;
-          color: #7e22ce;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-          text-decoration: none !important;
-          padding: 15px 32px !important;
-          font-size: 1.1rem !important;
-          white-space: nowrap;
-        }
-
-        .btn-premium:hover {
-          background: #f8f9fa;
-          transform: translateY(-3px);
-          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-          color: #7e22ce;
-        }
-
-        .btn-outline-white {
-          background: rgba(255, 255, 255, 0.15);
-          color: white;
-          border: 2px solid rgba(255, 255, 255, 0.4);
-          backdrop-filter: blur(10px);
-          text-decoration: none !important;
-          padding: 15px 32px !important;
-          font-size: 1.1rem !important;
-          white-space: nowrap;
-        }
-
-        .btn-outline-white:hover {
-          background: rgba(255, 255, 255, 0.25);
-          border-color: white;
-          transform: translateY(-3px);
-          color: white;
-        }
+        .gradient-card.purple { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.3); }
+        .gradient-card.blue { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); }
+        .gradient-card.teal { background: rgba(20,184,166,0.1); border-color: rgba(20,184,166,0.3); }
         
-        /* Layout Fixes */
-        .graduation-badge { 
-          display: inline-flex; 
-          align-items: center; 
-          gap: 10px; 
-          background: rgba(255, 255, 255, 0.15); 
-          padding: 8px 16px; 
-          border-radius: 40px; 
-          font-weight: 700; 
-          font-size: 0.85rem; 
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 255, 255, 0.2); 
-          margin-bottom: 2.5rem; 
-          color: white; 
-        }
+        .service-icon { margin-bottom: 1.5rem; color: var(--primary); }
+        .service-card h3 { font-size: 1.4rem; margin-bottom: 0.8rem; font-weight: 800; color: var(--text-main); }
+        .service-card p { color: var(--text-muted); line-height: 1.5; flex: 1; font-size: 0.95rem; }
+        .service-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 1.5rem; text-decoration: none !important; color: white !important; font-weight: 600; font-size: 0.95rem; background: var(--primary); padding: 10px 18px; border-radius: 12px; width: fit-content; transition: background 0.3s, transform 0.2s; }
+        .service-link:hover { background: var(--primary-hover); transform: translateX(4px); }
 
-        .glass-screen-layer {
-          background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
-          backdrop-filter: blur(20px); /* Apply blur effect */
-          border-radius: 40px; /* Rounded corners */
-          padding: 6rem; /* Inner padding */
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); /* Soft shadow */
-          border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
-          margin-top: -100px; /* Overlap with hero section */
-          position: relative;
-          z-index: 10; /* Ensure it's above other content */
-          display: flex;
-          flex-direction: column;
-          gap: 6rem;
-        }
+        /* CTA Section */
+        .cta-section { text-align: center; padding: 4rem; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border); }
+        .cta-section h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem; color: var(--text-main); }
+        .cta-section p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2.5rem; }
+        .cta-btn { margin: 0 auto; box-shadow: 0 10px 20px rgba(126,34,206,0.2); }
 
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .service-card { padding: 4rem 2.5rem; text-align: left; background: white; border-radius: 30px; }
-        .service-icon { margin-bottom: 2rem; color: var(--primary); }
-        .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; font-weight: 800; }
-        .service-card p { color: var(--text-muted); line-height: 1.6; }
-        .service-link { display: flex; align-items: center; gap: 8px; margin-top: 2rem; text-decoration: none !important; color: var(--primary); font-weight: 800; font-size: 0.95rem; }
-
-        .project-context { padding: 0; } /* Remove padding as it's now inside glass-screen-layer */
-        .c-feat { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--primary); }
-        .badge-purple { background: rgba(126, 34, 206, 0.1); color: #7e22ce; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
-
-        /* Epilepsy Info Section Styles */
-        .epilepsy-info-section {
-          margin-bottom: 6rem;
+        /* Responsive */
+        @media (max-width: 1100px) {
+          .types-grid, .services-grid { grid-template-columns: repeat(2, 1fr); }
+          .flow-grid { flex-direction: column; }
+          .flow-arrow { display: none; }
+          .flow-step { width: 100%; min-height: auto; }
         }
-        .types-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 2rem;
-        }
-        .type-card {
-          padding: 2rem;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          /* Inherits .glass-card via index.css for hover state and background */
-        }
-        .type-img-container {
-          width: 100%;
-          height: 180px;
-          border-radius: 20px;
-          overflow: hidden;
-          margin-bottom: 1.5rem;
-          background: rgba(126, 34, 206, 0.05);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .type-img-container img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          mix-blend-mode: multiply;
-        }
-        .type-card h3 {
-          font-size: 1.35rem;
-          margin-bottom: 1rem;
-          color: var(--primary);
-          font-weight: 800;
-        }
-        .type-card p {
-          color: var(--text-muted);
-          font-size: 0.95rem;
-          line-height: 1.6;
-        }
-
-
-        @media (max-width: 1000px) {
+        @media (max-width: 768px) {
           .hero-flex-wrapper { flex-direction: column; text-align: center; gap: 3rem; }
           .hero-cta-group { justify-content: center; }
           .hero-text-side { text-align: center; padding-right: 0; }
           .hero-title { font-size: 2.75rem; }
-          .services-grid, .types-grid { grid-template-columns: 1fr; }
-          .glass-screen-layer { padding: 3rem; margin-top: -50px; }
-          .context-banner { padding: 4rem 2rem !important; }
+          .types-grid, .services-grid { grid-template-columns: 1fr; }
+          .empathy-section, .cta-section { padding: 2.5rem 1.5rem; }
+          .section-header h2 { font-size: 2rem; }
         }
       `}</style>
     </div>
@@ -451,7 +343,7 @@ const App = () => {
         </Routes>
       </main>
 
-      <footer className="footer glass-card">
+      <footer className="footer dark-footer">
         <div className="footer-content">
           <p>© 2026 SeizureSafe. Pharmacy Graduation Project • MTI University.</p>
           <p className="disclaimer">Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosage, consult your doctor.</p>
@@ -459,15 +351,11 @@ const App = () => {
       </footer>
 
       <style>{`
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; background: #fafafc; position: relative; }
-        .main-content { flex: 1; padding-top: 80px; width: 100%; position: relative; z-index: 1; }
-        .footer { margin-top: auto; padding: 4rem 2rem; text-align: center; border-radius: 0; background: white; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
+        .main-content { flex: 1; padding-top: 80px; width: 100%; position: relative; z-index: 1; margin-bottom: 6rem; }
+        .dark-footer { margin-top: auto; padding: 3rem 2rem; text-align: center; background: #1e1b4b; color: white; position: relative; z-index: 1; }
         .footer-content { max-width: 800px; margin: 0 auto; }
-        .disclaimer { font-size: 0.8rem; color: var(--text-muted); margin-top: 1.5rem; line-height: 1.6; }
-        
-        .section-header { text-align: center; margin-bottom: 5rem; max-width: 700px; margin-inline: auto; }
-        .section-header h2 { font-size: 2.75rem; font-weight: 900; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-        .section-header p { font-size: 1.15rem; color: var(--text-muted); }
+        .disclaimer { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); margin-top: 1rem; line-height: 1.6; }
       `}</style>
     </div>
   );

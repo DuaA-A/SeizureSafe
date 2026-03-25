@@ -6,16 +6,16 @@ import '../../styles/about.css';
 
 // Using the team members defined in your project
 const teamMembers = [
-  { id: 1, name: "Zeinab Hamdy Hassab tayeeb", role: "Team Leader", isLeader: true, bio: "Coordinates clinical integration and leads the pharmacy presentation board structure." },
-  { id: 2, name: "Ahmed Ezzat Osman Tantawy", role: "Clinical Pharmacist", isLeader: false, bio: "Specializes in antiepileptic drug interactions and metabolic profiling." },
-  { id: 3, name: "Diana Yasser AbdAlazim Mohamed Salama", role: "Clinical Pharmacist", isLeader: false, bio: "Focuses on patient compliance and seizure trigger correlation data." },
-  { id: 4, name: "Mina Talat Shaker Wassef", role: "Clinical Pharmacist", isLeader: false, bio: "Ensures the accuracy of the Interaction Checker API integration." },
-  { id: 5, name: "Moustafa Khalid Mohamed Taha Bahr", role: "Clinical Pharmacist", isLeader: false, bio: "Develops the seizure pattern algorithms used in the Seizure Check tool." },
-  { id: 6, name: "Nada Mohammed Kamal Abieah", role: "Clinical Pharmacist", isLeader: false, bio: "Curates the medical terminology and user instructions for clarity." },
-  { id: 7, name: "Seveen Mohamed Ahmed Fouad Elsayoufy", role: "Clinical Pharmacist", isLeader: false, bio: "Evaluates application usability against pharmacy standards." },
-  { id: 8, name: "Abdalla Abouelscoud Hassan Hassoub Soliman", role: "Clinical Pharmacist", isLeader: false, bio: "Researches up-to-date medication interactions and contraindications." },
-  { id: 9, name: "Yassein Mohamed Mohamed Ali Almaghrabi", role: "Clinical Pharmacist", isLeader: false, bio: "Structures the medical history tracking and compliance database logic." },
-  { id: 10, name: "Ahmed Mohamed Ahmed Elgashy", role: "Clinical Pharmacist", isLeader: false, bio: "Validates final clinical safety recommendations for the graduation board." }
+    { id: 1, name: "Zeinab Hamdy Hassab tayeeb", role: "Team Leader", isLeader: true, bio: "Coordinates clinical integration and leads the pharmacy presentation board structure." },
+    { id: 2, name: "Ahmed Ezzat Osman Tantawy", role: "Clinical Pharmacist", isLeader: false, bio: "Specializes in antiepileptic drug interactions and metabolic profiling." },
+    { id: 3, name: "Diana Yasser AbdAlazim Mohamed Salama", role: "Clinical Pharmacist", isLeader: false, bio: "Focuses on patient compliance and seizure trigger correlation data." },
+    { id: 4, name: "Mina Talat Shaker Wassef", role: "Clinical Pharmacist", isLeader: false, bio: "Ensures the accuracy of the Interaction Checker API integration." },
+    { id: 5, name: "Moustafa Khalid Mohamed Taha Bahr", role: "Clinical Pharmacist", isLeader: false, bio: "Develops the seizure pattern algorithms used in the Seizure Check tool." },
+    { id: 6, name: "Nada Mohammed Kamal Abieah", role: "Clinical Pharmacist", isLeader: false, bio: "Curates the medical terminology and user instructions for clarity." },
+    { id: 7, name: "Seveen Mohamed Ahmed Fouad Elsayoufy", role: "Clinical Pharmacist", isLeader: false, bio: "Evaluates application usability against pharmacy standards." },
+    { id: 8, name: "Abdalla Abouelscoud Hassan Hassoub Soliman", role: "Clinical Pharmacist", isLeader: false, bio: "Researches up-to-date medication interactions and contraindications." },
+    { id: 9, name: "Yassein Mohamed Mohamed Ali Almaghrabi", role: "Clinical Pharmacist", isLeader: false, bio: "Structures the medical history tracking and compliance database logic." },
+    { id: 10, name: "Ahmed Mohamed Ahmed Elgashy", role: "Clinical Pharmacist", isLeader: false, bio: "Validates final clinical safety recommendations for the graduation board." }
 ];
 
 const About = () => {
@@ -47,7 +47,7 @@ const About = () => {
 
     return (
         <div className="about-page container">
-            
+
             {/* ── Header ─────────────────────────────────────────────────── */}
             <div className="about-header animate-fade-in">
                 <span style={{ color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.15em', display: 'block', marginBottom: '1rem' }}>The Clinical Team</span>
@@ -115,7 +115,7 @@ const About = () => {
                 className="mission-box"
             >
                 <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'rgba(157, 141, 241, 0.1)', filter: 'blur(100px)', borderRadius: '50%', transform: 'translate(30%, -30%)' }} />
-                
+
                 <div style={{ position: 'relative', zIndex: 10 }}>
                     <span className="mission-label">Our Mission</span>
                     <h2 className="mission-title">Bridging Pharmacy & Technology</h2>
