@@ -103,31 +103,67 @@ export const EPILEPSY_TYPES = {
 export const QUESTIONS = [
   {
     id: 'consciousness',
-    section: 'Symptoms',
-    text: 'Did the person lose consciousness?',
+    section: 'Initial Screening',
+    text: 'How was the person’s state of consciousness during the episode?',
     icon: 'Brain',
-    image: '/question_images/consciousness.png'
+    image: '/hero.png',
+    options: [
+      { id: 'lost', label: 'Total Loss of Consciousness', sub: 'Sudden collapse or complete non-responsiveness.' },
+      { id: 'impaired', label: 'Impaired Awareness', sub: 'The person appeared awake but was "not there" or confused.' },
+      { id: 'maintained', label: 'Fully Maintained', sub: 'The person was aware of everything happening around them.' }
+    ]
   },
   {
-    id: 'jerking',
-    section: 'Symptoms',
-    text: 'Was there rhythmic jerking of limbs?',
-    icon: 'Activity',
-    image: '/question_images/jerking.png'
-  },
-  {
-    id: 'stiffening',
-    section: 'Symptoms',
-    text: 'Did the body suddenly stiffen (tonic)?',
+    id: 'aura',
+    section: 'Pre-Seizure',
+    text: 'Did they experience any "warning" sensations before the event?',
     icon: 'Zap',
-    image: '/question_images/stiffening.png'
+    image: '/absence.jpg',
+    options: [
+      { id: 'sensory', label: 'Sensory Warning', sub: 'Strange smells, tastes, or a "rising" feeling in the stomach.' },
+      { id: 'emotional', label: 'Emotional Warning', sub: 'Sudden intense fear, joy, or déjà vu.' },
+      { id: 'none', label: 'No Warning', sub: 'The episode started completely without notice.' }
+    ]
+  },
+  {
+    id: 'movement_type',
+    section: 'Motor Symptoms',
+    text: 'What kind of body movements were observed?',
+    icon: 'Activity',
+    image: '/tonic-clonic.jpg',
+    multi: true,
+    options: [
+      { id: 'stiffening', label: 'Sudden Stiffening', sub: 'The body or limbs became rigid (Tonic phase).' },
+      { id: 'jerking', label: 'Rhythmic Jerking', sub: 'Repeated, rhythmic shaking of limbs (Clonic phase).' },
+      { id: 'automatisms', label: 'Repetitive Movements', sub: 'Lip smacking, chewing, or fumbling with clothes.' },
+      { id: 'limp', label: 'Sudden Limpness', sub: 'Sudden loss of muscle tone or drop attacks (Atonic).' },
+      { id: 'brief_shocks', label: 'Brief Muscle Shocks', sub: 'Sudden, shock-like jerks (Myoclonic).' },
+      { id: 'none', label: 'No Specific Movement', sub: 'Staring into space or "blanking out".' }
+    ]
+  },
+  {
+    id: 'post_ictal',
+    section: 'Recovery',
+    text: 'How did the person behave immediately after the episode?',
+    icon: 'ClipboardList',
+    image: '/focal Aware.jpg',
+    options: [
+      { id: 'confused', label: 'Prolonged Confusion', sub: 'Disoriented or sleepy for minutes to hours.' },
+      { id: 'rapid_return', label: 'Rapid Return', sub: 'Immediately back to normal within seconds.' },
+      { id: 'headache', label: 'Severe Headache', sub: 'Common after major generalized events.' }
+    ]
   },
   {
     id: 'duration',
-    section: 'Symptoms',
-    text: 'Did the seizure last more than 2 minutes?',
+    section: 'Timing',
+    text: 'How long did the active part of the seizure last?',
     icon: 'Clock',
-    image: '/question_images/duration.png'
+    image: '/hero.png',
+    options: [
+      { id: 'seconds', label: 'A few seconds', sub: 'Typical for absence or brief myoclonic events.' },
+      { id: 'under_2', label: 'Under 2 minutes', sub: 'Standard duration for most focal seizures.' },
+      { id: 'over_5', label: 'Over 5 minutes', sub: 'Requires immediate medical emergency attention.' }
+    ]
   }
 ];
 
@@ -146,32 +182,32 @@ export const analyzeResult = (answers) => {
   const hasMovement = (type) => Array.isArray(movement) ? movement.includes(type) : movement === type;
 
   // 1. Check for Generalized Tonic-Clonic
-  if (consciousness === 'lost' && (hasMovement('jerking_stiffening') || (hasMovement('jerking') && hasMovement('stiffening')))) {
+  if (consciousness === 'lost' && (movement_type.includes('stiffening') && movement_type.includes('jerking')) && post_ictal === 'confused') {
     return EPILEPSY_TYPES.GTCS;
   }
 
   // 2. Check for Absence
-  if (consciousness === 'lost' && (duration === 'seconds' || hasMovement('staring'))) {
+  if (consciousness === 'lost' && duration === 'seconds' && movement_type.includes('none')) {
     return EPILEPSY_TYPES.ABSENCE;
   }
 
   // 3. Check for Focal Aware
-  if (consciousness === 'maintained' && awareness === 'full') {
+  if (consciousness === 'maintained' && (aura === 'sensory' || aura === 'emotional')) {
     return EPILEPSY_TYPES.FOCAL_AWARE;
   }
 
   // 4. Check for Focal Impaired
-  if (consciousness === 'impaired' || (consciousness === 'maintained' && awareness === 'partial')) {
+  if (consciousness === 'impaired' || movement_type.includes('automatisms')) {
     return EPILEPSY_TYPES.FOCAL_IMPAIRED;
   }
 
   // 5. Check for Myoclonic
-  if (hasMovement('brief_jerks')) {
+  if (movement_type.includes('brief_shocks')) {
     return EPILEPSY_TYPES.MYOCLONIC;
   }
 
   // 6. Check for Atonic
-  if (hasMovement('drop_collapse')) {
+  if (movement_type.includes('limp')) {
     return EPILEPSY_TYPES.ATONIC;
   }
 

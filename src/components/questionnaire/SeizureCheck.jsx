@@ -22,64 +22,7 @@ import {
   Check,
   Pill
 } from 'lucide-react';
-import { analyzeResult } from '../../utils/epilepsyLogic';
-
-const EPILEPSY_STEPS = [
-  {
-    id: 'profile',
-    title: 'Patient Profile',
-    subtitle: 'Essential demographics for clinical assessment.',
-    type: 'profile'
-  },
-  {
-    id: 'consciousness',
-    title: 'State of Consciousness',
-    subtitle: 'Did the person lose awareness of their surroundings?',
-    image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=800',
-    options: [
-      { id: 'lost', label: 'Lost Consciousness', desc: 'Sudden collapse or non-responsiveness.' },
-      { id: 'impaired', label: 'Altered/Impaired', desc: 'Appears awake but confused/unresponsive.' },
-      { id: 'maintained', label: 'Fully Maintained', desc: 'The person remained awake and aware.' }
-    ]
-  },
-  {
-    id: 'movement',
-    title: 'Movement Patterns',
-    subtitle: 'Describe all physical activity observed (Select ALL that apply).',
-    multiSelect: true,
-    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=800',
-    options: [
-      { id: 'jerking_stiffening', label: 'Rhythmic Jerking/Stiffening', desc: 'Full body or localized rhythmic movements.' },
-      { id: 'staring', label: 'Blank Staring', desc: 'Sudden freezing or staring into space.' },
-      { id: 'automatisms', label: 'Fumbling/Lip Smacking', desc: 'Aimless, repetitive motor tasks.' },
-      { id: 'brief_jerks', label: 'Brief Shock-like Jerks', desc: 'Sudden jumps (usually in the morning).' },
-      { id: 'drop_collapse', label: 'Sudden Collapse (Drop)', desc: 'Immediate loss of muscle tone.' },
-      { id: 'none', label: 'No Unusual Movement', desc: 'Only sensory or emotional changes.' }
-    ]
-  },
-  {
-    id: 'duration',
-    title: 'Episode Duration',
-    subtitle: 'How long did the clinical event last?',
-    image: 'https://images.unsplash.com/photo-1508962850731-0d6f22443886?auto=format&fit=crop&q=80&w=800',
-    options: [
-      { id: 'seconds', label: 'Brief Seconds', desc: 'Usually less than 30 seconds.' },
-      { id: '1-3mins', label: '1 to 3 Minutes', desc: 'Typical for many seizure types.' },
-      { id: 'over_5mins', label: 'Over 5 Minutes', desc: 'Requires emergency medical attention.' }
-    ]
-  },
-  {
-    id: 'awareness',
-    title: 'Level of Awareness',
-    subtitle: 'Could the person answer questions or interact?',
-    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800',
-    options: [
-      { id: 'full', label: 'Full Awareness', desc: 'Can describe the event clearly.' },
-      { id: 'partial', label: 'Partial/Vague', desc: 'Recalls some parts, but not all.' },
-      { id: 'none', label: 'Total Memory Loss', desc: 'No recollection of the event.' }
-    ]
-  }
-];
+import { analyzeResult, QUESTIONS as EPILEPSY_STEPS } from '../../utils/epilepsyLogic';
 
 const SeizureCheck = ({ onOpenAuth }) => {
   const { currentUser } = useAuth();
@@ -105,7 +48,7 @@ const SeizureCheck = ({ onOpenAuth }) => {
   const handleBack = () => setStep(prev => Math.max(prev - 1, 0));
 
   const handleSelectOption = (optId) => {
-    if (currentStepData.multiSelect) {
+    if (currentStepData.multi) {
       const current = answers[currentStepData.id] || [];
       if (current.includes(optId)) {
         setAnswers({...answers, [currentStepData.id]: current.filter(id => id !== optId)});
@@ -134,7 +77,6 @@ const SeizureCheck = ({ onOpenAuth }) => {
         localStorage.setItem('preview_latest_result', JSON.stringify(resultData));
       } else {
         try {
-          // Keep only the latest: overwrite or update doc with user ID
           await setDoc(doc(db, 'seizure_latest_results', currentUser.uid), {
             ...resultData,
             timestamp: serverTimestamp()
@@ -145,72 +87,46 @@ const SeizureCheck = ({ onOpenAuth }) => {
       }
     }
     setIsSubmitting(false);
-    setStep(totalSteps); // Jump to result
+    setStep(totalSteps); 
   };
 
   const renderCurrentStep = () => {
-    if (currentStepData.type === 'profile') {
-      return (
-        <div className="profile-step-layout animate-fade-in">
-          <div className="step-header">
-            <User size={32} className="icon-purple mb-4" />
-            <h2>Patient Information</h2>
-            <p>Essential details to refine assessment.</p>
-          </div>
-          <div className="profile-form mt-4">
-            <div className="input-group-premium">
-              <label>Full Name or Initial</label>
-              <input type="text" placeholder="Patient Name" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} />
-            </div>
-            <div className="form-row mt-4">
-              <div className="input-group-premium half">
-                <label>Age</label>
-                <input type="number" placeholder="25" value={profile.age} onChange={e => setProfile({...profile, age: e.target.value})} />
-              </div>
-              <div className="input-group-premium half">
-                <label>Gender</label>
-                <select value={profile.gender} onChange={e => setProfile({...profile, gender: e.target.value})}>
-                  <option>Male</option><option>Female</option><option>Other</option>
-                </select>
-              </div>
-            </div>
-            <div className="input-group-premium mt-4">
-              <label>Weight (kg)</label>
-              <input type="number" placeholder="70" value={profile.weight} onChange={e => setProfile({...profile, weight: e.target.value})} />
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div className="diagnostic-step-layout animate-fade-in">
         <div className="question-side">
-          <span className="step-count">Step {step} of {totalSteps - 1} • {currentStepData.title}</span>
-          <h2>{currentStepData.subtitle}</h2>
-          <div className="options-grid mt-6">
+          <div className="active-badge mb-3">Clinical Assessment Stage</div>
+          <span className="step-count">Question {step + 1} of {totalSteps} • {currentStepData.section}</span>
+          <h2 className="step-question-text">{currentStepData.text}</h2>
+          <div className="options-vertical-list mt-8">
             {currentStepData.options.map((opt) => {
-              const isActive = currentStepData.multiSelect 
+              const isActive = currentStepData.multi 
                 ? (answers[currentStepData.id] || []).includes(opt.id)
                 : answers[currentStepData.id] === opt.id;
               
               return (
-                <button key={opt.id} className={`option-card glass-card ${isActive ? 'active' : ''}`} onClick={() => handleSelectOption(opt.id)}>
-                  <div className={currentStepData.multiSelect ? "checkbox-box" : "radio-circle"}>
-                    {currentStepData.multiSelect && isActive && <Check size={14} />}
+                <button key={opt.id} className={`option-card-premium ${isActive ? 'active' : ''}`} onClick={() => handleSelectOption(opt.id)}>
+                  <div className="opt-marker">
+                    {currentStepData.multi ? (
+                      <div className={`check-box ${isActive ? 'checked' : ''}`}>{isActive && <Check size={14} />}</div>
+                    ) : (
+                      <div className={`radio-circle ${isActive ? 'checked' : ''}`}></div>
+                    )}
                   </div>
-                  <div className="option-info">
+                  <div className="opt-content">
                     <span className="opt-label">{opt.label}</span>
-                    <p className="opt-desc">{opt.desc}</p>
+                    <p className="opt-sub">{opt.sub}</p>
                   </div>
                 </button>
               );
             })}
           </div>
         </div>
-        <div className="image-side">
-          <div className="image-frame glass-card">
-            <img src={currentStepData.image} alt={currentStepData.title} />
+        <div className="visual-side">
+          <div className="image-frame-clinical">
+            <img src={currentStepData.image} alt="Clinical Visual" />
+            <div className="image-overlay-sub">
+               <Info size={16} /> <span>Reference visual for clinical categorization.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -280,13 +196,34 @@ const SeizureCheck = ({ onOpenAuth }) => {
   return (
     <div className="check-page container section-padding">
       {!isStarted ? (
-        <div className="check-card-frame glass-card">
-          <div className="intro-screen animate-fade-in text-center flex flex-col justify-center items-center h-full">
-            <div className="intro-icon-wrapper mb-6"><ClipboardList size={64} className="icon-purple" /></div>
-            <h1 className="intro-title text-center w-full">Medical Seizure Assessment</h1>
-            <p className="intro-desc text-center">A professional 6-step diagnostic tool. Combine patient profile with multi-pattern clinical observation for accurate assessment.</p>
-            <div className="flex justify-center w-full">
-              <button className="btn btn-premium btn-massive mt-8" onClick={() => setIsStarted(true)}>Begin Assessment <ChevronRight size={22} className="ml-2" /></button>
+        <div className="intro-hero-wrapper animate-fade-in">
+          <div className="intro-hero-grid">
+            <div className="intro-hero-text">
+               <div className="active-badge mb-4">Clinical Diagnostic Interface</div>
+               <h1 className="clinical-title">Seizure Classification <br/>Assessment Tool</h1>
+               <p className="clinical-description">
+                 A comprehensive 6-step clinical guide designed for caregivers to accurately identify 
+                 epileptic seizure patterns. This tool uses pharmacist-verified criteria to distinguish 
+                 between generalized and focal onset episodes.
+               </p>
+               <div className="clinical-benefits mt-8">
+                  <div className="benefit-item">
+                     <ShieldCheck size={20} className="icon-purple" />
+                     <span>Evidence-based diagnostic criteria</span>
+                  </div>
+                  <div className="benefit-item">
+                     <Clock size={20} className="icon-purple" />
+                     <span>Results in under 3 minutes</span>
+                  </div>
+               </div>
+               <button className="btn btn-premium btn-massive mt-10" onClick={() => setIsStarted(true)}>
+                  Begin Clinical Assessment <ArrowRight size={22} className="ml-2" />
+               </button>
+            </div>
+            <div className="intro-hero-visual">
+               <div className="hero-visual-frame glass-card">
+                  <img src="/hero.png" alt="Clinical Assessment" />
+               </div>
             </div>
           </div>
         </div>
@@ -306,41 +243,48 @@ const SeizureCheck = ({ onOpenAuth }) => {
       ) : renderResult()}
 
       <style>{`
-        .check-page { max-width: 1100px; margin: 0 auto; min-height: 70vh; padding: 4rem 2rem; }
-        .check-card-frame { padding: 4rem; min-height: 600px; display: flex; flex-direction: column; background: white; border-radius: 32px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
-        .intro-title { font-size: 3rem; font-weight: 900; margin-bottom: 1.5rem; text-align: center; color: var(--text-main); }
-        .intro-desc { font-size: 1.25rem; line-height: 1.7; color: var(--text-muted); max-width: 800px; margin: 0 auto; text-align: center; }
-        .intro-icon-wrapper { display: flex; justify-content: center; width: 100%; }
-        .flex { display: flex; }
-        .justify-center { justify-content: center; }
-        .w-full { width: 100%; }
+        .check-page { max-width: 1200px; margin: 0 auto; min-height: 80vh; padding: 4rem 2rem; }
         
-        .check-body { flex: 1; }
-        .diagnostic-step-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; }
-        .step-header { text-align: center; margin-bottom: 2rem; }
-        .step-header h2 { font-size: 2.2rem; font-weight: 900; margin-bottom: 1rem; text-align: center; }
-        .step-header p { font-size: 1.1rem; color: var(--text-muted); text-align: center; }
-        
-        .profile-form { max-width: 600px; margin: 0 auto; }
-        .input-group-premium { display: flex; flex-direction: column; gap: 8px; text-align: left; }
-        .input-group-premium label { font-weight: 700; color: var(--text-main); font-size: 0.9rem; margin-left: 4px; }
-        .input-group-premium input, .input-group-premium select { padding: 14px 18px; border-radius: 12px; border: 1.5px solid var(--border); font-size: 1rem; outline: none; transition: border-color 0.2s; }
-        .input-group-premium input:focus { border-color: var(--primary); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        /* Intro Hero */
+        .intro-hero-wrapper { min-height: 600px; display: flex; align-items: center; }
+        .intro-hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; width: 100%; }
+        .clinical-title { font-size: 3.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; text-align: left; color: var(--text-main); }
+        .clinical-description { font-size: 1.2rem; line-height: 1.7; color: var(--text-muted); text-align: left; }
+        .clinical-benefits { display: flex; flex-direction: column; gap: 1rem; }
+        .benefit-item { display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--text-muted); }
+        .hero-visual-frame { border-radius: 40px; overflow: hidden; height: 500px; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .hero-visual-frame img { width: 100%; height: 100%; object-fit: cover; }
 
-        .checkbox-box { width: 22px; height: 22px; border: 2px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 12px; }
-        .option-card.active .checkbox-box { background: var(--primary); border-color: var(--primary); color: white; }
-        .step-count { font-weight: 900; color: var(--primary); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 1rem; display: block; text-align: center; }
-        .question-side { text-align: center; }
-        .question-side h2 { font-size: 2rem; font-weight: 900; text-align: center; margin-bottom: 2rem; }
-        .options-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 500px; margin-left: auto; margin-right: auto; }
-        .option-card { padding: 1.5rem !important; text-align: left; display: flex; align-items: center; cursor: pointer; border: 1.5px solid var(--border); background: white; border-radius: 16px; transition: all 0.2s; width: 100%; }
-        .option-card:hover { border-color: var(--primary); background: rgba(157, 141, 241, 0.05); }
-        .option-card.active { border-color: var(--primary); background: rgba(157, 141, 241, 0.1); box-shadow: 0 4px 15px rgba(157, 141, 241, 0.2); }
+        /* Diagnostic Steps */
+        .check-card-frame { padding: 4rem; min-height: 650px; display: flex; flex-direction: column; background: white; border-radius: 32px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        .diagnostic-step-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: flex-start; }
+        .question-side { text-align: left !important; }
+        .step-count { font-weight: 800; color: var(--primary); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 0.5rem; display: block; text-align: left; }
+        .step-question-text { font-size: 2.2rem; font-weight: 900; line-height: 1.2; text-align: left !important; color: var(--text-main); margin-bottom: 2rem; }
         
-        .image-frame { border-radius: 20px; overflow: hidden; height: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .image-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .options-vertical-list { display: flex; flex-direction: column; gap: 1rem; }
+        .option-card-premium { padding: 1.5rem !important; display: flex; align-items: center; gap: 1.5rem; cursor: pointer; border: 2px solid var(--border); background: white; border-radius: 20px; transition: all 0.2s; width: 100%; text-align: left !important; }
+        .option-card-premium:hover { border-color: var(--primary); background: rgba(157, 141, 241, 0.05); transform: translateX(10px); }
+        .option-card-premium.active { border-color: var(--primary); background: rgba(157, 141, 241, 0.1); box-shadow: 0 8px 25px rgba(157, 141, 241, 0.2); }
+        
+        .opt-marker { display: flex; align-items: center; justify-content: center; }
+        .radio-circle { width: 20px; height: 20px; border: 2px solid #cbd5e1; border-radius: 50%; position: relative; }
+        .radio-circle.checked::after { content: ''; position: absolute; inset: 4px; background: var(--primary); border-radius: 50%; }
+        .check-box { width: 22px; height: 22px; border: 2px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .check-box.checked { background: var(--primary); border-color: var(--primary); color: white; }
+        
+        .opt-label { font-size: 1.1rem; font-weight: 700; color: var(--text-main); display: block; }
+        .opt-sub { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+        
+        .visual-side { position: sticky; top: 0; }
+        .image-frame-clinical { border-radius: 30px; overflow: hidden; height: 450px; background: #f8fafc; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+        .image-frame-clinical img { width: 100%; height: 100%; object-fit: cover; }
+        .image-overlay-sub { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); }
+
+        .active-badge { background: var(--primary); color: white !important; font-weight: 800; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; display: inline-block; }
+        
         .check-footer { padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; }
+        .btn-massive { padding: 18px 40px; font-size: 1.1rem; font-weight: 700; border-radius: 20px; }
 
         /* Compact Report UI */
         .report-hero.compact { padding: 2rem; border-radius: 24px; background: linear-gradient(135deg, #4338ca 0%, #3b82f6 100%); text-align: left; }

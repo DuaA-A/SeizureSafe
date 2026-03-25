@@ -77,7 +77,7 @@ const EPILEPSY_DETAILS = [
     id: 'focal-impaired',
     name: 'Focal Impaired Awareness',
     title: 'Focal Impaired',
-    image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=600',
+    image: '/hero.png',
     description: 'A focal seizure where awareness is altered or lost. The person may appear conscious but is not fully responsive.',
     symptoms: ['Automatisms (lip smacking, chewing)', 'Repetitive movements', 'Aimless walking', 'No memory of the event'],
     note: 'Guide the individual away from danger gently; do not restrain them forcefully.'
@@ -86,7 +86,7 @@ const EPILEPSY_DETAILS = [
     id: 'atonic',
     name: 'Atonic Seizure (Drop Attacks)',
     title: 'Atonic',
-    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=600',
+    image: '/tonic-clonic.jpg',
     description: 'Sudden loss of muscle tone causing the person to collapse or fall forward. Also known as "drop attacks".',
     symptoms: ['Sudden limpness', 'Head dropping forward', 'Immediate collapse', 'Brief duration'],
     note: 'Risk of head injury is high. Protective headgear is often recommended for frequent events.'
@@ -95,7 +95,7 @@ const EPILEPSY_DETAILS = [
     id: 'myoclonic',
     name: 'Myoclonic Seizure',
     title: 'Myoclonic',
-    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=600',
+    image: '/absence.jpg',
     description: 'Brief, shock-like jerks of a muscle or group of muscles. Usually occurring on both sides of the body.',
     symptoms: ['Sudden muscle contractions', 'Shock-like jerks', 'Commonly occurs in the morning', 'Brief (1-2 seconds)'],
     note: 'Often occurs shortly after waking. Can interfere with holding objects or eating.'
@@ -204,7 +204,7 @@ const Home = ({ onOpenAuth }) => {
               whileInView={{ opacity: 1, scale: 1 }}
               className="intro-image glass-card"
             >
-              <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=800" alt="Brain Anatomy" />
+              <img src="/hero.png" alt="What is Epilepsy" />
             </motion.div>
           </div>
         </div>
@@ -313,6 +313,18 @@ const Home = ({ onOpenAuth }) => {
         .hero-img-container { position: relative; display: flex; justify-content: center; align-items: center; width: 100%; }
         .hero-main-img { width: 100%; max-width: 600px; height: auto; z-index: 2; mix-blend-mode: screen; }
 
+        /* Modal Overhaul */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 2rem; }
+        .modal-content { max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; background: white; border-radius: 32px; box-shadow: 0 30px 60px rgba(0,0,0,0.2) !important; position: relative; border: 1px solid rgba(255,255,255,0.3); }
+        .modal-body-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 0; min-height: 500px; }
+        .modal-image { height: 100%; min-height: 500px; overflow: hidden; }
+        .modal-image img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-info { padding: 4rem 3rem; }
+        .modal-info h2 { font-size: 2.2rem; font-weight: 900; margin-bottom: 1rem; color: var(--text-main); }
+        .modal-desc { font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; }
+        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; background: white; border-radius: 50%; padding: 8px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; }
+        .active-badge { background: var(--primary) !important; color: white !important; font-weight: 800 !important; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; display: inline-block; }
+        
         .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: white !important; text-decoration: none !important; }
         .hero-cta-group { display: flex; gap: 1.5rem; }
         .hero-description { font-size: 1.2rem; line-height: 1.7; color: rgba(255, 255, 255, 0.9); max-width: 600px; margin-bottom: 3rem; }
