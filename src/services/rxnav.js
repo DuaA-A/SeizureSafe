@@ -67,7 +67,9 @@ export const getInteractions = async (rxcuis) => {
       if (data.interact) {
         interactions.push({
           severity: 'High',
-          description: `Clinical Warning: ${drug.charAt(0).toUpperCase() + drug.slice(1)} (${data.category}) carries a high risk of interaction with standard Antiepileptic Drugs (AEDs). It may dangerously alter seizure thresholds, reduce AED efficacy, or increase systemic toxicity. Pharmacist consultation is mandatory before dispensing.`,
+          description: `Clinical Warning: ${drug.charAt(0).toUpperCase() + drug.slice(1)} (${data.category}) carries a high risk of interaction with standard Antiepileptic Drugs (AEDs).`,
+          details: `Mechanism: This drug may dangerously alter seizure thresholds, reduce AED efficacy, or increase systemic toxicity.`,
+          significance: `Pharmacist consultation is mandatory before dispensing to ensure patient safety and therapeutic efficacy.`,
           drugs: [drug.charAt(0).toUpperCase() + drug.slice(1), 'Antiepileptic Drug (AED)']
         });
       }
@@ -88,6 +90,7 @@ export const getInteractions = async (rxcuis) => {
               interactions.push({
                 severity: pair.severity === 'high' ? 'High' : pair.severity === 'moderate' ? 'Moderate' : 'Minor',
                 description: pair.description,
+                comment: pair.comment || 'No additional clinical comments provided.',
                 drugs: pair.interactionConcept.map(c => c.minConceptItem.name)
               });
             });

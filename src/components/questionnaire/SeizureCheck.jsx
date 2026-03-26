@@ -252,8 +252,10 @@ const SeizureCheck = ({ onOpenAuth }) => {
         .clinical-description { font-size: 1.2rem; line-height: 1.7; color: var(--text-muted); text-align: left; }
         .clinical-benefits { display: flex; flex-direction: column; gap: 1rem; }
         .benefit-item { display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--text-muted); }
-        .hero-visual-frame { border-radius: 40px; overflow: hidden; height: 500px; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .hero-visual-frame { border-radius: 40px; overflow: hidden; height: 500px; box-shadow: 0 30px 60px rgba(157, 141, 241, 0.4) !important; border: 10px solid white; background: white; position: relative; }
         .hero-visual-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .intro-hero-wrapper { background: linear-gradient(135deg, rgba(157, 141, 241, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%); padding: 4rem; border-radius: 40px; margin-bottom: 2rem; position: relative; overflow: hidden; }
+        .intro-hero-wrapper::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 86c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm66 3c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm-46-45c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm0-20c3.314 0 6 2.686 6 6s-2.686 6-6 6-6-2.686-6-6 2.686-6 6-6zM94 46c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686-6 6 6zm0-5c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1zM57 90c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm0-10c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zm-35-45c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM8 30c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686-6 6 6zm0-5c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1zm54 40c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%239d8df1' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E"); opacity: 0.5; }
 
         /* Diagnostic Steps */
         .check-card-frame { padding: 4rem; min-height: 650px; display: flex; flex-direction: column; background: white; border-radius: 32px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
@@ -277,7 +279,7 @@ const SeizureCheck = ({ onOpenAuth }) => {
         .opt-sub { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
         
         .visual-side { position: sticky; top: 0; }
-        .image-frame-clinical { border-radius: 30px; overflow: hidden; height: 450px; background: #f8fafc; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+        .image-frame-clinical { border-radius: 30px; overflow: hidden; height: 450px; background: white; position: relative; box-shadow: 0 20px 50px rgba(157, 141, 241, 0.3) !important; border: 8px solid white; }
         .image-frame-clinical img { width: 100%; height: 100%; object-fit: cover; }
         .image-overlay-sub { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); }
 

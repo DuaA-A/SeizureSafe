@@ -13,10 +13,11 @@ const TypeDetailModal = ({ type, onClose }) => {
   if (!type) return null;
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="modal-content glass-card" 
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 50 }}
+        className="modal-content glass-card"
         onClick={e => e.stopPropagation()}
       >
         <button className="close-btn" onClick={onClose}><X size={24} /></button>
@@ -25,18 +26,25 @@ const TypeDetailModal = ({ type, onClose }) => {
             <img src={type.image} alt={type.name} />
           </div>
           <div className="modal-info">
-            <div className="active-badge mb-2">Detailed Clinical Guide</div>
+            <div className="modal-badge mb-3">Clinical Classification Detail</div>
             <h2>{type.name}</h2>
-            <p className="modal-desc">{type.description}</p>
-            <div className="symptoms-box mt-4">
-              <h4>Primary Indicators:</h4>
-              <ul>
-                {type.symptoms.map((s, i) => <li key={i}>{s}</li>)}
-              </ul>
+            <div className="modal-desc-wrapper">
+              <p className="modal-desc">{type.description}</p>
             </div>
-            <div className="medical-note-box mt-4">
-              <Info size={18} />
-              <p>Pharmacist Note: {type.note}</p>
+            <div className="modal-details-grid mt-6">
+              <div className="symptoms-box">
+                <h4><Activity size={18} className="icon-purple" /> Primary Indicators:</h4>
+                <ul>
+                  {type.symptoms.map((s, i) => <li key={i}>{s}</li>)}
+                </ul>
+              </div>
+              <div className="medical-note-box">
+                <div className="note-header">
+                  <Info size={18} className="icon-purple" />
+                  <strong>Pharmacist Note</strong>
+                </div>
+                <p>{type.note}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -77,7 +85,7 @@ const EPILEPSY_DETAILS = [
     id: 'focal-impaired',
     name: 'Focal Impaired Awareness',
     title: 'Focal Impaired',
-    image: '/hero.png',
+    image: '/focal impaired.jpg',
     description: 'A focal seizure where awareness is altered or lost. The person may appear conscious but is not fully responsive.',
     symptoms: ['Automatisms (lip smacking, chewing)', 'Repetitive movements', 'Aimless walking', 'No memory of the event'],
     note: 'Guide the individual away from danger gently; do not restrain them forcefully.'
@@ -114,14 +122,14 @@ const Home = ({ onOpenAuth }) => {
         <div className="hero-content container">
           <div className="hero-flex-wrapper">
             <div className="hero-text-side">
-              <div className="active-badge mb-4">Empowering Caregivers Every Day</div>
+              <div className="active-badge mb-4">Empowering Caregivers Every Day</div> <br />
               <h1 className="hero-title white-text">
                 Your Loved One’s Safety <br />
-                <span className="text-glow italic" style={{color:'#eebef1'}}>Is Our Priority</span>
+                <span className="text-glow italic" style={{ color: '#eebef1' }}>Is Our Priority</span>
               </h1>
               <p className="hero-description white-text">
-                We bridge the gap between clinical complexity and compassionate care. 
-                Identify seizure patterns accurately and verify drug interactions with pharmacist-backed tools 
+                We bridge the gap between clinical complexity and compassionate care.
+                Identify seizure patterns accurately and verify drug interactions with pharmacist-backed tools
                 designed for the people you care about most.
               </p>
 
@@ -169,10 +177,10 @@ const Home = ({ onOpenAuth }) => {
 
 
       {/* 2. Understanding Epilepsy - Intro */}
-      <section className="full-screen-section bg-soft">
+      <section className="full-screen-section bg-unified">
         <div className="container">
           <div className="intro-epilepsy-layout">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               className="intro-text"
@@ -180,12 +188,12 @@ const Home = ({ onOpenAuth }) => {
               <div className="active-badge mb-2">Knowledge is Power</div>
               <h2>What Is Epilepsy?</h2>
               <p>
-                Epilepsy is a chronic noncommunicable disease of the brain that affects people of all ages. 
-                It is characterized by recurrent seizures, which are brief episodes of involuntary movement 
+                Epilepsy is a chronic noncommunicable disease of the brain that affects people of all ages.
+                It is characterized by recurrent seizures, which are brief episodes of involuntary movement
                 that may involve a part of the body (partial) or the entire body (generalized).
               </p>
               <p>
-                As a caregiver, identifying the exact pattern of these episodes is the most critical information 
+                As a caregiver, identifying the exact pattern of these episodes is the most critical information
                 you can provide to a neurologist to ensure effective pharmacological treatment.
               </p>
               <div className="stats-grid mt-8">
@@ -199,19 +207,19 @@ const Home = ({ onOpenAuth }) => {
                 </div>
               </div>
             </motion.div>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               className="intro-image glass-card"
             >
-              <img src="/hero.png" alt="What is Epilepsy" />
+              <img src="/epilepsy.jpg" alt="What is Epilepsy" />
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* 3. Types of Epilepsy Grid */}
-      <section className="full-screen-section">
+      <section className="full-screen-section bg-unified">
         <div className="container">
           <div className="section-header">
             <h2>Clinical Classifications</h2>
@@ -219,7 +227,7 @@ const Home = ({ onOpenAuth }) => {
           </div>
           <div className="types-full-grid mt-12">
             {EPILEPSY_DETAILS.map((type) => (
-              <motion.div 
+              <motion.div
                 key={type.id}
                 whileHover={{ scale: 1.05, y: -10 }}
                 className="type-card-premium glass-card"
@@ -241,7 +249,7 @@ const Home = ({ onOpenAuth }) => {
       </section>
 
       {/* 4. Support Services */}
-      <section className="section-spacing bg-gradient-sync text-center">
+      <section className="section-spacing bg-unified text-center">
         <div className="container">
           <div className="section-header centered-header">
             <h2>Clinical Support Tools</h2>
@@ -271,9 +279,9 @@ const Home = ({ onOpenAuth }) => {
       </section>
 
       {/* 5. Sign-Up CTA Section */}
-      <section className="section-spacing text-center">
+      <section className="section-spacing bg-unified text-center">
         <div className="container cta-border-card-wrapper">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -292,9 +300,10 @@ const Home = ({ onOpenAuth }) => {
       <style>{`
         .home-container { display: flex; flex-direction: column; gap: 0rem; padding-bottom: 0rem; position: relative; }
         
-        .full-screen-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 6rem 0; box-sizing: border-box; }
-        .bg-gradient-sync { background: linear-gradient(135deg, #f8fafc 0%, rgba(238, 190, 241, 0.15) 100%); }
+        .full-screen-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 6rem 0; box-sizing: border-box; position: relative; }
+        .bg-unified { background: linear-gradient(135deg, #f8fafc 0%, rgba(157, 141, 241, 0.15) 100%); }
         .bg-glass-blur { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(20px); }
+        .text-glow { text-shadow: 0 0 15px rgba(238, 190, 241, 0.5); }
 
         /* Active Badge */
         .active-badge { display: inline-flex; align-items: center; padding: 6px 16px; background: rgba(126, 34, 206, 0.1); color: var(--primary); border-radius: 30px; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(126, 34, 206, 0.2); }
@@ -315,15 +324,36 @@ const Home = ({ onOpenAuth }) => {
 
         /* Modal Overhaul */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 2rem; }
-        .modal-content { max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; background: white; border-radius: 32px; box-shadow: 0 30px 60px rgba(0,0,0,0.2) !important; position: relative; border: 1px solid rgba(255,255,255,0.3); }
-        .modal-body-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 0; min-height: 500px; }
-        .modal-image { height: 100%; min-height: 500px; overflow: hidden; }
+        .modal-content { 
+          max-width: 1000px; 
+          width: 95%; 
+          max-height: 90vh; 
+          overflow-y: auto; 
+          background: white; 
+          border-radius: 32px; 
+          box-shadow: 0 40px 100px rgba(0,0,0,0.2) !important; 
+          position: relative; 
+          border: 1px solid rgba(255,255,255,0.3);
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+        .modal-body-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 0; min-height: 600px; }
+        .modal-image { height: 100%; min-height: 600px; overflow: hidden; }
         .modal-image img { width: 100%; height: 100%; object-fit: cover; }
-        .modal-info { padding: 4rem 3rem; }
-        .modal-info h2 { font-size: 2.2rem; font-weight: 900; margin-bottom: 1rem; color: var(--text-main); }
-        .modal-desc { font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; }
-        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; background: white; border-radius: 50%; padding: 8px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; }
-        .active-badge { background: var(--primary) !important; color: white !important; font-weight: 800 !important; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; display: inline-block; }
+        .modal-info { padding: 4rem; display: flex; flex-direction: column; }
+        .modal-badge { display: inline-block; padding: 6px 14px; background: rgba(126, 34, 206, 0.1); color: var(--primary); border-radius: 20px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; width: fit-content; }
+        .modal-info h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 1.5rem; color: var(--text-main); }
+        .modal-desc { font-size: 1.15rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+        .modal-details-grid { display: flex; flex-direction: column; gap: 2rem; }
+        .symptoms-box h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .symptoms-box ul { padding-left: 1.5rem; color: var(--text-muted); }
+        .symptoms-box li { margin-bottom: 8px; font-weight: 500; }
+        .medical-note-box { padding: 2rem; background: rgba(157, 141, 241, 0.05); border-radius: 24px; border: 1px solid rgba(157, 141, 241, 0.1); }
+        .note-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.8rem; }
+        .note-header strong { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); }
+        .medical-note-box p { margin: 0; font-size: 1rem; color: var(--text-main); font-weight: 600; line-height: 1.5; }
+        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; background: white; border-radius: 50%; padding: 10px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
+        .close-btn:hover { transform: rotate(90deg); color: var(--error); }
         
         .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: white !important; text-decoration: none !important; }
         .hero-cta-group { display: flex; gap: 1.5rem; }
@@ -359,8 +389,20 @@ const Home = ({ onOpenAuth }) => {
         .type-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); display: flex; align-items: flex-end; justify-content: center; padding: 2rem; opacity: 0; transition: opacity 0.3s; }
         .type-card-premium:hover .type-card-overlay { opacity: 1; }
         .view-details { color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 2px solid white; padding-bottom: 4px; }
-        .type-card-info { padding: 1.5rem; text-align: center; }
+        .type-card-info { padding: 1.5rem; text-align: center; background: white; border-top: 1px solid var(--border); }
         .type-card-info h3 { font-size: 1.25rem; margin: 0; color: var(--text-main); }
+        
+        .type-card-premium { border: 2px solid white !important; box-shadow: 0 10px 40px rgba(157, 141, 241, 0.3) !important; position: relative; z-index: 1; }
+        .type-card-premium::before { content: ''; position: absolute; inset: -4px; background: linear-gradient(135deg, var(--primary), #3b82f6); border-radius: 26px; z-index: -1; opacity: 0.2; }
+        
+        .intro-image { border: 8px solid white !important; box-shadow: 0 20px 50px rgba(157, 141, 241, 0.4) !important; position: relative; }
+        .hero-img-container { 
+          border: 4px solid rgba(255,255,255,0.3); 
+          border-radius: 30px; 
+          padding: 10px; 
+          background: rgba(255,255,255,0.05); 
+          box-shadow: 0 0 60px rgba(238, 190, 241, 0.2);
+        }
 
         /* Modal Styles */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 2rem; }
@@ -412,16 +454,34 @@ const Home = ({ onOpenAuth }) => {
 
         @media (max-width: 1000px) {
           .intro-epilepsy-layout, .modal-body-layout { grid-template-columns: 1fr; gap: 2rem; }
-          .types-full-grid, .services-grid { grid-template-columns: 1fr; }
-          .modal-content { padding: 2rem !important; height: 90vh; overflow-y: auto; }
+          .types-full-grid, .services-grid { grid-template-columns: 1fr; padding: 0 1rem; }
+          .modal-content { 
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            border-radius: 32px 32px 0 0;
+            max-height: 85vh;
+            padding: 1.5rem !important;
+            margin: 0;
+          }
+          .modal-image { min-height: 250px; }
           .modal-image img { height: 250px; }
+          .modal-info { padding: 2rem 1rem; }
           
-          .hero-flex-wrapper { flex-direction: column; text-align: center; padding-top: 4rem; }
-          .hero-text-side { padding-right: 0; margin-bottom: 3rem; }
-          .hero-title { font-size: 2.5rem; }
-          .hero-cta-group { justify-content: center; }
+          .hero-flex-wrapper { flex-direction: column; text-align: center; padding-top: 4rem; gap: 2rem; }
+          .hero-text-side { padding-right: 0; margin-bottom: 0; }
+          .hero-title { font-size: 2.2rem; }
+          .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; }
+          .hero-cta-group .btn { width: 100%; }
           .hero-image-side { justify-content: center; width: 100%; }
           .hero-main-img { max-width: 100%; }
+          
+          .full-screen-section { padding: 4rem 0; min-height: auto; }
+          .intro-text h2 { font-size: 2rem; }
+          .intro-image img { height: 300px; }
+          .stats-grid { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
         }
       `}</style>
     </div>

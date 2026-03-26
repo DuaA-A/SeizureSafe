@@ -177,7 +177,7 @@ export const QUESTIONS = [
  * 5. Special Features (Aura, Post-ictal confusion, etc.)
  */
 export const analyzeResult = (answers) => {
-  const { consciousness, movement, duration, awareness } = answers;
+  const { consciousness, movement_type, duration, aura, post_ictal } = answers;
   
   const hasMovement = (type) => Array.isArray(movement) ? movement.includes(type) : movement === type;
 
