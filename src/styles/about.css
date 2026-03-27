@@ -106,37 +106,70 @@
 }
 
 .member-bio {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
   line-height: 1.6;
 }
 
+/* No Image Standard Card tweaks */
+.no-img-card {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 0;
+}
+
 /* Leader Card */
-.leader-card {
-  max-width: 380px;
-  margin: 0 auto;
+/* Leader Card without Image */
+.leader-card-no-img {
+  background: linear-gradient(135deg, rgba(157, 141, 241, 0.05), rgba(169, 204, 227, 0.05));
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 12px 60px rgba(157, 141, 241, 0.25);
+  box-shadow: 0 12px 60px rgba(157, 141, 241, 0.15);
   border: 2px solid var(--primary);
   position: relative;
+  padding: 4rem 2rem 3rem;
+  text-align: center;
 }
 
-.leader-photo-area {
-  position: relative;
-  height: 380px;
-  background: linear-gradient(135deg, rgba(157, 141, 241, 0.15), rgba(169, 204, 227, 0.25));
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.leader-gradient-overlay {
+.leader-badge-wrapper-top {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, var(--text-main) 10%, transparent 80%);
-  z-index: 15;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.leader-name-text {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.leader-role-text {
+  font-size: 1rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.leader-divider {
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
+  margin: 0 auto 1.5rem;
+  border-radius: 4px;
+}
+
+.leader-bio-text {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .leader-badge-wrapper {

@@ -196,16 +196,6 @@ const Home = ({ onOpenAuth }) => {
                 As a caregiver, identifying the exact pattern of these episodes is the most critical information
                 you can provide to a neurologist to ensure effective pharmacological treatment.
               </p>
-              <div className="stats-grid mt-8">
-                <div className="stat-item">
-                  <h3>50M+</h3>
-                  <span>People Affected Worldwide</span>
-                </div>
-                <div className="stat-item">
-                  <h3>70%</h3>
-                  <span>Can Live Seizure-Free with Meds</span>
-                </div>
-              </div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -214,6 +204,16 @@ const Home = ({ onOpenAuth }) => {
             >
               <img src="/epilepsy.jpg" alt="What is Epilepsy" />
             </motion.div>
+            <div className="stats-grid mt-8">
+              <div className="stat-item">
+                <h3>50M+</h3>
+                <span>People Affected Worldwide</span>
+              </div>
+              <div className="stat-item">
+                <h3>70%</h3>
+                <span>Can Live Seizure-Free with Meds</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -290,8 +290,8 @@ const Home = ({ onOpenAuth }) => {
             <h2>Ready to Take Control?</h2>
             <p>Join SeizureSafe today to build a secure, pharmacist-verified archive for your loved one.</p>
             <div className="cta-buttons mt-8">
-              <button className="btn btn-premium btn-large" onClick={onOpenAuth}>Register Now</button>
-              <Link to="/about" className="btn btn-secondary btn-large ml-4" style={{ borderColor: 'var(--primary)', color: 'var(--primary)' }}>Learn More</Link>
+              <button className="btn-white-solid" onClick={onOpenAuth}>Register Now</button>
+              <Link to="/about" className="btn-outline-white">Learn More</Link>
             </div>
           </motion.div>
         </div>
@@ -323,10 +323,10 @@ const Home = ({ onOpenAuth }) => {
         .hero-main-img { width: 100%; max-width: 600px; height: auto; z-index: 2; mix-blend-mode: screen; }
 
         /* Modal Overhaul */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 2rem; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 99999 !important; padding: 2rem; }
         .modal-content { 
-          max-width: 1000px; 
-          width: 95%; 
+          max-width: 1200px; 
+          width: 80%; 
           max-height: 90vh; 
           overflow-y: auto; 
           background: white; 
@@ -339,7 +339,7 @@ const Home = ({ onOpenAuth }) => {
         }
         .modal-body-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 0; min-height: 600px; }
         .modal-image { height: 100%; min-height: 600px; overflow: hidden; }
-        .modal-image img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-image img { width: 100%; height: 100%; object-fit: contain; background: #f8fafc; }
         .modal-info { padding: 4rem; display: flex; flex-direction: column; }
         .modal-badge { display: inline-block; padding: 6px 14px; background: rgba(126, 34, 206, 0.1); color: var(--primary); border-radius: 20px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; width: fit-content; }
         .modal-info h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 1.5rem; color: var(--text-main); }
@@ -371,21 +371,23 @@ const Home = ({ onOpenAuth }) => {
         @keyframes smoothFlow { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
 
         /* Intro Epilepsy Layout */
-        .intro-epilepsy-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; }
+        .intro-epilepsy-layout { display: grid; grid-template-columns: 1.2fr 1fr; grid-template-areas: "text image" "stats image"; gap: 2rem 5rem; align-items: center; }
+        .intro-text { grid-area: text; }
+        .intro-image { grid-area: image; }
         .intro-text h2 { font-size: 3rem; margin-bottom: 1.5rem; }
         .intro-text p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1.5rem; }
         .intro-image img { width: 100%; height: 500px; object-fit: cover; border-radius: 24px; }
         
-        .stats-grid { display: flex; gap: 3rem; }
+        .stats-grid { grid-area: stats; display: flex; gap: 3rem; margin-top: 0 !important; }
         .stat-item h3 { font-size: 2.5rem; color: var(--primary); margin-bottom: 0.2rem; }
         .stat-item span { font-weight: 700; color: var(--text-muted); font-size: 0.9rem; }
 
         /* Types Grid (Premium) */
         .types-full-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
         .type-card-premium { cursor: pointer; position: relative; overflow: hidden; border-radius: 24px; padding: 0 !important; }
-        .type-card-img { position: relative; height: 320px; width: 100%; }
-        .type-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .type-card-premium:hover .type-card-img img { transform: scale(1.1); }
+        .type-card-img { position: relative; height: 320px; width: 100%; background: #f8fafc; }
+        .type-card-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .type-card-premium:hover .type-card-img img { transform: scale(1.05); }
         .type-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); display: flex; align-items: flex-end; justify-content: center; padding: 2rem; opacity: 0; transition: opacity 0.3s; }
         .type-card-premium:hover .type-card-overlay { opacity: 1; }
         .view-details { color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 2px solid white; padding-bottom: 4px; }
@@ -404,20 +406,6 @@ const Home = ({ onOpenAuth }) => {
           box-shadow: 0 0 60px rgba(238, 190, 241, 0.2);
         }
 
-        /* Modal Styles */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        .modal-content { max-width: 900px; width: 100%; position: relative; padding: 3rem !important; overflow: hidden; }
-        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--text-muted); cursor: pointer; }
-        .modal-body-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: start; }
-        .modal-image img { width: 100%; height: 400px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .modal-info h2 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--text-main); }
-        .modal-desc { font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; }
-        .symptoms-box h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--text-main); }
-        .symptoms-box ul { padding-left: 1.2rem; color: var(--text-muted); }
-        .symptoms-box li { margin-bottom: 6px; }
-        .medical-note-box { display: flex; gap: 1rem; padding: 1.5rem; background: rgba(59, 130, 246, 0.05); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.1); color: #1e40af; }
-        .medical-note-box p { margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.5; }
-
         /* Empathy Section Overlay */
         .empathy-section-wrapper { position: relative; margin-top: -8rem; z-index: 100; padding: 0 2rem; }
         .empathy-section { padding: 4rem !important; text-align: center; max-width: 900px; margin: 0 auto; border: 2px solid rgba(126, 34, 206, 0.1) !important; }
@@ -435,26 +423,31 @@ const Home = ({ onOpenAuth }) => {
         .service-card p { max-width: 280px; }
 
         /* CTA Section - Gradient Border Card */
-        .cta-border-card-wrapper { display: flex; justify-content: center; width: 100%; padding: 4rem 0; }
+        .cta-border-card-wrapper { display: flex; justify-content: center; width: 100%; padding: 4rem 1.5rem; }
         .cta-glass-card { 
-          padding: 5rem 3rem !important; 
-          background: white !important; 
-          border: 4px solid transparent !important; 
-          background-image: linear-gradient(white, white), linear-gradient(135deg, #4338ca 0%, #3b82f6 100%) !important;
-          background-origin: border-box !important;
-          background-clip: padding-box, border-box !important;
-          color: var(--text-main);
-          max-width: 900px;
+          padding: 4rem 2rem !important; 
+          background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+          border: none !important; 
+          color: white;
+          max-width: 800px;
           margin: 0 auto;
-          box-shadow: 0 20px 50px rgba(0,0,0,0.1) !important;
+          box-shadow: 0 20px 50px rgba(126, 34, 206, 0.25) !important;
+          border-radius: 30px;
         }
-        .cta-glass-card h2 { color: var(--text-main) !important; font-size: 2.5rem; margin-bottom: 1.5rem; }
-        .cta-glass-card p { color: var(--text-muted) !important; font-size: 1.2rem; margin-bottom: 2.5rem; }
-        .ml-4 { margin-left:1.5rem; }
+        .cta-glass-card h2 { color: white !important; font-size: 2.8rem; margin-bottom: 1.5rem; font-weight: 800; }
+        .cta-glass-card p { color: rgba(255, 255, 255, 0.95) !important; font-size: 1.2rem; margin-bottom: 2.5rem; line-height: 1.6; }
+        .cta-buttons { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .cta-buttons .btn { margin: 0 !important; }
+        .btn-white-solid { background: white; color: var(--primary); font-weight: 800; border: none; padding: 14px 28px; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-white-solid:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn-outline-white { border: 2px solid white; color: white !important; background: transparent; padding: 14px 28px; border-radius: 30px; font-weight: 700; display: inline-flex; align-items: center; text-decoration: none; }
+        .btn-outline-white:hover { background: rgba(255,255,255,0.1); }
 
         @media (max-width: 1000px) {
-          .intro-epilepsy-layout, .modal-body-layout { grid-template-columns: 1fr; gap: 2rem; }
+          .intro-epilepsy-layout { grid-template-columns: 1fr; grid-template-areas: "text" "image" "stats"; gap: 2rem; }
+          .modal-body-layout { grid-template-columns: 1fr; gap: 2rem; }
           .types-full-grid, .services-grid { grid-template-columns: 1fr; padding: 0 1rem; }
+          .type-card-img { height: 220px; }
           .modal-content { 
             position: fixed;
             bottom: 0;
@@ -466,22 +459,28 @@ const Home = ({ onOpenAuth }) => {
             padding: 1.5rem !important;
             margin: 0;
           }
-          .modal-image { min-height: 250px; }
-          .modal-image img { height: 250px; }
+          .modal-image { min-height: unset; height: auto; }
+          .modal-image img { height: auto; max-height: 250px; object-fit: contain; }
           .modal-info { padding: 2rem 1rem; }
           
-          .hero-flex-wrapper { flex-direction: column; text-align: center; padding-top: 4rem; gap: 2rem; }
-          .hero-text-side { padding-right: 0; margin-bottom: 0; }
-          .hero-title { font-size: 2.2rem; }
-          .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; }
-          .hero-cta-group .btn { width: 100%; }
-          .hero-image-side { justify-content: center; width: 100%; }
-          .hero-main-img { max-width: 100%; }
+          .modern-hero { background: #1e1b4b; padding-top: 0; }
+          .hero-flex-wrapper { flex-direction: column; text-align: center; justify-content: center; min-height: 85vh; padding-top: 3rem; position: relative; gap: 1.5rem; }
+          .hero-text-side { padding-right: 0; margin-bottom: 0; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; }
+          .hero-title { font-size: 2.4rem; color: #ffffff !important; font-weight: 900; }
+          .hero-description { color: #f8fafc !important; font-size: 1.05rem; font-weight: 500; }
+          .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; align-items: center; }
+          .hero-cta-group .btn { width: 100%; max-width: 320px; display: flex; justify-content: center; }
+          .hero-image-side { position: absolute; inset: 0; z-index: 0; opacity: 0.25; filter: blur(4px); display: block; overflow: hidden; pointer-events: none; width: 100%; height: 100%; }
+          .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: block; }
+          .hero-main-img { width: 100%; height: 100%; max-width: none; object-fit: cover; opacity: 0.9; }
+          .active-badge { margin: 0 auto 1.5rem !important; display: inline-flex; }
           
           .full-screen-section { padding: 4rem 0; min-height: auto; }
           .intro-text h2 { font-size: 2rem; }
           .intro-image img { height: 300px; }
-          .stats-grid { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+          .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; text-align: center; justify-content: center; margin-top: 1.5rem !important; }
+          .stat-item h3 { font-size: 1.5rem; }
+          .stat-item span { font-size: 0.75rem; line-height: 1.2; display: block; }
         }
       `}</style>
     </div>

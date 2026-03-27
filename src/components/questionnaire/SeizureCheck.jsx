@@ -20,7 +20,8 @@ import {
   ArrowRight,
   FileCheck,
   Check,
-  Pill
+  Pill,
+  ShieldCheck
 } from 'lucide-react';
 import { analyzeResult, QUESTIONS as EPILEPSY_STEPS } from '../../utils/epilepsyLogic';
 
@@ -309,9 +310,15 @@ const SeizureCheck = ({ onOpenAuth }) => {
         .text-white { color: white !important; }
 
         @media (max-width: 900px) {
+          .intro-hero-grid { grid-template-columns: 1fr; gap: 2rem; }
           .diagnostic-step-layout { grid-template-columns: 1fr; gap: 2rem; }
           .report-main-grid { grid-template-columns: 1fr; }
           .check-card-frame { padding: 1.5rem; }
+          .intro-hero-wrapper { padding: 2rem; border-radius: 20px; }
+          .clinical-title { font-size: 2.2rem; }
+          .hero-visual-frame { height: 300px; border-width: 4px; }
+          .image-frame-clinical { height: 250px; }
+          .btn-massive { padding: 14px 24px; font-size: 1rem; width: 100%; display: flex; justify-content: center; }
         }
       `}</style>
     </div>
