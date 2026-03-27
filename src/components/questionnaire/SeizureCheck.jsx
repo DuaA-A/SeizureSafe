@@ -66,8 +66,14 @@ const SeizureCheck = ({ onOpenAuth }) => {
     const analysis = analyzeResult(answers);
     setResult(analysis);
     
+    // Auto-populate profile with logged in user if available
+    const finalProfile = {
+       ...profile,
+       name: profile.name || (currentUser?.displayName) || 'Patient',
+    };
+
     const resultData = {
-      profile,
+      profile: finalProfile,
       answers,
       resultName: analysis.name,
       timestamp: new Date().toISOString()
@@ -140,8 +146,9 @@ const SeizureCheck = ({ onOpenAuth }) => {
         <div className="report-hero-content">
           <div className="status-badge"><FileCheck size={16} /> Analysis Ready</div>
           <h1 className="text-white">Primary Assessment: <span className="text-white-glow">{result.name}</span></h1>
-          <div className="patient-summary mt-2 text-white">
-            <span>Name: {profile.name}</span> • <span>Age: {profile.age}</span> • <span>Weight: {profile.weight}kg</span>
+          <div className="patient-summary mt-2 text-white" style={{ opacity: 0.9 }}>
+            <span>Profile: {(currentUser?.displayName) || 'Patient Analysis'}</span> 
+            <span className="ml-2">• Date: {new Date().toLocaleDateString()}</span>
           </div>
         </div>
       </div>
@@ -236,7 +243,7 @@ const SeizureCheck = ({ onOpenAuth }) => {
             <div className="step-progress-wrapper">
               {EPILEPSY_STEPS.map((_, i) => <div key={i} className={`step-dot ${i === step ? 'active' : ''} ${i < step ? 'completed' : ''}`}></div>)}
             </div>
-            <button className="btn btn-primary-nav" onClick={handleNext} disabled={(step === 0 && !profile.name) || (step > 0 && (!answers[currentStepData.id] || answers[currentStepData.id]?.length === 0)) || isSubmitting}>
+            <button className="btn btn-primary-nav" onClick={handleNext} disabled={(!answers[currentStepData.id] || answers[currentStepData.id]?.length === 0) || isSubmitting}>
               {isSubmitting ? 'Processing...' : step === totalSteps - 1 ? 'Generate Report' : 'Next Step'} <ChevronRight size={20} />
             </button>
           </div>

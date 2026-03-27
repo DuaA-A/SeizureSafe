@@ -52,7 +52,7 @@ export const getRxCUI = async (drugName) => {
 };
 
 export const getInteractions = async (rxcuis) => {
-  if (rxcuis.length < 2) return [];
+  if (rxcuis.length === 0) return [];
   
   // Separate local overrides from genuine API IDs
   const localDrugs = rxcuis.filter(r => r.startsWith('LOCAL_')).map(r => r.replace('LOCAL_', ''));

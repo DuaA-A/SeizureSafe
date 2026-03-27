@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { GraduationCap } from 'lucide-react';
 import { TeamMemberCard } from './TeamMemberCard';
 import '../../styles/about.css';
@@ -49,10 +50,12 @@ const About = () => {
         <div className="about-page container">
 
             {/* ── Header ─────────────────────────────────────────────────── */}
-            <div className="about-header animate-fade-in">
-                <span style={{ color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.15em', display: 'block', marginBottom: '1rem' }}>The Clinical Team</span>
-                <h2>Meet the Pharmacists Behind SeizureSafe</h2>
-                <p>We are a dedicated group of pharmacy students committed to improving epilepsy care through technological intervention.</p>
+            <div className="about-header-wrapper animate-fade-in">
+                <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
+                    <span className="about-subtitle">The Clinical Team</span>
+                    <h1 className="about-title">Meet the Pharmacists Behind SeizureSafe</h1>
+                    <p className="about-desc">We are a dedicated group of pharmacy students committed to improving epilepsy care through technological intervention.</p>
+                </div>
             </div>
 
             {/* ── MTI College Section ─────────────────────────────────────── */}
@@ -174,9 +177,9 @@ const About = () => {
                     <p className="survey-text">
                         Access our expert system designed to help identify the patterns of epileptic episodes to prepare comprehensive reports for your doctor.
                     </p>
-                    <a href="/questionnaire" className="btn-white-solid">
+                    <Link to="/questionnaire" className="btn-white-solid" style={{ display: 'inline-block', padding: '14px 28px', textDecoration: 'none' }}>
                         Start the Diagnostic Tools
-                    </a>
+                    </Link>
                 </div>
             </motion.div>
 

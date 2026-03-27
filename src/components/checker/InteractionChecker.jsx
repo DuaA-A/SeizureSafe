@@ -97,8 +97,8 @@ const InteractionChecker = ({ onOpenAuth }) => {
   };
 
   const checkInteractions = async () => {
-    if (medsToCheck.length < 2) {
-      setErrorMsg("Please add at least 2 medications to check for interactions.");
+    if (medsToCheck.length < 1) {
+      setErrorMsg("Please add at least 1 medication to check for interactions against standard AEDs.");
       return;
     }
     setLoading(true);
@@ -145,7 +145,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
           <div className="quick-check-layout">
             <div className="input-panel glass-card">
               <h3>Interaction Analysis</h3>
-              <p>Add 2 to {MAX_DRUGS} medications to analyze potential risky interactions.</p>
+              <p>Add 1 to {MAX_DRUGS} medications to analyze potential interactions against standard Epilepsy treatments.</p>
               
               <div className="multi-drug-slots">
                 {[...Array(MAX_DRUGS)].map((_, index) => (
@@ -188,7 +188,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
                         </div>
                       </div>
                     ) : (
-                      <span className="slot-placeholder">Slot {index + 1} {index < 2 ? '(Required)' : '(Optional)'}</span>
+                      <span className="slot-placeholder">Slot {index + 1} {index < 1 ? '(Required)' : '(Optional)'}</span>
                     )}
                   </div>
                 ))}
@@ -240,7 +240,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
                 </div>
               )}
 
-              {medsToCheck.length >= 2 && (
+              {medsToCheck.length >= 1 && (
                 <button 
                   className={`btn run-check-btn w-full mt-6 ${hasChecked ? 'btn-secondary' : 'btn-premium animate-pulse'}`} 
                   onClick={checkInteractions}
@@ -306,16 +306,16 @@ const InteractionChecker = ({ onOpenAuth }) => {
                 <div className="no-interactions glass-card text-center animate-fade-in">
                   <CheckCircle2 size={48} className="icon-success" />
                   <h3>No Major Interactions Detected</h3>
-                  <p>Based on our real-time clinical database query, your active combination of {medsToCheck.length} medications does not yield any standardized risk alerts.</p>
+                  <p>Based on our real-time clinical database query, {medsToCheck.length === 1 ? `"${medsToCheck[0].name}" does not yield any standardized risk alerts against standard Antiepileptic Drugs (AEDs)` : `your active combination of ${medsToCheck.length} medications does not yield any standardized risk alerts`}.</p>
                 </div>
               ) : (
                 <div className="empty-results-state glass-card text-center">
                   <Shield size={48} className="icon-muted" style={{ opacity: 0.3 }} />
                   <h3>Awaiting Analysis</h3>
                   <p>
-                    {medsToCheck.length < 2 
-                      ? "Add at least 2 medications to the slots to unlock the safety analyzer." 
-                      : "Click 'Run Safety Analysis' to generate your clinical report."}
+                    {medsToCheck.length < 1 
+                      ? "Add at least 1 medication to the slots to unlock the safety analyzer against Epilepsy drugs." 
+                      : "Click 'Generate Safety Report' to run your clinical analysis."}
                   </p>
                 </div>
               )}
