@@ -424,7 +424,7 @@ const Home = ({ onOpenAuth }) => {
         /* CTA Section - Gradient Border Card */
         .cta-border-card-wrapper { display: flex; justify-content: center; width: 100%; padding: 4rem 1.5rem; }
         .cta-glass-card { 
-          padding: 4rem 2rem !important; 
+          padding: 5rem 3rem; 
           background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
           border: none !important; 
           color: white;
@@ -432,6 +432,7 @@ const Home = ({ onOpenAuth }) => {
           margin: 0 auto;
           box-shadow: 0 20px 50px rgba(126, 34, 206, 0.25) !important;
           border-radius: 30px;
+          text-align: center;
         }
         .cta-glass-card h2 { color: white !important; font-size: 2.8rem; margin-bottom: 1.5rem; font-weight: 800; }
         .cta-glass-card p { color: rgba(255, 255, 255, 0.95) !important; font-size: 1.2rem; margin-bottom: 2.5rem; line-height: 1.6; }
@@ -467,15 +468,15 @@ const Home = ({ onOpenAuth }) => {
           .modal-info { padding: 2rem 1rem; }
           
           .modern-hero { background: #1e1b4b; padding-top: 0; }
-          .hero-flex-wrapper { flex-direction: column; text-align: center; justify-content: center; min-height: 85vh; padding-top: 3rem; position: relative; gap: 1.5rem; }
-          .hero-text-side { padding-right: 0; margin-bottom: 0; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; }
-          .hero-title { font-size: 2.4rem; color: #ffffff !important; font-weight: 900; }
-          .hero-description { color: #f8fafc !important; font-size: 1.05rem; font-weight: 500; }
+          .hero-flex-wrapper { flex-direction: column; text-align: center; justify-content: stretch; height: 90vh; padding-top: 80px; padding-bottom: 2rem; position: relative; gap: 0; }
+          .hero-text-side { padding-right: 0; margin-bottom: 0; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center !important; }
+          .hero-title { font-size: 2.4rem; color: #ffffff !important; font-weight: 900; margin-top: 2rem; margin-bottom: auto; }
+          .hero-description { color: #f8fafc !important; font-size: 1.05rem; font-weight: 500; margin-bottom: 2rem; }
           .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; align-items: center; }
-          .hero-cta-group .btn { width: 100%; max-width: 320px; display: flex; justify-content: center; }
+          .hero-cta-group > * { width: 100%; max-width: 320px; display: flex; justify-content: center; box-sizing: border-box; }
           .hero-image-side { position: absolute; inset: 0; z-index: 0; opacity: 0.4; display: block; overflow: hidden; pointer-events: none; width: 100%; height: 100%; }
-          .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center; padding-top: 10%; }
-          .hero-main-img { width: 100%; height: 100%; max-width: 100vw; object-fit: contain; object-position: center top; opacity: 1; }
+          .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding-top: 4rem; }
+          .hero-main-img { width: 100%; height: 100%; max-width: 100vw; object-fit: contain; object-position: center center; opacity: 1; transform: scale(1.1); }
           .active-badge { display: none !important; }
           
           .full-screen-section { padding: 4rem 0; min-height: auto; }
