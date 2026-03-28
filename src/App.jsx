@@ -135,10 +135,10 @@ const Home = ({ onOpenAuth }) => {
               </p>
 
               <div className="hero-cta-group">
-                <Link to="/questionnaire" className="btn btn-premium btn-large">
+                <Link to="/questionnaire" className="btn btn-outline-white">
                   Epilepsy Questionnaire <ChevronRight size={20} />
                 </Link>
-                <Link to="/checker" className="btn btn-outline-white btn-large">
+                <Link to="/checker" className="btn btn-outline-white">
                   Drug Interaction Checker
                 </Link>
               </div>
@@ -472,8 +472,8 @@ const Home = ({ onOpenAuth }) => {
           .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; align-items: center; }
           .hero-cta-group .btn { width: 100%; max-width: 320px; display: flex; justify-content: center; }
           .hero-image-side { position: absolute; inset: 0; z-index: 0; opacity: 0.4; display: block; overflow: hidden; pointer-events: none; width: 100%; height: 100%; }
-          .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-          .hero-main-img { width: 100%; height: 100%; max-width: 100vw; object-fit: contain; opacity: 1; }
+          .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center; padding-top: 10%; }
+          .hero-main-img { width: 100%; height: 100%; max-width: 100vw; object-fit: contain; object-position: center top; opacity: 1; }
           .active-badge { display: none !important; }
           
           .full-screen-section { padding: 4rem 0; min-height: auto; }
