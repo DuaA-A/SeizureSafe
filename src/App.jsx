@@ -468,10 +468,10 @@ const Home = ({ onOpenAuth }) => {
           .modal-info { padding: 2rem 1rem; }
           
           .modern-hero { background: #1e1b4b; padding-top: 0; }
-          .hero-flex-wrapper { flex-direction: column; text-align: center; justify-content: stretch; height: 85vh; padding-top: 80px; padding-bottom: 4rem; position: relative; gap: 0; }
+          .hero-flex-wrapper { flex-direction: column; text-align: center; justify-content: stretch; height: 85vh; padding-top: 1rem; padding-bottom: 4rem; position: relative; gap: 0; }
           .hero-text-side { padding-right: 0; margin-bottom: 0; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center !important; }
-          .hero-title { font-size: 2.4rem; color: #ffffff !important; font-weight: 900; margin-top: 1.5rem; margin-bottom: auto; }
-          .hero-description { color: #f8fafc !important; font-size: 1.05rem; font-weight: 500; margin-bottom: 2rem; }
+          .hero-title { font-size: 2.6rem; color: #ffffff !important; font-weight: 900; margin-top: 0; margin-bottom: auto; line-height: 1.1; }
+          .hero-description { color: #f8fafc !important; font-size: 1.05rem; font-weight: 500; margin-bottom: 2rem; max-width: 90%; }
           .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; align-items: center; }
           .hero-cta-group > * { width: 100%; max-width: 320px; display: flex; justify-content: center; box-sizing: border-box; }
           .hero-image-side { position: absolute; inset: 0; z-index: 0; opacity: 0.4; display: block; overflow: hidden; pointer-events: none; width: 100%; height: 100%; }
