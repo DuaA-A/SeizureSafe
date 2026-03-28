@@ -81,7 +81,7 @@ const AuthWindow = ({ onClose }) => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+          <button type="submit" className="btn btn-premium w-full" disabled={loading}>
             {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
           </button>
         </form>

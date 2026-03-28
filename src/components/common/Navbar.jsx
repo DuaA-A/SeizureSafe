@@ -86,7 +86,7 @@ const Navbar = ({ onOpenAuth }) => {
               <button onClick={() => { logout(); setIsOpen(false); }}>Logout</button>
             </>
           ) : (
-            <button className="btn btn-primary" onClick={() => { onOpenAuth(); setIsOpen(false); }}>Sign In</button>
+            <button className="btn btn-mobile-signin" onClick={() => { onOpenAuth(); setIsOpen(false); }}>Sign In</button>
           )}
         </div>
       )}
@@ -181,6 +181,27 @@ const Navbar = ({ onOpenAuth }) => {
             border-bottom: 1px solid var(--border); box-shadow: var(--shadow);
           }
           .mobile-menu a { text-decoration: none; color: var(--text-main); font-weight: 600; }
+          
+          @keyframes gradientFloat {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          .btn-mobile-signin {
+            background: linear-gradient(270deg, var(--primary), var(--accent), var(--secondary), var(--primary));
+            background-size: 300% 300%;
+            animation: gradientFloat 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            color: white !important;
+            border: none;
+            border-radius: 30px;
+            padding: 14px 28px;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(157, 141, 241, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          }
+          .btn-mobile-signin:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(157, 141, 241, 0.5); }
         }
       `}</style>
     </nav>

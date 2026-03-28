@@ -135,7 +135,7 @@ const Home = ({ onOpenAuth }) => {
               </p>
 
               <div className="hero-cta-group">
-                <Link to="/questionnaire" className="btn btn-outline-white">
+                <Link to="/questionnaire" className="btn-white-dark">
                   Epilepsy Questionnaire <ChevronRight size={20} />
                 </Link>
                 <Link to="/checker" className="btn btn-outline-white">
@@ -324,19 +324,17 @@ const Home = ({ onOpenAuth }) => {
         .hero-main-img { width: 100%; max-width: 600px; height: auto; z-index: 2; mix-blend-mode: screen; }
 
         /* Modal Overhaul */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 99999 !important; padding: 2rem; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 99999 !important; padding: 2rem; padding-top: calc(80px + 2rem); }
         .modal-content { 
           max-width: 1200px; 
           width: 80%; 
-          max-height: 90vh; 
+          max-height: 85vh; 
           overflow-y: auto; 
           background: white; 
           border-radius: 32px; 
           box-shadow: 0 40px 100px rgba(0,0,0,0.2) !important; 
           position: relative; 
           border: 1px solid rgba(255,255,255,0.3);
-          margin-top: auto;
-          margin-bottom: auto;
         }
         .modal-body-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 0; min-height: 600px; }
         .modal-image { height: 100%; min-height: 600px; overflow: hidden; }
@@ -441,8 +439,12 @@ const Home = ({ onOpenAuth }) => {
         .cta-buttons .btn { margin: 0 !important; }
         .btn-white-solid { background: white; color: var(--primary); font-weight: 800; border: none; padding: 14px 28px; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
         .btn-white-solid:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .btn-outline-white { border: 2px solid white; color: white !important; background: transparent; padding: 14px 28px; border-radius: 30px; font-weight: 700; display: inline-flex; align-items: center; text-decoration: none; }
-        .btn-outline-white:hover { background: rgba(255,255,255,0.1); }
+        .btn-outline-white { border: 2px solid white; color: white !important; background: transparent; padding: 14px 28px; border-radius: 30px; font-weight: 700; display: inline-flex; align-items: center; text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-white-dark { position: relative; background: white !important; color: var(--text-main) !important; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); text-decoration: none; margin: 0; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, color 0.3s; z-index: 1; overflow: hidden; }
+        .btn-white-dark::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); opacity: 0; z-index: -1; transition: opacity 0.4s ease; border-radius: 30px; }
+        .btn-white-dark:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.2) !important; color: white !important; }
+        .btn-white-dark:hover::before { opacity: 1; }
+        .btn-outline-white:hover { background: white !important; color: var(--primary) !important; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
 
         @media (max-width: 1000px) {
           .intro-epilepsy-layout { grid-template-columns: 1fr; grid-template-areas: "text" "image" "stats"; gap: 2rem; }
