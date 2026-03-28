@@ -114,8 +114,9 @@ const Home = ({ onOpenAuth }) => {
   const [selectedType, setSelectedType] = useState(null);
 
   return (
-    <div className="home-container animate-fade-in">
+    <>
       <TypeDetailModal type={selectedType} onClose={() => setSelectedType(null)} />
+      <div className="home-container animate-fade-in">
 
       {/* Hero Section */}
       <section className="full-screen-section modern-hero">
@@ -470,10 +471,10 @@ const Home = ({ onOpenAuth }) => {
           .hero-description { color: #f8fafc !important; font-size: 1.05rem; font-weight: 500; }
           .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; align-items: center; }
           .hero-cta-group .btn { width: 100%; max-width: 320px; display: flex; justify-content: center; }
-          .hero-image-side { position: absolute; inset: 0; z-index: 0; opacity: 0.25; filter: blur(4px); display: block; overflow: hidden; pointer-events: none; width: 100%; height: 100%; }
-          .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: block; }
-          .hero-main-img { width: 100%; height: 100%; max-width: none; object-fit: cover; opacity: 0.9; }
-          .active-badge { margin: 0 auto 1.5rem !important; display: inline-flex; }
+          .hero-image-side { position: absolute; inset: 0; z-index: 0; opacity: 0.4; display: block; overflow: hidden; pointer-events: none; width: 100%; height: 100%; }
+          .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+          .hero-main-img { width: 100%; height: 100%; max-width: 100vw; object-fit: contain; opacity: 1; }
+          .active-badge { display: none !important; }
           
           .full-screen-section { padding: 4rem 0; min-height: auto; }
           .intro-text h2 { font-size: 2rem; }
@@ -483,7 +484,8 @@ const Home = ({ onOpenAuth }) => {
           .stat-item span { font-size: 0.75rem; line-height: 1.2; display: block; }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -79,7 +79,7 @@
 
 /* Luxury Card for Members */
 .luxury-card {
-  background: white;
+  background: linear-gradient(135deg, rgba(162, 217, 206, 0.15), rgba(169, 204, 227, 0.15));
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
