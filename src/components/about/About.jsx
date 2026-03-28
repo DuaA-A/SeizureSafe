@@ -25,7 +25,7 @@ const About = () => {
     }, []);
 
     const leader = teamMembers.find((m) => m.isLeader);
-    const members = teamMembers.filter((m) => !m.isLeader);
+    const members = teamMembers; // Mapping the full list now
 
     const values = [
         {
@@ -88,19 +88,14 @@ const About = () => {
                             animation: 'border-glow 2.8s ease-in-out infinite', padding: '20px'
                         }}
                     >
-                        <img src="/mti_logo.jpeg" alt="SeizureSafe Logo" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+                        <img src="/team/mti_logo.jpeg" alt="MTI University Logo" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
                     </div>
                 </div>
                 <h3 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.5rem' }}>MTI University</h3>
                 <p style={{ maxWidth: '500px', color: 'var(--text-muted)' }}>Faculty of Pharmacy Medical Graduation Project 2026</p>
             </motion.div>
 
-            {/* ── Leader Section ─────────────────────────────────────────── */}
-            {leader && (
-                <div style={{ marginBottom: '4rem' }}>
-                    <TeamMemberCard member={leader} />
-                </div>
-            )}
+            {/* ── Removed Separate Leader Section to merge into Grid ─────────────────────────────────────────── */}
 
             {/* ── Team Grid ──────────────────────────────────────────────── */}
             <div className="team-grid-about">

@@ -94,7 +94,7 @@ const EPILEPSY_DETAILS = [
     id: 'atonic',
     name: 'Atonic Seizure (Drop Attacks)',
     title: 'Atonic',
-    image: '/tonic-clonic.jpg',
+    image: '/atonic.jpg',
     description: 'Sudden loss of muscle tone causing the person to collapse or fall forward. Also known as "drop attacks".',
     symptoms: ['Sudden limpness', 'Head dropping forward', 'Immediate collapse', 'Brief duration'],
     note: 'Risk of head injury is high. Protective headgear is often recommended for frequent events.'
@@ -103,7 +103,7 @@ const EPILEPSY_DETAILS = [
     id: 'myoclonic',
     name: 'Myoclonic Seizure',
     title: 'Myoclonic',
-    image: '/absence.jpg',
+    image: '/myoclonic.jpg',
     description: 'Brief, shock-like jerks of a muscle or group of muscles. Usually occurring on both sides of the body.',
     symptoms: ['Sudden muscle contractions', 'Shock-like jerks', 'Commonly occurs in the morning', 'Brief (1-2 seconds)'],
     note: 'Often occurs shortly after waking. Can interfere with holding objects or eating.'

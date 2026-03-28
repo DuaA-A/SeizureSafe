@@ -158,7 +158,7 @@ export const QUESTIONS = [
     section: 'Timing',
     text: 'How long did the active part of the seizure last?',
     icon: 'Clock',
-    image: '/hero.png',
+    image: '/epilepsy.jpg',
     options: [
       { id: 'seconds', label: 'A few seconds', sub: 'Typical for absence or brief myoclonic events.' },
       { id: 'under_2', label: 'Under 2 minutes', sub: 'Standard duration for most focal seizures.' },
