@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { getInteractions, getRxCUI, BASELINE_EPILEPSY_DRUGS } from '../../services/rxnav';
+import { getRxCUI, BASELINE_EPILEPSY_DRUGS } from '../../services/rxnav';
 import { getOpenFdaData } from '../../services/openFDA';
 import { FOOD_INTERACTIONS } from '../../utils/foodInteractions';
+import { checkLocalInteractions } from '../../services/localInteractionsDb';
 import { 
   Pill, Search, AlertTriangle, CheckCircle2, Plus, Trash2, 
   Loader2, Shield, Info, Coffee, RefreshCw
@@ -88,25 +89,21 @@ const InteractionChecker = ({ onOpenAuth }) => {
     setErrorMsg('');
     
     try {
-      let allRxcuis = medsToCheck.map(m => m.rxcui);
       
       const hasEpilepsyDrug = medsToCheck.some(m => 
         BASELINE_EPILEPSY_DRUGS.some(base => base.toLowerCase() === m.name.toLowerCase())
       );
       
-      let baselineMedNames = [];
+      let allDrugNames = medsToCheck.map(m => m.name);
+
       if (!hasEpilepsyDrug) {
-        // Limit to 2 baseline drugs to ensure the query doesn't fail from being too large
+        // Limit to 2 baseline drugs to check implicitly
         for (const baseDrug of BASELINE_EPILEPSY_DRUGS.slice(0, 2)) { 
-          const id = await getRxCUI(baseDrug);
-          if (id) {
-            allRxcuis.push(id);
-            baselineMedNames.push(baseDrug);
-          }
+          allDrugNames.push(baseDrug);
         }
       }
 
-      const interactionsRes = await getInteractions(allRxcuis);
+      const interactionsRes = checkLocalInteractions(allDrugNames);
       
       const userMedNamesLower = medsToCheck.map(m => m.name.toLowerCase());
       const relevantInteractions = interactionsRes.filter(inter => {
@@ -265,7 +262,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
                       {reportData.interactions.length === 0 ? (
                         <div className="clear-status">
                           <CheckCircle2 size={32} className="status-icon green" />
-                          <p>No standardized adverse drug-drug interactions detected between your inputs and baseline epilepsy medications in the RxNav database.</p>
+                          <p>No major interactions found in the clinical proxy database between your inputs and baseline epilepsy medications. Always consult your provider.</p>
                         </div>
                       ) : (
                         <div className="report-list">
