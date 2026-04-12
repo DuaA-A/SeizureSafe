@@ -29,14 +29,25 @@ export const getRxCUI = async (drugName) => {
   if (rxcuiCache.has(normalized)) return rxcuiCache.get(normalized);
 
   try {
-    const response = await fetch(`${BASE_URL}/spellingsuggest.json?name=${encodeURIComponent(normalized)}`);
-    const data = await response.json();
-    const bestMatch = data.suggestionGroup?.suggestion?.[0] || drugName;
-
-    const rxcuiResponse = await fetch(`${BASE_URL}/rxcui.json?name=${encodeURIComponent(bestMatch)}`);
+    // First try direct lookup
+    const rxcuiResponse = await fetch(`${BASE_URL}/rxcui.json?name=${encodeURIComponent(normalized)}`);
     const rxcuiData = await rxcuiResponse.json();
+    let rxcui = rxcuiData.idGroup?.rxnormId?.[0] || null;
     
-    const rxcui = rxcuiData.idGroup?.rxnormId?.[0] || null;
+    // If not found, try spell check
+    if (!rxcui) {
+      const spellRes = await fetch(`${BASE_URL}/spellingsuggestions.json?name=${encodeURIComponent(normalized)}`);
+      if (spellRes.ok) {
+        const spellData = await spellRes.json();
+        const bestMatch = spellData.suggestionGroup?.suggestionList?.suggestion?.[0];
+        
+        if (bestMatch) {
+          const retryRes = await fetch(`${BASE_URL}/rxcui.json?name=${encodeURIComponent(bestMatch)}`);
+          const retryData = await retryRes.json();
+          rxcui = retryData.idGroup?.rxnormId?.[0] || null;
+        }
+      }
+    }
     
     if (rxcui) {
       rxcuiCache.set(normalized, rxcui);

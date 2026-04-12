@@ -5,10 +5,11 @@ import { getOpenFdaData } from '../../services/openFDA';
 import { FOOD_INTERACTIONS } from '../../utils/foodInteractions';
 import { 
   Pill, Search, AlertTriangle, CheckCircle2, Plus, Trash2, 
-  Loader2, Shield, ArrowRight, Info, Coffee, RefreshCw
+  Loader2, Shield, Info, Coffee, RefreshCw
 } from 'lucide-react';
 import { db, isPreviewMode } from '../../firebase/config';
-import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
+import '../../styles/about.css'; // Inheriting global header classes
 
 const InteractionChecker = ({ onOpenAuth }) => {
   const { currentUser } = useAuth();
@@ -87,18 +88,16 @@ const InteractionChecker = ({ onOpenAuth }) => {
     setErrorMsg('');
     
     try {
-      // 1. Gather RxCUIs from user input
       let allRxcuis = medsToCheck.map(m => m.rxcui);
       
-      // Auto-inject baseline drugs if there isn't one already (to ensure drug vs epilepsy drug checks)
       const hasEpilepsyDrug = medsToCheck.some(m => 
         BASELINE_EPILEPSY_DRUGS.some(base => base.toLowerCase() === m.name.toLowerCase())
       );
       
       let baselineMedNames = [];
       if (!hasEpilepsyDrug) {
-        // Fetch rxcui for baseline drugs to compare against
-        for (const baseDrug of BASELINE_EPILEPSY_DRUGS.slice(0, 3)) { // Limit to 3 to avoid extreme API times
+        // Limit to 2 baseline drugs to ensure the query doesn't fail from being too large
+        for (const baseDrug of BASELINE_EPILEPSY_DRUGS.slice(0, 2)) { 
           const id = await getRxCUI(baseDrug);
           if (id) {
             allRxcuis.push(id);
@@ -107,29 +106,21 @@ const InteractionChecker = ({ onOpenAuth }) => {
         }
       }
 
-      // 2. Fetch standard Drug-Drug interactions
       const interactionsRes = await getInteractions(allRxcuis);
       
-      // Filter out interactions that are only between the hidden baseline drugs
       const userMedNamesLower = medsToCheck.map(m => m.name.toLowerCase());
-      
       const relevantInteractions = interactionsRes.filter(inter => {
         if (!hasEpilepsyDrug) {
-           // We injected baseline meds. Only show if at least ONE of the interacting drugs is a User drug.
            const drgALower = inter.drugA.toLowerCase();
            const drgBLower = inter.drugB.toLowerCase();
-           const touchesUserMed = userMedNamesLower.some(umed => drgALower.includes(umed) || drgBLower.includes(umed));
-           return touchesUserMed;
+           return userMedNamesLower.some(umed => drgALower.includes(umed) || drgBLower.includes(umed));
         }
         return true;
       });
 
-      // 3. Fetch Food and Warning Interactions (OpenFDA + Local logic)
       let foodWarnings = [];
       for (const med of medsToCheck) {
         const medNameLower = med.name.toLowerCase();
-        
-        // Check local food interactions first
         if (FOOD_INTERACTIONS[medNameLower]) {
           foodWarnings.push({
             drug: med.name,
@@ -137,8 +128,6 @@ const InteractionChecker = ({ onOpenAuth }) => {
             source: 'Verified Clinical Baseline'
           });
         }
-        
-        // Check OpenFDA
         const fdaData = await getOpenFdaData(med.name);
         if (fdaData && fdaData.foodRules) {
           foodWarnings.push({
@@ -159,139 +148,138 @@ const InteractionChecker = ({ onOpenAuth }) => {
       
     } catch (err) {
       console.error(err);
-      setErrorMsg("Failed to generate complete interaction report.");
+      setErrorMsg("Failed to generate complete interaction report. The API service may be down.");
     } finally {
       setLoading(false);
     }
   };
 
-  const getSeverityClass = (sev) => {
-    switch(sev?.toLowerCase()) {
-      case 'high': return 'bg-red-50 border-red-500';
-      case 'moderate': return 'bg-orange-50 border-orange-500';
-      default: return 'bg-green-50 border-green-500';
-    }
+  const getSeverityIcon = (sev) => {
+    const s = sev?.toLowerCase() || '';
+    if (s.includes('high') || s.includes('major')) return <AlertTriangle className="icon-high" size={24} />;
+    if (s.includes('moderate')) return <AlertTriangle className="icon-mod" size={24} />;
+    return <Info className="icon-low" size={24} />;
   };
 
-  const getSeverityIcon = (sev) => {
-    switch(sev?.toLowerCase()) {
-      case 'high': return <AlertTriangle className="text-red-600" size={24} />;
-      case 'moderate': return <AlertTriangle className="text-orange-600" size={24} />;
-      default: return <Info className="text-green-600" size={24} />;
-    }
+  const getSeverityClass = (sev) => {
+    const s = sev?.toLowerCase() || '';
+    if (s.includes('high') || s.includes('major')) return 'sev-high';
+    if (s.includes('moderate')) return 'sev-mod';
+    return 'sev-low';
   };
 
   return (
-    <div className="checker-page container animate-fade-in pb-20">
-      <div className="checker-header-wrapper">
-        <div className="checker-header">
-           <Shield size={48} className="text-white mb-4 mx-auto opacity-90" />
-           <h1 className="text-4xl font-extrabold text-white mb-2 text-center">Medication Safety Center</h1>
-           <p className="subtitle text-center mb-6">Live dynamic validation checking your prescriptions against epilepsy therapies and food interactions.</p>
-           
-           <div className="flex justify-center gap-4">
-             <button className={`tab-btn ${activeTab === 'quick' ? 'active' : ''}`} onClick={() => setActiveTab('quick')}>Safety Analyzer</button>
-             <button className={`tab-btn ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>My Archive</button>
-           </div>
+    <div className="checker-page container">
+
+      {/* ── Standardized Header ─────────────────────────────────────────────────── */}
+      <div className="about-header-wrapper animate-fade-in">
+        <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
+            <span className="about-subtitle">Live Validation</span>
+            <h1 className="about-title">Medication Safety Center</h1>
+            <p className="about-desc">Live dynamic validation checking your prescriptions against epilepsy therapies and food interactions via NIH RxNav.</p>
+            
+            <div className="tab-controls mt-6">
+              <button className={`tab-btn ${activeTab === 'quick' ? 'active' : ''}`} onClick={() => setActiveTab('quick')}>Safety Analyzer</button>
+              <button className={`tab-btn ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>My Archive</button>
+            </div>
         </div>
       </div>
 
       <div className="checker-body mt-8">
         {activeTab === 'quick' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="quick-check-layout">
              
              {/* Left Column: Input */}
-             <div className="lg:col-span-5">
-               <div className="glass-card p-6">
-                 <h3 className="text-2xl font-bold mb-2">Build Regimen</h3>
-                 <p className="text-gray-600 mb-6">Add drugs below. We automatically cross-reference these against baseline epilepsy treatments.</p>
-                 
-                 <div className="flex flex-col gap-3 mb-6">
-                  {[...Array(MAX_DRUGS)].map((_, index) => (
-                    <div key={index} className={`flex items-center gap-3 p-3 rounded-xl border-2 ${medsToCheck[index] ? 'border-purple-200 bg-white' : 'border-dashed border-gray-200 bg-gray-50'}`}>
-                      {medsToCheck[index] ? (
-                        <>
-                          <Pill size={20} className="text-purple-600" />
-                          <span className="font-bold flex-1">{medsToCheck[index].name}</span>
-                          <button onClick={() => removeDrug(index)} className="text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
-                        </>
-                      ) : (
-                        <span className="text-gray-400 pl-2">Slot {index + 1} {index === 0 ? '(Required)' : '(Optional)'}</span>
-                      )}
-                    </div>
-                  ))}
-                 </div>
-
-                 {medsToCheck.length < MAX_DRUGS && (
-                   <form onSubmit={(e) => addDrug(e)} className="relative mb-4">
-                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                     <input 
-                       type="text" 
-                       className="w-full h-14 pl-12 pr-16 rounded-xl border-2 border-gray-200 focus:border-purple-500 outline-none font-semibold transition-all"
-                       placeholder="e.g. Ibuprofen"
-                       value={inputDrug}
-                       disabled={loading}
-                       onChange={(e) => setInputDrug(e.target.value)}
-                     />
-                     <button type="submit" disabled={loading || !inputDrug.trim()} className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-purple-600 text-white rounded-lg flex items-center justify-center disabled:opacity-50 hover:bg-purple-700 transition">
-                       {loading ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
-                     </button>
-                   </form>
-                 )}
-
-                 {errorMsg && (
-                    <div className="p-3 bg-red-50 text-red-600 rounded-lg flex items-center gap-2 mb-4 text-sm font-semibold">
-                      <AlertTriangle size={16} /> {errorMsg}
-                    </div>
-                 )}
-
-                 {medsToCheck.length > 0 && (
-                   <button 
-                     className="w-full h-14 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-lg hover:shadow-lg transition-all flex items-center justify-center gap-2 mt-4"
-                     onClick={checkInteractions}
-                     disabled={loading}
-                   >
-                     {loading ? <><RefreshCw className="animate-spin" size={20} /> Analyzing...</> : 'Generate Full Report'}
-                   </button>
-                 )}
+             <div className="checker-input-area glass-card">
+               <h2>Build Regimen</h2>
+               <p className="subtitle">Add drugs below. We automatically cross-reference these against baseline epilepsy treatments.</p>
+               
+               <div className="multi-drug-slots mt-6">
+                {[...Array(MAX_DRUGS)].map((_, index) => (
+                  <div key={index} className={`drug-slot ${medsToCheck[index] ? 'filled' : 'empty'}`}>
+                    {medsToCheck[index] ? (
+                      <>
+                        <Pill size={20} className="slot-icon" />
+                        <span className="slot-name">{medsToCheck[index].name}</span>
+                        <button onClick={() => removeDrug(index)} className="slot-remove"><Trash2 size={18} /></button>
+                      </>
+                    ) : (
+                      <span className="slot-empty-text">Slot {index + 1} {index === 0 ? '(Required)' : '(Optional)'}</span>
+                    )}
+                  </div>
+                ))}
                </div>
+
+               {medsToCheck.length < MAX_DRUGS && (
+                 <form onSubmit={(e) => addDrug(e)} className="drug-search-form mt-4">
+                   <Search className="search-icon" size={20} />
+                   <input 
+                     type="text" 
+                     className="drug-input"
+                     placeholder="e.g. Ibuprofen"
+                     value={inputDrug}
+                     disabled={loading}
+                     onChange={(e) => setInputDrug(e.target.value)}
+                   />
+                   <button type="submit" disabled={loading || !inputDrug.trim()} className="btn-add">
+                     {loading ? <Loader2 size={18} className="spinner" /> : <Plus size={18} />}
+                   </button>
+                 </form>
+               )}
+
+               {errorMsg && (
+                  <div className="error-alert mt-4">
+                    <AlertTriangle size={16} /> {errorMsg}
+                  </div>
+               )}
+
+               {medsToCheck.length > 0 && (
+                 <button 
+                   className="btn-generate-report mt-6"
+                   onClick={checkInteractions}
+                   disabled={loading}
+                 >
+                   {loading ? <><RefreshCw className="spinner" size={20} /> Analyzing...</> : 'Generate Full Report'}
+                 </button>
+               )}
              </div>
 
              {/* Right Column: Output */}
-             <div className="lg:col-span-7">
+             <div className="checker-results">
                {loading ? (
-                 <div className="space-y-4">
-                   <div className="h-24 bg-gray-200 rounded-2xl animate-pulse"></div>
-                   <div className="h-32 bg-gray-200 rounded-2xl animate-pulse"></div>
-                   <div className="h-48 bg-gray-200 rounded-2xl animate-pulse"></div>
+                 <div className="loader-skeletons">
+                   <div className="skeleton s-small"></div>
+                   <div className="skeleton s-med"></div>
+                   <div className="skeleton s-large"></div>
                  </div>
                ) : reportData.checked ? (
-                 <div className="space-y-6 animate-fade-in cursor-default">
+                 <div className="interactions-container animate-fade-in">
                     
                     {/* Drug vs Drug */}
-                    <div className="glass-card p-6 border-t-8 border-purple-500">
-                      <h3 className="text-2xl font-bold flex items-center gap-3 mb-6"><Pill className="text-purple-600" /> API Drug Interactions</h3>
+                    <div className="interaction-report glass-card border-top-purple">
+                      <div className="report-header">
+                        <Pill className="header-icon purple" />
+                        <h3>API Drug Interactions</h3>
+                      </div>
                       
                       {reportData.interactions.length === 0 ? (
-                        <div className="p-6 bg-green-50 rounded-xl flex items-center gap-4 border border-green-200">
-                          <CheckCircle2 size={32} className="text-green-600 shrink-0" />
-                          <p className="text-green-800 font-medium">No standardized adverse drug-drug interactions detected between your inputs and baseline epilepsy medications in the RxNav database.</p>
+                        <div className="clear-status">
+                          <CheckCircle2 size={32} className="status-icon green" />
+                          <p>No standardized adverse drug-drug interactions detected between your inputs and baseline epilepsy medications in the RxNav database.</p>
                         </div>
                       ) : (
-                        <div className="space-y-4">
+                        <div className="report-list">
                           {reportData.interactions.map((inter, idx) => (
-                            <div key={idx} className={`p-5 rounded-xl border-l-4 ${getSeverityClass(inter.severity)}`}>
-                              <div className="flex items-start gap-4">
-                                <div className="shrink-0 mt-1">{getSeverityIcon(inter.severity)}</div>
-                                <div>
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <span className={`text-xs font-bold uppercase tracking-wider ${inter.severity === 'High' ? 'text-red-700' : inter.severity === 'Moderate' ? 'text-orange-700' : 'text-green-700'}`}>
-                                      {inter.severity} Risk
-                                    </span>
-                                  </div>
-                                  <h4 className="font-bold text-lg text-gray-900 mb-2">{inter.drugA} + {inter.drugB}</h4>
-                                  <p className="text-gray-700 mb-2 text-sm leading-relaxed"><strong>Description:</strong> {inter.description}</p>
-                                  <p className="text-gray-600 text-sm leading-relaxed bg-white/50 p-2 rounded"><strong>Note:</strong> {inter.recommendation}</p>
+                            <div key={idx} className={`interaction-card ${getSeverityClass(inter.severity)}`}>
+                              <div className="card-icon-wrap">
+                                {getSeverityIcon(inter.severity)}
+                              </div>
+                              <div className="card-content">
+                                <span className={`severity-badge ${getSeverityClass(inter.severity)}`}>{inter.severity} Risk</span>
+                                <h4>{inter.drugA} + {inter.drugB}</h4>
+                                <div className="card-details">
+                                  <p><strong>Description:</strong> {inter.description}</p>
+                                  <p className="physician-note"><strong>Note:</strong> {inter.recommendation}</p>
                                 </div>
                               </div>
                             </div>
@@ -301,41 +289,44 @@ const InteractionChecker = ({ onOpenAuth }) => {
                     </div>
 
                     {/* Food & Lifestyle */}
-                    <div className="glass-card p-6 border-t-8 border-amber-500">
-                      <h3 className="text-2xl font-bold flex items-center gap-3 mb-6"><Coffee className="text-amber-600" /> Food & Lifestyle Alerts</h3>
+                    <div className="interaction-report glass-card border-top-amber mt-6">
+                      <div className="report-header">
+                        <Coffee className="header-icon amber" />
+                        <h3>Food & Lifestyle Alerts</h3>
+                      </div>
                       
                       {reportData.foodWarnings.length === 0 ? (
-                        <div className="p-6 bg-gray-50 rounded-xl flex items-center gap-4 border border-gray-200">
-                          <Info size={32} className="text-gray-400 shrink-0" />
-                          <p className="text-gray-600 font-medium">No major food or lifestyle restrictions identified in OpenFDA or local clinical protocols for these specific medications.</p>
+                        <div className="clear-status">
+                          <Info size={32} className="status-icon muted" />
+                          <p>No major food or lifestyle restrictions identified in OpenFDA or local clinical protocols for these medications.</p>
                         </div>
                       ) : (
-                        <div className="space-y-4">
+                        <div className="report-list">
                           {reportData.foodWarnings.map((warning, idx) => (
-                            <div key={idx} className="p-5 bg-amber-50 rounded-xl border border-amber-200">
-                              <h4 className="font-bold text-amber-900 text-lg mb-3 border-b border-amber-200 pb-2">{warning.drug}</h4>
+                            <div key={idx} className="interaction-card food-card">
+                              <h4>{warning.drug}</h4>
                               
                               {warning.avoidFoods && warning.avoidFoods.length > 0 && (
-                                <div className="mb-3">
-                                  <strong className="text-sm font-bold text-amber-800 block mb-1 uppercase tracking-wide">Must Avoid:</strong>
-                                  <ul className="list-disc ml-5 text-gray-800 text-sm">
+                                <div className="food-detail">
+                                  <strong>Must Avoid:</strong>
+                                  <ul>
                                     {warning.avoidFoods.map((f, i) => <li key={i}>{f}</li>)}
                                   </ul>
                                 </div>
                               )}
                               {warning.timing && (
-                                <div className="mb-3">
-                                  <strong className="text-sm font-bold text-amber-800 block mb-1 uppercase tracking-wide">Administration Timing:</strong>
-                                  <p className="text-gray-800 text-sm">{warning.timing}</p>
+                                <div className="food-detail">
+                                  <strong>Administration Timing:</strong>
+                                  <p>{warning.timing}</p>
                                 </div>
                               )}
                               {warning.instructions && (
-                                <div>
-                                  <strong className="text-sm font-bold text-amber-800 block mb-1 uppercase tracking-wide">Clinical Instruction:</strong>
-                                  <p className="text-gray-800 text-sm leading-relaxed">{warning.instructions}</p>
+                                <div className="food-detail">
+                                  <strong>Clinical Instruction:</strong>
+                                  <p>{warning.instructions}</p>
                                 </div>
                               )}
-                              <p className="text-xs text-amber-600/70 mt-3 pt-2 border-t border-amber-200/50 italic">Source: {warning.source}</p>
+                              <div className="source-note">Source: {warning.source}</div>
                             </div>
                           ))}
                         </div>
@@ -343,46 +334,44 @@ const InteractionChecker = ({ onOpenAuth }) => {
                     </div>
                     
                     {/* Disclaimer */}
-                    <div className="bg-blue-50/50 border border-blue-100 p-4 rounded-xl text-blue-800 text-sm">
-                      <strong>Medical Disclaimer:</strong> This application relies on NIH RxNav and OpenFDA APIs strictly for educational purposes. 
-                      Drug interactions are complex and dependent on your specific health history. Do not alter your medication regiment without consulting your doctor or pharmacist.
+                    <div className="disclaimer-box mt-6">
+                      <strong>Medical Disclaimer:</strong> This application relies on NIH RxNav and OpenFDA APIs strictly for educational purposes. Drug interactions are complex and dependent on your specific health history. Do not alter your medication regiment without consulting your doctor or pharmacist.
                     </div>
 
                  </div>
                ) : (
-                 <div className="h-full min-h-[400px] flex flex-col items-center justify-center p-8 text-center bg-white/40 rounded-2xl border-2 border-dashed border-gray-300">
-                   <Shield size={64} className="text-gray-300 mb-4" />
-                   <h3 className="text-xl font-bold text-gray-400 mb-2">Awaiting Analysis</h3>
-                   <p className="text-gray-500 max-w-sm">Enter your prescriptions and click generate to retrieve safety protocols across multiple health databases.</p>
+                 <div className="empty-state-board">
+                   <Shield size={64} className="empty-icon" />
+                   <h3>Awaiting Analysis</h3>
+                   <p>Enter your prescriptions and click generate to retrieve safety protocols across multiple health databases.</p>
                  </div>
                )}
              </div>
-
           </div>
         ) : (
           /* Saved Tab */
-          <div className="glass-card p-8">
+          <div className="glass-card padding-large">
             {!currentUser ? (
-              <div className="text-center py-12">
-                <Shield size={48} className="text-purple-600 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold mb-2">Access Your Archive</h3>
-                <p className="text-gray-600 mb-6">Log in to save drugs across sessions.</p>
-                <button className="btn btn-premium" onClick={onOpenAuth}>Log In Securely</button>
+              <div className="auth-prompt">
+                <Shield size={48} className="auth-icon" />
+                <h3>Access Your Archive</h3>
+                <p>Log in to save drugs across sessions.</p>
+                <button className="btn btn-premium mt-4" onClick={onOpenAuth}>Log In Securely</button>
               </div>
             ) : (
-              <div>
-                <h3 className="text-2xl font-bold mb-6">Saved Prescriptions</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="archive-view">
+                <h3>Saved Prescriptions</h3>
+                <div className="archive-grid mt-6">
                   {savedMeds.length > 0 ? savedMeds.map((m, i) => (
-                    <div key={i} className="p-4 border-2 border-gray-100 rounded-xl bg-white flex items-center justify-between shadow-sm">
-                      <div>
-                        <strong className="block text-lg">{m.name}</strong>
-                        <span className="text-xs text-gray-400">Archived: {new Date(m.addedAt).toLocaleDateString()}</span>
+                    <div key={i} className="archive-card">
+                      <div className="archive-info">
+                        <strong>{m.name}</strong>
+                        <span>Archived: {new Date(m.addedAt).toLocaleDateString()}</span>
                       </div>
-                      <Pill size={20} className="text-purple-600" />
+                      <Pill size={20} className="archive-card-icon" />
                     </div>
                   )) : (
-                    <p className="col-span-full text-gray-500 italic p-8 text-center bg-gray-50 rounded-xl border border-dashed border-gray-200">No medications saved to your profile yet.</p>
+                    <div className="archive-empty">No medications saved to your profile yet.</div>
                   )}
                 </div>
               </div>
@@ -392,23 +381,134 @@ const InteractionChecker = ({ onOpenAuth }) => {
       </div>
 
       <style>{`
-        .checker-header-wrapper { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 6rem 1rem 2.5rem; border-radius: 0 0 32px 32px; margin-top: -80px; }
-        .tab-btn { padding: 10px 24px; border-radius: 30px; font-weight: 700; color: white; background: rgba(255,255,255,0.1); border: 2px solid transparent; transition: all 0.3s; }
+        .tab-controls { display: flex; justify-content: center; gap: 1rem; }
+        .tab-btn { padding: 12px 28px; border-radius: 30px; font-weight: 700; color: white; background: rgba(255,255,255,0.1); border: 2px solid transparent; transition: all 0.3s; cursor: pointer; }
         .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .tab-btn:hover:not(.active) { border-color: rgba(255,255,255,0.5); }
+
+        .checker-body { max-width: 1200px; margin: 2rem auto; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+
+        .quick-check-layout {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        @media (min-width: 900px) {
+          .quick-check-layout { grid-template-columns: 5fr 7fr; }
+        }
+
+        .checker-input-area { padding: 2rem; }
+        .checker-input-area h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .subtitle { color: var(--text-secondary); font-size: 1.05rem; }
+
+        .multi-drug-slots { display: flex; flex-direction: column; gap: 0.75rem; }
+        .drug-slot {
+          display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem;
+          border-radius: 12px; border: 2px solid; transition: all 0.3s;
+        }
+        .drug-slot.filled { border-color: rgba(126, 34, 206, 0.2); background: white; }
+        .drug-slot.empty { border-color: var(--border); border-style: dashed; background: rgba(0,0,0,0.02); }
+        .slot-icon { color: var(--primary); }
+        .slot-name { flex: 1; font-weight: 700; color: var(--text-main); }
+        .slot-remove { color: var(--text-muted); background: none; border: none; cursor: pointer; transition: color 0.2s; }
+        .slot-remove:hover { color: #ef4444; }
+        .slot-empty-text { color: var(--text-muted); padding-left: 0.5rem; font-size: 0.95rem; }
+
+        .drug-search-form { position: relative; }
+        .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .drug-input {
+          width: 100%; height: 56px; padding: 0 4rem 0 3rem; border-radius: 12px;
+          border: 2px solid var(--border); font-size: 1rem; font-weight: 600; outline: none; transition: border-color 0.2s;
+        }
+        .drug-input:focus { border-color: var(--primary); }
+        .btn-add {
+          position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);
+          width: 40px; height: 40px; background: var(--primary); color: white; border: none; border-radius: 8px;
+          display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-add:hover:not(:disabled) { background: #6b21a8; }
+        .btn-add:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .error-alert { padding: 1rem; border-radius: 8px; background: #fef2f2; color: #dc2626; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.9rem; border: 1px solid #fecaca; }
         
-        .bg-red-50 { background-color: #fef2f2; }
-        .bg-orange-50 { background-color: #fff7ed; }
-        .bg-green-50 { background-color: #f0fdf4; }
-        .border-red-500 { border-color: #ef4444; }
-        .border-orange-500 { border-color: #f97316; }
-        .border-green-500 { border-color: #22c55e; }
-        .text-red-600 { color: #dc2626; }
-        .text-orange-600 { color: #ea580c; }
-        .text-green-600 { color: #16a34a; }
-        .text-red-700 { color: #b91c1c; }
-        .text-orange-700 { color: #c2410c; }
-        .text-green-700 { color: #15803d; }
+        .btn-generate-report {
+          width: 100%; height: 56px; background: linear-gradient(to right, var(--primary), var(--secondary));
+          color: white; font-weight: 800; font-size: 1.1rem; border: none; border-radius: 12px; cursor: pointer;
+          display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-generate-report:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(126, 34, 206, 0.2); }
+        .btn-generate-report:disabled { opacity: 0.7; cursor: not-allowed; }
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Results Area */
+        .checker-results { width: 100%; }
+        
+        .loader-skeletons { display: flex; flex-direction: column; gap: 1rem; }
+        .skeleton { background: #e5e7eb; border-radius: 16px; animation: pulse 1.5s infinite; }
+        .s-small { height: 100px; } .s-med { height: 150px; } .s-large { height: 250px; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .empty-state-board {
+          height: 100%; min-height: 400px; border: 2px dashed var(--border); border-radius: 20px;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; background: rgba(255,255,255,0.4);
+        }
+        .empty-icon { color: var(--text-muted); margin-bottom: 1rem; opacity: 0.5; }
+        .empty-state-board h3 { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .empty-state-board p { color: var(--text-secondary); max-width: 300px; margin: 0 auto; line-height: 1.5; }
+
+        .interaction-report { padding: 2rem; }
+        .border-top-purple { border-top: 6px solid var(--primary); }
+        .border-top-amber { border-top: 6px solid #f59e0b; }
+        .report-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .report-header h3 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .header-icon.purple { color: var(--primary); } .header-icon.amber { color: #f59e0b; }
+
+        .clear-status { padding: 1.5rem; border-radius: 12px; border: 1px solid; display: flex; align-items: center; gap: 1rem; background: rgba(240, 253, 244, 0.4); border-color: #bbf7d0; }
+        .status-icon.green { color: #16a34a; } .status-icon.muted { color: var(--text-muted); }
+        .clear-status p { margin: 0; color: #166534; font-weight: 500; line-height: 1.5; }
+
+        .report-list { display: flex; flex-direction: column; gap: 1rem; }
+        .interaction-card { padding: 1.5rem; border-radius: 12px; border-left: 5px solid; display: flex; gap: 1rem; }
+        .interaction-card.sev-high { background: #fef2f2; border-color: #ef4444; }
+        .interaction-card.sev-mod { background: #fff7ed; border-color: #f97316; }
+        .interaction-card.sev-low { background: #f0fdf4; border-color: #22c55e; }
+        
+        .icon-high { color: #dc2626; } .icon-mod { color: #ea580c; } .icon-low { color: #16a34a; }
+        
+        .card-content h4 { font-size: 1.25rem; font-weight: 800; margin: 0.5rem 0; color: var(--text-main); }
+        .severity-badge { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+        .severity-badge.sev-high { color: #b91c1c; } .severity-badge.sev-mod { color: #c2410c; } .severity-badge.sev-low { color: #15803d; }
+        
+        .card-details p { margin: 0 0 0.5rem 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem; }
+        .physician-note { background: rgba(255,255,255,0.6); padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem !important; }
+
+        .food-card { flex-direction: column; background: #fffbeb !important; border-color: #fcd34d !important; gap: 0.5rem; }
+        .food-card h4 { font-size: 1.25rem; font-weight: 800; color: #92400e; margin: 0 0 0.5rem 0; border-bottom: 1px solid #fde68a; padding-bottom: 0.5rem; }
+        .food-detail { margin-bottom: 0.75rem; }
+        .food-detail strong { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #b45309; margin-bottom: 0.25rem; }
+        .food-detail ul { margin: 0; padding-left: 1.25rem; color: var(--text-main); font-size: 0.95rem; }
+        .food-detail p { margin: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.5; }
+        .source-note { font-size: 0.8rem; color: #d97706; border-top: 1px solid #fde68a; padding-top: 0.5rem; margin-top: 0.5rem; font-style: italic; }
+
+        .disclaimer-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 1.25rem; border-radius: 12px; color: #1e40af; font-size: 0.9rem; line-height: 1.6; }
+
+        .padding-large { padding: 3rem; }
+        .auth-prompt { text-align: center; max-width: 400px; margin: 0 auto; }
+        .auth-icon { color: var(--primary); margin-bottom: 1rem; }
+        .auth-prompt h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .auth-prompt p { color: var(--text-secondary); margin-bottom: 1.5rem; }
+        
+        .archive-view h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; }
+        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+        .archive-card { padding: 1.5rem; border: 1px solid var(--border); border-radius: 12px; background: white; display: flex; align-items: center; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; }
+        .archive-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: rgba(126, 34, 206, 0.3); }
+        .archive-info strong { display: block; font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.25rem; }
+        .archive-info span { font-size: 0.85rem; color: var(--text-muted); }
+        .archive-card-icon { color: var(--primary); opacity: 0.5; }
+        .archive-empty { grid-column: 1 / -1; padding: 3rem; text-align: center; color: var(--text-muted); background: rgba(0,0,0,0.02); border-radius: 12px; border: 1px dashed var(--border); font-style: italic; }
       `}</style>
     </div>
   );

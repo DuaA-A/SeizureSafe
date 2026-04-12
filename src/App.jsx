@@ -327,7 +327,6 @@ const Home = ({ onOpenAuth }) => {
         }
       `}</style>
       </div>
-    </>
   );
 };
 
