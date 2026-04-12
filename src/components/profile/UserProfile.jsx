@@ -19,7 +19,6 @@ import { getRxCUI } from '../../services/rxnav';
 
 const UserProfile = () => {
   const { currentUser, logout } = useAuth();
-  const [assessmentHistory, setAssessmentHistory] = useState([]);
   const [medications, setMedications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [medInput, setMedInput] = useState('');
@@ -36,19 +35,9 @@ const UserProfile = () => {
     setLoading(true);
     try {
       if (isPreviewMode) {
-        // Read from localStorage in preview mode
-        const history = JSON.parse(localStorage.getItem('preview_history') || '[]');
-        setAssessmentHistory(history);
-        
         const meds = JSON.parse(localStorage.getItem('preview_meds') || '[]');
         setMedications(meds);
       } else {
-        const historyRef = doc(db, 'user_history', currentUser.uid);
-        const historySnap = await getDoc(historyRef);
-        if (historySnap.exists()) {
-          setAssessmentHistory(historySnap.data().assessments || []);
-        }
-
         const medRef = doc(db, 'user_medications', currentUser.uid);
         const medSnap = await getDoc(medRef);
         if (medSnap.exists()) {
@@ -132,12 +121,8 @@ const UserProfile = () => {
             {isPreviewMode && <span className="badge badge-warning">Preview Mode</span>}
             <div className="profile-stats">
               <div className="stat">
-                <strong>{assessmentHistory.length}</strong>
-                <span>Results</span>
-              </div>
-              <div className="stat">
                 <strong>{medications.length}</strong>
-                <span>Drugs</span>
+                <span>Drugs Archive</span>
               </div>
             </div>
             <button onClick={logout} className="btn btn-ghost full-width logout-btn">
@@ -148,32 +133,7 @@ const UserProfile = () => {
 
         {/* Main */}
         <main className="dashboard-main">
-          <section className="dashboard-section">
-            <div className="section-header">
-              <h3><History size={20} /> Seizure Check History</h3>
-              <button className="btn-text" onClick={() => navigate('/questionnaire')}>New Check</button>
-            </div>
-            
-            <div className="history-list">
-              {assessmentHistory.length > 0 ? assessmentHistory.map((item, i) => (
-                <div key={i} className="history-card glass-card">
-                  <div className="history-info">
-                    <h4>{item.resultName}</h4>
-                    <div className="meta">
-                      <Calendar size={14} /> 
-                      {new Date(item.timestamp).toLocaleDateString()} at {new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                    </div>
-                  </div>
-                  <ChevronRight size={20} className="icon-muted" />
-                </div>
-              )) : (
-                <div className="empty-state glass-card">
-                  <p>No assessment history yet.</p>
-                  <button className="btn btn-primary btn-sm mt-4" onClick={() => navigate('/questionnaire')}>Start First Check</button>
-                </div>
-              )}
-            </div>
-          </section>
+
 
           <section className="dashboard-section">
             <div className="section-header">
@@ -225,10 +185,7 @@ const UserProfile = () => {
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .section-header h3 { display: flex; align-items: center; gap: 10px; font-size: 1.15rem; }
         
-        .history-list { display: flex; flex-direction: column; gap: 1rem; }
-        .history-card { padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .history-info h4 { font-size: 1.1rem; margin-bottom: 4px; }
-        .meta { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-muted); }
+
         
         .med-manager-card { padding: 2rem; }
         .med-input-compact { display: flex; gap: 8px; margin-bottom: 1.5rem; }

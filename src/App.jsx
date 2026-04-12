@@ -3,120 +3,20 @@ import { Routes, Route, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from './components/common/Navbar';
 import AuthWindow from './components/auth/AuthWindow';
-import SeizureCheck from './components/questionnaire/SeizureCheck';
 import InteractionChecker from './components/checker/InteractionChecker';
 import UserProfile from './components/profile/UserProfile';
 import About from './components/about/About';
+import FirstAid from './components/education/FirstAid';
+import AboutEpilepsy from './components/education/AboutEpilepsy';
+import MythsFacts from './components/education/MythsFacts';
+import SpecialWarnings from './components/education/SpecialWarnings';
 import { Shield, Activity, Pill, User, ChevronRight, Heart, ClipboardList, ArrowRight, ShieldCheck, FileText, X, Info } from 'lucide-react';
 
-const TypeDetailModal = ({ type, onClose }) => {
-  if (!type) return null;
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 50 }}
-        className="modal-content glass-card"
-        onClick={e => e.stopPropagation()}
-      >
-        <button className="close-btn" onClick={onClose}><X size={24} /></button>
-        <div className="modal-body-layout">
-          <div className="modal-image">
-            <img src={type.image} alt={type.name} />
-          </div>
-          <div className="modal-info">
-            <div className="modal-badge mb-3">Clinical Classification Detail</div>
-            <h2>{type.name}</h2>
-            <div className="modal-desc-wrapper">
-              <p className="modal-desc">{type.description}</p>
-            </div>
-            <div className="modal-details-grid mt-6">
-              <div className="symptoms-box">
-                <h4><Activity size={18} className="icon-purple" /> Primary Indicators:</h4>
-                <ul>
-                  {type.symptoms.map((s, i) => <li key={i}>{s}</li>)}
-                </ul>
-              </div>
-              <div className="medical-note-box">
-                <div className="note-header">
-                  <Info size={18} className="icon-purple" />
-                  <strong>Pharmacist Note</strong>
-                </div>
-                <p>{type.note}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-};
 
-const EPILEPSY_DETAILS = [
-  {
-    id: 'gtc',
-    name: 'Generalized Tonic-Clonic',
-    title: 'Tonic-Clonic',
-    image: '/tonic-clonic.jpg',
-    description: 'A major generalized seizure characterized by sudden loss of consciousness, body stiffening (tonic phase), followed by rhythmic jerking (clonic phase).',
-    symptoms: ['Loss of consciousness', 'Full body rhythmic jerking', 'Vocalizations or tongue biting', 'Confusion after episode'],
-    note: 'Ensure the environment is clear of sharp objects. Do not place anything in the mouth.'
-  },
-  {
-    id: 'focal-aware',
-    name: 'Focal Aware Seizure',
-    title: 'Focal Aware',
-    image: '/focal Aware.jpg',
-    description: 'Starts in one area of the brain. The person remains fully aware and can usually describe the event in detail after it finishes.',
-    symptoms: ['Localized twitching (hand/face)', 'Strange smells or tastes', 'Intense feelings of fear/joy', 'Numbness or tingling'],
-    note: 'Observe carefully to see if it progresses. Documentation of precise feelings is vital for diagnosis.'
-  },
-  {
-    id: 'absence',
-    name: 'Absence Seizure',
-    title: 'Absence',
-    image: '/absence.jpg',
-    description: 'A brief lapse in consciousness that looks like staring into space. Commonly seen in children and lasts only a few seconds.',
-    symptoms: ['Sudden blank stare', 'Eyes rolling upward', 'Rapid blinking', 'Immediate return to normal awareness'],
-    note: 'Easily missed in school settings. Frequent "daydreaming" should be medically investigated.'
-  },
-  {
-    id: 'focal-impaired',
-    name: 'Focal Impaired Awareness',
-    title: 'Focal Impaired',
-    image: '/focal impaired.jpg',
-    description: 'A focal seizure where awareness is altered or lost. The person may appear conscious but is not fully responsive.',
-    symptoms: ['Automatisms (lip smacking, chewing)', 'Repetitive movements', 'Aimless walking', 'No memory of the event'],
-    note: 'Guide the individual away from danger gently; do not restrain them forcefully.'
-  },
-  {
-    id: 'atonic',
-    name: 'Atonic Seizure (Drop Attacks)',
-    title: 'Atonic',
-    image: '/atonic.jpg',
-    description: 'Sudden loss of muscle tone causing the person to collapse or fall forward. Also known as "drop attacks".',
-    symptoms: ['Sudden limpness', 'Head dropping forward', 'Immediate collapse', 'Brief duration'],
-    note: 'Risk of head injury is high. Protective headgear is often recommended for frequent events.'
-  },
-  {
-    id: 'myoclonic',
-    name: 'Myoclonic Seizure',
-    title: 'Myoclonic',
-    image: '/myoclonic.jpg',
-    description: 'Brief, shock-like jerks of a muscle or group of muscles. Usually occurring on both sides of the body.',
-    symptoms: ['Sudden muscle contractions', 'Shock-like jerks', 'Commonly occurs in the morning', 'Brief (1-2 seconds)'],
-    note: 'Often occurs shortly after waking. Can interfere with holding objects or eating.'
-  }
-];
 
 const Home = ({ onOpenAuth }) => {
-  const [selectedType, setSelectedType] = useState(null);
-
   return (
-    <>
-      <TypeDetailModal type={selectedType} onClose={() => setSelectedType(null)} />
-      <div className="home-container animate-fade-in">
+    <div className="home-container animate-fade-in">
 
       {/* Hero Section */}
       <section className="full-screen-section modern-hero">
@@ -135,8 +35,8 @@ const Home = ({ onOpenAuth }) => {
               </p>
 
               <div className="hero-cta-group">
-                <Link to="/questionnaire" className="btn-white-dark">
-                  Epilepsy Questionnaire <ChevronRight size={20} />
+                <Link to="/first-aid" className="btn-white-dark">
+                  Emergency First Aid <ChevronRight size={20} />
                 </Link>
                 <Link to="/checker" className="btn btn-outline-white">
                   Drug Interaction Checker
@@ -177,74 +77,13 @@ const Home = ({ onOpenAuth }) => {
       </section>
 
 
-      {/* 2. Understanding Epilepsy - Intro */}
-      <section className="full-screen-section bg-unified">
+      {/* 2. Understanding Epilepsy - Intro Link */}
+      <section className="section-spacing bg-unified text-center">
         <div className="container">
-          <div className="intro-epilepsy-layout">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="intro-text"
-            >
-              <div className="active-badge mb-2">Knowledge is Power</div>
-              <h2>What Is Epilepsy?</h2>
-              <p>
-                Epilepsy is a chronic noncommunicable disease of the brain that affects people of all ages.
-                It is characterized by recurrent seizures, which are brief episodes of involuntary movement
-                that may involve a part of the body (partial) or the entire body (generalized).
-              </p>
-              <p>
-                As a caregiver, identifying the exact pattern of these episodes is the most critical information
-                you can provide to a neurologist to ensure effective pharmacological treatment.
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              className="intro-image glass-card"
-            >
-              <img src="/epilepsy.jpg" alt="What is Epilepsy" />
-            </motion.div>
-            <div className="stats-grid mt-8">
-              <div className="stat-item">
-                <h3>50M+</h3>
-                <span>People Affected Worldwide</span>
-              </div>
-              <div className="stat-item">
-                <h3>70%</h3>
-                <span>Can Live Seizure-Free with Meds</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Types of Epilepsy Grid */}
-      <section className="full-screen-section bg-unified">
-        <div className="container">
-          <div className="section-header">
-            <h2>Clinical Classifications</h2>
-            <p>Select a type to view detailed clinical observation patterns and safety notes.</p>
-          </div>
-          <div className="types-full-grid mt-12">
-            {EPILEPSY_DETAILS.map((type) => (
-              <motion.div
-                key={type.id}
-                whileHover={{ scale: 1.05, y: -10 }}
-                className="type-card-premium glass-card"
-                onClick={() => setSelectedType(type)}
-              >
-                <div className="type-card-img">
-                  <img src={type.image} alt={type.name} />
-                  <div className="type-card-overlay">
-                    <span className="view-details">Click for Details</span>
-                  </div>
-                </div>
-                <div className="type-card-info">
-                  <h3>{type.title}</h3>
-                </div>
-              </motion.div>
-            ))}
+          <div className="section-header centered-header">
+            <h2>Understanding Epilepsy</h2>
+            <p>Epilepsy is a chronic noncommunicable disease of the brain that affects people of all ages. Knowing the specific type of seizure is critical for providing the right pharmacological treatment.</p>
+            <Link to="/about-epilepsy" className="btn btn-premium mt-8">Learn More About Epilepsy Types</Link>
           </div>
         </div>
       </section>
@@ -259,9 +98,9 @@ const Home = ({ onOpenAuth }) => {
           <div className="services-grid mt-12">
             <motion.div whileHover={{ y: -6 }} className="service-card glass-card">
               <div className="service-icon"><Activity size={40} /></div>
-              <h3>Seizure Check</h3>
-              <p>Diagnostic auxiliary guide utilizing clinical observation patterns to safely document their exact episodes.</p>
-              <Link to="/questionnaire" className="btn btn-premium mt-4">Start Check</Link>
+              <h3>Epilepsy Education</h3>
+              <p>Comprehensive guide on what to do during a seizure, common myths, and facts to empower caregivers.</p>
+              <Link to="/first-aid" className="btn btn-premium mt-4">Learn More</Link>
             </motion.div>
             <motion.div whileHover={{ y: -6 }} className="service-card glass-card">
               <div className="service-icon"><Pill size={40} /></div>
@@ -504,7 +343,10 @@ const App = () => {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home onOpenAuth={() => setShowAuth(true)} />} />
-          <Route path="/questionnaire" element={<SeizureCheck onOpenAuth={() => setShowAuth(true)} />} />
+          <Route path="/first-aid" element={<FirstAid />} />
+          <Route path="/about-epilepsy" element={<AboutEpilepsy />} />
+          <Route path="/myths-facts" element={<MythsFacts />} />
+          <Route path="/special-warnings" element={<SpecialWarnings />} />
           <Route path="/checker" element={<InteractionChecker onOpenAuth={() => setShowAuth(true)} />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/about" element={<About />} />

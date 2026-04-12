@@ -9,7 +9,8 @@ import {
   Pill,
   Menu,
   X,
-  CreditCard
+  CreditCard,
+  BookOpen
 } from 'lucide-react';
 
 const Navbar = ({ onOpenAuth }) => {
@@ -41,9 +42,17 @@ const Navbar = ({ onOpenAuth }) => {
 
         {/* Desktop Nav */}
         <div className="nav-links">
-          <Link to="/questionnaire" className={`nav-link ${isActive('/questionnaire') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
-            <Activity size={18} /> Questionnaire
-          </Link>
+          <div className="nav-dropdown-group">
+            <span className={`nav-link ${!scrolled && isHome ? 'white-link' : ''}`}>
+              <BookOpen size={18} /> Education
+            </span>
+            <div className="nav-dropdown-content animate-fade-in glass-card">
+              <Link to="/about-epilepsy" className="dropdown-item">About Epilepsy</Link>
+              <Link to="/first-aid" className="dropdown-item">Emergency First Aid</Link>
+              <Link to="/myths-facts" className="dropdown-item">Myths & Facts</Link>
+              <Link to="/special-warnings" className="dropdown-item">Special Warnings</Link>
+            </div>
+          </div>
           <Link to="/checker" className={`nav-link ${isActive('/checker') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
             <Pill size={18} /> Interaction Checker
           </Link>
@@ -78,7 +87,13 @@ const Navbar = ({ onOpenAuth }) => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="mobile-menu animate-fade-in">
-          <Link to="/questionnaire" onClick={() => setIsOpen(false)}>Questionnaire</Link>
+          <div className="mobile-education-links">
+            <strong>Education</strong>
+            <Link to="/about-epilepsy" onClick={() => setIsOpen(false)}>About Epilepsy</Link>
+            <Link to="/first-aid" onClick={() => setIsOpen(false)}>Emergency First Aid</Link>
+            <Link to="/myths-facts" onClick={() => setIsOpen(false)}>Myths & Facts</Link>
+            <Link to="/special-warnings" onClick={() => setIsOpen(false)}>Special Warnings</Link>
+          </div>
           <Link to="/checker" onClick={() => setIsOpen(false)}>Interaction Checker</Link>
           {currentUser ? (
             <>
@@ -164,6 +179,20 @@ const Navbar = ({ onOpenAuth }) => {
           transition: color 0.2s;
         }
         .btn-icon:hover { color: var(--error); }
+        
+        .nav-dropdown-group { position: relative; display: flex; align-items: center; }
+        .nav-dropdown-group:hover .nav-dropdown-content { display: flex; opacity: 1; pointer-events: auto; }
+        .nav-dropdown-content { 
+          display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
+          background: white; padding: 0.5rem; border-radius: 12px; min-width: 200px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid var(--border);
+          opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 1000;
+        }
+        .dropdown-item { padding: 10px 16px; color: var(--text-main); text-decoration: none; font-weight: 600; border-radius: 8px; transition: background 0.2s; }
+        .dropdown-item:hover { background: rgba(126, 34, 206, 0.05); color: var(--primary); }
+        
+        .mobile-education-links { display: flex; flex-direction: column; gap: 1rem; border-left: 2px solid var(--border); padding-left: 1rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .mobile-education-links strong { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
         
         .mobile-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--text-main); }
         
