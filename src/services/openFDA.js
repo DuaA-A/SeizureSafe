@@ -25,7 +25,10 @@ const extractFoodInstructions = (textBlocks) => {
 
 export const getOpenFdaData = async (drugName) => {
   try {
-    const query = encodeURIComponent(`openfda.brand_name:"${drugName}"+openfda.generic_name:"${drugName}"+openfda.substance_name:"${drugName}"`);
+    const normalizedDrug = drugName.trim();
+    const query = encodeURIComponent(
+      `(openfda.brand_name:"${normalizedDrug}" OR openfda.generic_name:"${normalizedDrug}" OR openfda.substance_name:"${normalizedDrug}")`
+    );
     const response = await fetch(`${FDA_BASE_URL}?search=${query}&limit=1`);
     
     if (!response.ok) {
@@ -38,7 +41,12 @@ export const getOpenFdaData = async (drugName) => {
     const label = data.results[0];
 
     // Extract relevant data points
-    const foodWarningsText = label.food_interactions || label.warnings || label.precautions;
+    const foodWarningsText = [
+      ...(label.food_interactions || []),
+      ...(label.warnings || []),
+      ...(label.precautions || []),
+      ...(label.dosage_and_administration || [])
+    ];
     const detectedFoodRules = extractFoodInstructions(foodWarningsText);
     
     return {

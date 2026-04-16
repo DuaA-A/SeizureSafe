@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { getRxCUI, BASELINE_EPILEPSY_DRUGS } from '../../services/rxnav';
+import { getRxCUI, getInteractions, BASELINE_EPILEPSY_DRUGS } from '../../services/rxnav';
 import { getOpenFdaData } from '../../services/openFDA';
 import { FOOD_INTERACTIONS } from '../../utils/foodInteractions';
 import { checkLocalInteractions } from '../../services/localInteractionsDb';
@@ -103,10 +103,14 @@ const InteractionChecker = ({ onOpenAuth }) => {
         }
       }
 
-      const interactionsRes = checkLocalInteractions(allDrugNames);
+      const localInteractions = checkLocalInteractions(allDrugNames);
+      const allRxcuis = medsToCheck
+        .map((m) => m.rxcui)
+        .filter(Boolean);
+      const apiInteractions = allRxcuis.length >= 2 ? await getInteractions(allRxcuis) : [];
       
       const userMedNamesLower = medsToCheck.map(m => m.name.toLowerCase());
-      const relevantInteractions = interactionsRes.filter(inter => {
+      const localRelevantInteractions = localInteractions.filter(inter => {
         if (!hasEpilepsyDrug) {
            const drgALower = inter.drugA.toLowerCase();
            const drgBLower = inter.drugB.toLowerCase();
@@ -114,6 +118,15 @@ const InteractionChecker = ({ onOpenAuth }) => {
         }
         return true;
       });
+
+      const mergedInteractions = Array.from(
+        new Map(
+          [...apiInteractions, ...localRelevantInteractions].map((inter) => {
+            const key = [inter.drugA, inter.drugB].map((v) => v.toLowerCase().trim()).sort().join('::');
+            return [key, inter];
+          })
+        ).values()
+      );
 
       let foodWarnings = [];
       for (const med of medsToCheck) {
@@ -138,7 +151,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
       }
 
       setReportData({
-        interactions: relevantInteractions,
+        interactions: mergedInteractions,
         foodWarnings: foodWarnings,
         checked: true
       });

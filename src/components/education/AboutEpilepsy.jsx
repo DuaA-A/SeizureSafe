@@ -190,11 +190,11 @@ const AboutEpilepsy = () => {
       </div>
 
       {/* ── Types of Epilepsy Grid ───────────────────────────────── */}
-      <section className="section-spacing bg-unified" style={{ marginTop: '4rem', padding: '4rem 0', borderRadius: '24px' }}>
-        <div className="container" style={{ padding: '0 2rem' }}>
-          <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '1rem' }}>Clinical Classifications</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Select a type to view detailed clinical observation patterns and safety notes.</p>
+      <section className="section-spacing bg-unified epilepsy-types-section">
+        <div className="container epilepsy-types-container">
+          <div className="section-header epilepsy-section-header">
+            <h2>Clinical Classifications</h2>
+            <p>Select a type to view detailed clinical observation patterns and safety notes.</p>
           </div>
           <div className="types-full-grid">
             {EPILEPSY_DETAILS.map((type) => (
@@ -224,6 +224,32 @@ const AboutEpilepsy = () => {
           margin-top: -30px; /* Pull it up into the gradient header */
           position: relative;
           z-index: 10;
+        }
+
+        .epilepsy-types-section {
+          margin-top: 4rem;
+          padding: 4rem 0;
+          border-radius: 24px;
+        }
+
+        .epilepsy-types-container {
+          padding: 0 2rem;
+        }
+
+        .epilepsy-section-header {
+          text-align: center;
+          margin-bottom: 3rem;
+        }
+
+        .epilepsy-section-header h2 {
+          font-size: 2.5rem;
+          font-weight: 800;
+          margin-bottom: 1rem;
+        }
+
+        .epilepsy-section-header p {
+          color: var(--text-muted);
+          font-size: 1.1rem;
         }
         
         .faq-container {
@@ -299,6 +325,206 @@ const AboutEpilepsy = () => {
         
         .icon-purple { color: var(--primary); }
         .icon-muted { color: var(--text-muted); }
+
+        .types-full-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+
+        .type-card-premium {
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          border-radius: 24px;
+          padding: 0 !important;
+          border: 2px solid rgba(255, 255, 255, 0.8) !important;
+          box-shadow: 0 10px 35px rgba(157, 141, 241, 0.2) !important;
+        }
+
+        .type-card-img {
+          position: relative;
+          height: 260px;
+          width: 100%;
+          background: #f8fafc;
+        }
+
+        .type-card-img img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          transition: transform 0.4s ease;
+        }
+
+        .type-card-premium:hover .type-card-img img {
+          transform: scale(1.05);
+        }
+
+        .type-card-overlay {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          padding: 1.25rem;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .type-card-premium:hover .type-card-overlay {
+          opacity: 1;
+        }
+
+        .view-details {
+          color: white;
+          font-size: 0.8rem;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .type-card-info {
+          padding: 1.25rem;
+          text-align: center;
+          border-top: 1px solid var(--border);
+          background: white;
+        }
+
+        .type-card-info h3 {
+          margin: 0;
+          font-size: 1.15rem;
+        }
+
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.55);
+          backdrop-filter: blur(6px);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5rem;
+        }
+
+        .modal-content {
+          width: min(1100px, 95vw);
+          max-height: 90vh;
+          overflow-y: auto;
+          background: white;
+          border-radius: 24px;
+          position: relative;
+        }
+
+        .modal-body-layout {
+          display: grid;
+          grid-template-columns: 1fr 1.15fr;
+          min-height: 520px;
+        }
+
+        .modal-image {
+          background: #f8fafc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+        }
+
+        .modal-image img {
+          width: 100%;
+          max-height: 420px;
+          object-fit: contain;
+        }
+
+        .modal-info {
+          padding: 2rem;
+        }
+
+        .modal-badge {
+          display: inline-block;
+          background: rgba(126, 34, 206, 0.1);
+          color: var(--primary);
+          border-radius: 999px;
+          font-size: 0.75rem;
+          font-weight: 800;
+          padding: 0.45rem 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+        }
+
+        .modal-desc {
+          color: var(--text-secondary);
+          line-height: 1.6;
+        }
+
+        .modal-details-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .symptoms-box, .medical-note-box {
+          background: rgba(157, 141, 241, 0.06);
+          border: 1px solid rgba(157, 141, 241, 0.12);
+          border-radius: 14px;
+          padding: 1rem;
+        }
+
+        .symptoms-box ul {
+          padding-left: 1.25rem;
+          margin: 0.5rem 0 0;
+        }
+
+        .medical-note-box p {
+          margin: 0.5rem 0 0;
+          color: var(--text-main);
+        }
+
+        .note-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .close-btn {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          background: white;
+          width: 40px;
+          height: 40px;
+          display: grid;
+          place-items: center;
+          cursor: pointer;
+          color: var(--text-muted);
+        }
+
+        .close-btn:hover {
+          color: #ef4444;
+        }
+
+        @media (max-width: 1024px) {
+          .types-full-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .types-full-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .modal-body-layout {
+            grid-template-columns: 1fr;
+          }
+
+          .epilepsy-types-container {
+            padding: 0 1rem;
+          }
+        }
       `}</style>
     </div>
   );
