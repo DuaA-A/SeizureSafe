@@ -41,6 +41,15 @@ button {
 
 [dir="rtl"] {
   --dir-sign: -1;
+  font-size: 1.05rem;
+}
+
+[dir="rtl"] body {
+  line-height: 1.85;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3 {
+  line-height: 1.4;
 }
 
 * {

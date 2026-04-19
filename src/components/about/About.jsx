@@ -130,24 +130,6 @@ const About = () => {
                 </div>
             </motion.div>
 
-            {/* ── Action CTA ─────────────────────────────────────────────── */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="survey-box"
-            >
-                <div style={{ position: 'relative', zIndex: 10 }}>
-                    <span className="survey-label">{t('about.ctaLabel')}</span>
-                    <h3 className="survey-title">{t('about.ctaTitle')}</h3>
-                    <p className="survey-text">
-                        {t('about.ctaText')}
-                    </p>
-                    <Link to="/questionnaire" className="btn-white-solid" style={{ display: 'inline-block', padding: '14px 28px', textDecoration: 'none' }}>
-                        {t('about.ctaBtn')}
-                    </Link>
-                </div>
-            </motion.div>
 
         </div>
     );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Navbar from './components/common/Navbar';
 import AuthWindow from './components/auth/AuthWindow';
@@ -16,6 +16,7 @@ import { Shield, Activity, Pill, User, ChevronRight, Heart, ClipboardList, Arrow
 const Home = ({ onOpenAuth }) => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
+  const values = t('about.values', { returnObjects: true });
 
   return (
     <div className="home-container animate-fade-in">
@@ -24,7 +25,13 @@ const Home = ({ onOpenAuth }) => {
       <section className="full-screen-section modern-hero">
         <div className="hero-content container">
           <div className="hero-flex-wrapper" style={{ flexDirection: 'row' }}>
-            <div className="hero-text-side" style={{ textAlign: 'start' }}>
+            <motion.div 
+              className="hero-text-side" 
+              style={{ textAlign: 'start' }}
+              initial={{ x: isRTL ? 150 : -150, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 1.8 }}
+            >
               <div className="active-badge mb-4">{t('home.heroBadge')}</div> <br />
               <h1 className="hero-title white-text">
                 {t('home.heroTitle').split(' ').slice(0, -3).join(' ')} <br />
@@ -42,9 +49,14 @@ const Home = ({ onOpenAuth }) => {
                   {t('common.interactionChecker')}
                 </Link>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="hero-image-side">
+            <motion.div 
+              className="hero-image-side"
+              initial={{ x: isRTL ? -150 : 150, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 1.9 }}
+            >
               <div className="hero-img-container">
                 <img src="/hero.png" alt="Epilepsy Awareness" className="hero-main-img" />
                 <div className="brain-flow-overlay">
@@ -71,7 +83,7 @@ const Home = ({ onOpenAuth }) => {
                   </svg>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -80,10 +92,54 @@ const Home = ({ onOpenAuth }) => {
       {/* 2. Understanding Epilepsy - Intro Link */}
       <section className="section-spacing bg-unified text-center">
         <div className="container">
-          <div className="section-header centered-header">
+          <motion.div 
+            className="section-header centered-header glass-card highlight-section-box"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
             <h2>{t('home.understandingTitle')}</h2>
             <p>{t('home.understandingDescription')}</p>
             <Link to="/about-epilepsy" className="btn btn-premium mt-8">{t('home.understandingBtn')}</Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 3. Medical Values */}
+      <section className="section-spacing bg-unified text-center">
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <motion.span 
+              initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+              style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--primary)', fontWeight: 800 }}>
+              {t('about.valuesSubtitle')}
+            </motion.span>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-main)', marginTop: '0.5rem' }}>
+              {t('about.valuesTitle')}
+            </motion.h2>
+          </div>
+
+          <div className="values-grid-home">
+            {Array.isArray(values) && values.map((value, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 }}
+                className="value-card-gradient glass-card"
+                style={{ padding: '2.5rem 2rem', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+              >
+                <div style={{ width: '48px', height: '48px', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.2)', color: 'white', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', fontWeight: 800 }}>
+                  ✦
+                </div>
+                <h4 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'white', marginBottom: '1rem' }}>{value.title}</h4>
+                <p style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.6, fontSize: '0.95rem', margin: 0 }}>{value.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -91,24 +147,51 @@ const Home = ({ onOpenAuth }) => {
       {/* 4. Support Services */}
       <section className="section-spacing bg-unified text-center">
         <div className="container">
-          <div className="section-header centered-header">
+          <motion.div 
+            className="section-header centered-header"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
             <h2>{t('home.servicesTitle')}</h2>
             <p>{t('home.servicesSubtitle')}</p>
-          </div>
+          </motion.div>
           <div className="services-grid mt-12">
-            <motion.div whileHover={{ y: -6 }} className="service-card glass-card">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              whileHover={{ y: -10, scale: 1.02 }} 
+              className="service-card glass-card"
+            >
               <div className="service-icon"><Activity size={40} /></div>
               <h3>{t('home.eduTitle')}</h3>
               <p>{t('home.eduDesc')}</p>
               <Link to="/first-aid" className="btn btn-premium mt-4">{t('common.learnMore')}</Link>
             </motion.div>
-            <motion.div whileHover={{ y: -6 }} className="service-card glass-card">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+              whileHover={{ y: -10, scale: 1.02 }} 
+              className="service-card glass-card"
+            >
               <div className="service-icon"><Pill size={40} /></div>
               <h3>{t('home.checkerTitle')}</h3>
               <p>{t('home.checkerDesc')}</p>
               <Link to="/checker" className="btn btn-premium mt-4">{t('common.checkDrugs')}</Link>
             </motion.div>
-            <motion.div whileHover={{ y: -6 }} className="service-card glass-card">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+              whileHover={{ y: -10, scale: 1.02 }} 
+              className="service-card glass-card"
+            >
               <div className="service-icon"><FileText size={40} /></div>
               <h3>{t('home.archivesTitle')}</h3>
               <p>{t('home.archivesDesc')}</p>
@@ -125,7 +208,8 @@ const Home = ({ onOpenAuth }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="cta-glass-card glass-card animate-fade-in"
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="cta-glass-card glass-card"
           >
             <h2>{t('home.ctaTitle')}</h2>
             <p>{t('home.ctaDesc')}</p>
@@ -248,6 +332,27 @@ const Home = ({ onOpenAuth }) => {
         /* Empathy Section Overlay */
         .empathy-section-wrapper { position: relative; margin-top: -8rem; z-index: 100; padding: 0 2rem; }
         .empathy-section { padding: 4rem !important; text-align: center; max-width: 900px; margin: 0 auto; border: 2px solid rgba(126, 34, 206, 0.1) !important; }
+        
+        .highlight-section-box {
+          padding: 4rem 3rem !important;
+          max-width: 900px;
+          margin: 0 auto;
+          background: rgba(169, 204, 227, 0.2) !important; /* Calm soft blue */
+          border: 1px solid rgba(169, 204, 227, 0.5) !important;
+          border-radius: 32px !important;
+          box-shadow: 0 10px 40px rgba(169, 204, 227, 0.15) !important;
+        }
+        .highlight-section-box h2 {
+          font-size: 2.8rem;
+          color: var(--text-main);
+          margin-bottom: 1.5rem;
+        }
+        [dir="rtl"] .highlight-section-box p {
+          font-size: 1.3rem; 
+          line-height: 2.1 !important;
+          color: var(--text-main);
+          opacity: 0.9;
+        }
         .empathy-lead { font-size: 1.4rem; font-weight: 500; line-height: 1.6; max-width: 900px; margin: 1.5rem auto 0; color: var(--text-main); }
         .empathy-icon { color: #f43f5e; margin-bottom: 1rem; }
 
@@ -333,6 +438,7 @@ const Home = ({ onOpenAuth }) => {
 
 const App = () => {
   const [showAuth, setShowAuth] = useState(false);
+  const [isAppLoading, setIsAppLoading] = useState(true);
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
@@ -340,8 +446,33 @@ const App = () => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
   }, [i18n.language]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setIsAppLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className={`app-container ${i18n.language === 'ar' ? 'rtl-mode' : ''}`}>
+      <AnimatePresence>
+        {isAppLoading && (
+          <motion.div 
+            className="splash-screen"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="splash-logo-container"
+            >
+              <img src="/logo.png" alt="SeizureSafe Logo" className="splash-logo-img" />
+              <h1 className="splash-logo-text">Seizure<span className="safe-text">Safe</span></h1>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <Navbar onOpenAuth={() => setShowAuth(true)} />
 
       {showAuth && <AuthWindow onClose={() => setShowAuth(false)} />}
@@ -368,13 +499,41 @@ const App = () => {
 
       <style>{`
         .app-container { min-height: 100vh; display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
-        .main-content { flex: 1; padding-top: 80px; width: 100%; position: relative; z-index: 1; margin-bottom: 6rem; }
+        .main-content { flex: 1; padding-top: 80px; width: 100%; position: relative; z-index: 1; margin-bottom: 0; }
         .dark-footer { margin-top: auto; padding: 3rem 2rem; text-align: center; background: #1e1b4b; color: white; position: relative; z-index: 1; }
         .footer-content { max-width: 800px; margin: 0 auto; }
         .disclaimer { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); margin-top: 1rem; line-height: 1.6; }
         
         /* RTL Mode Overrides */
         .rtl-mode { font-family: 'Cairo', 'Inter', sans-serif !important; }
+        
+        /* Splash Screen */
+        .splash-screen {
+          position: fixed; inset: 0; background: #1e1b4b; z-index: 999999; display: flex; align-items: center; justify-content: center;
+        }
+        .splash-logo-container {
+          display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+        }
+        .splash-logo-img { width: 120px; height: auto; animation: heartbeat 1.5s infinite ease-in-out; filter: drop-shadow(0 0 30px rgba(157, 141, 241, 0.4)); }
+        .splash-logo-text { font-size: 3rem; color: white; font-weight: 900; letter-spacing: 1px; margin: 0; }
+        .splash-logo-text .safe-text { color: var(--primary); }
+        @keyframes heartbeat {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+        }
+        
+        /* Animated Values Cards */
+        .values-grid-home { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
+        .value-card-gradient {
+          background: linear-gradient(135deg, var(--primary), var(--secondary));
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          box-shadow: 0 15px 40px rgba(157, 141, 241, 0.2);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .value-card-gradient:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 50px rgba(157, 141, 241, 0.3);
+        }
       `}</style>
     </div>
   );

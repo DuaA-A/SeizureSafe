@@ -133,12 +133,24 @@
   line-height: 1.6;
 }
 
+/* Team Grid */
+.team-grid-about {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
 /* No Image Standard Card tweaks */
 .no-img-card {
-  height: 100%;
+  min-height: 250px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 1.5rem 0;
+  padding: 2.5rem;
+  background: white;
+  transition: all 0.3s ease;
 }
 
 /* Leader Card */

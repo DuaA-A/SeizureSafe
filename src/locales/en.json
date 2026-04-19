@@ -39,7 +39,7 @@
       "Do not give them water, food, or pills until fully alert.",
       "Do not perform CPR unless they stop breathing after the seizure stops."
     ],
-    "emergencyTitle": "When to call an ambulance (911)",
+    "emergencyTitle": "When to call an ambulance (123)",
     "emergencyList": [
       "The seizure lasts longer than 5 minutes.",
       "The person has difficulty breathing after the seizure.",
@@ -151,7 +151,7 @@
       },
       {
         "myth": "A seizure is always a medical emergency.",
-        "fact": "Actually, most seizures last a short time and stop on their own. You only need to call 911 if it lasts longer than 5 minutes, or under specific criteria."
+        "fact": "Actually, most seizures last a short time and stop on their own. You only need to call 123 if it lasts longer than 5 minutes, or under specific criteria."
       }
     ]
   },
