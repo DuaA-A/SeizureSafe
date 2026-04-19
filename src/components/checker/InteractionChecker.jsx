@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { getRxCUI, getInteractions, BASELINE_EPILEPSY_DRUGS } from '../../services/rxnav';
 import { getOpenFdaData } from '../../services/openFDA';
@@ -14,6 +15,9 @@ import '../../styles/about.css'; // Inheriting global header classes
 
 const InteractionChecker = ({ onOpenAuth }) => {
   const { currentUser } = useAuth();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+  
   const [activeTab, setActiveTab] = useState('quick');
   const [inputDrug, setInputDrug] = useState('');
   const [medsToCheck, setMedsToCheck] = useState([]);
@@ -51,9 +55,9 @@ const InteractionChecker = ({ onOpenAuth }) => {
     if (e) e.preventDefault();
     const drugName = forcedDrugName || inputDrug;
     if (!drugName.trim()) return;
-    if (medsToCheck.length >= MAX_DRUGS) return setErrorMsg(`Maximum ${MAX_DRUGS} medications allowed.`);
+    if (medsToCheck.length >= MAX_DRUGS) return setErrorMsg(t('checker.errors.maxDrugs', { max: MAX_DRUGS }));
     if (medsToCheck.some(m => m.name.toLowerCase() === drugName.toLowerCase())) {
-      setErrorMsg(`"${drugName}" is already added.`);
+      setErrorMsg(t('checker.errors.alreadyAdded', { name: drugName }));
       return;
     }
     
@@ -66,10 +70,10 @@ const InteractionChecker = ({ onOpenAuth }) => {
         setMedsToCheck(prev => [...prev, { name: drugName, rxcui }]);
         if (!forcedDrugName) setInputDrug('');
       } else {
-        setErrorMsg(`"${drugName}" not found in RxNav database. Check spelling.`);
+        setErrorMsg(t('checker.errors.notFound', { name: drugName }));
       }
     } catch (err) {
-      setErrorMsg("Network error connecting to drug database.");
+      setErrorMsg(t('checker.errors.network'));
     } finally {
       setLoading(false);
     }
@@ -83,7 +87,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
 
   const checkInteractions = async () => {
     if (medsToCheck.length < 1) {
-      return setErrorMsg("Please add at least 1 medication to check.");
+      return setErrorMsg(t('checker.errors.addOne'));
     }
     setLoading(true);
     setErrorMsg('');
@@ -158,7 +162,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
       
     } catch (err) {
       console.error(err);
-      setErrorMsg("Failed to generate complete interaction report. The API service may be down.");
+      setErrorMsg(t('checker.errors.apiDown'));
     } finally {
       setLoading(false);
     }
@@ -179,18 +183,18 @@ const InteractionChecker = ({ onOpenAuth }) => {
   };
 
   return (
-    <div className="checker-page container">
+    <div className="checker-page container" dir={isRTL ? 'rtl' : 'ltr'}>
 
       {/* ── Standardized Header ─────────────────────────────────────────────────── */}
       <div className="about-header-wrapper animate-fade-in">
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
-            <span className="about-subtitle">Live Validation</span>
-            <h1 className="about-title">Medication Safety Center</h1>
-            <p className="about-desc">Live dynamic validation checking your prescriptions against epilepsy therapies and food interactions via NIH RxNav.</p>
+            <span className="about-subtitle">{t('checker.subtitle')}</span>
+            <h1 className="about-title">{t('checker.title')}</h1>
+            <p className="about-desc">{t('checker.desc')}</p>
             
             <div className="tab-controls mt-6">
-              <button className={`tab-btn ${activeTab === 'quick' ? 'active' : ''}`} onClick={() => setActiveTab('quick')}>Safety Analyzer</button>
-              <button className={`tab-btn ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>My Archive</button>
+              <button className={`tab-btn ${activeTab === 'quick' ? 'active' : ''}`} onClick={() => setActiveTab('quick')}>{t('checker.tabSafety')}</button>
+              <button className={`tab-btn ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>{t('checker.tabArchive')}</button>
             </div>
         </div>
       </div>
@@ -201,8 +205,8 @@ const InteractionChecker = ({ onOpenAuth }) => {
              
              {/* Left Column: Input */}
              <div className="checker-input-area glass-card">
-               <h2>Build Regimen</h2>
-               <p className="subtitle">Add drugs below. We automatically cross-reference these against baseline epilepsy treatments.</p>
+               <h2>{t('checker.buildTitle')}</h2>
+               <p className="subtitle">{t('checker.buildDesc')}</p>
                
                <div className="multi-drug-slots mt-6">
                 {[...Array(MAX_DRUGS)].map((_, index) => (
@@ -214,7 +218,9 @@ const InteractionChecker = ({ onOpenAuth }) => {
                         <button onClick={() => removeDrug(index)} className="slot-remove"><Trash2 size={18} /></button>
                       </>
                     ) : (
-                      <span className="slot-empty-text">Slot {index + 1} {index === 0 ? '(Required)' : '(Optional)'}</span>
+                      <span className="slot-empty-text">
+                        {t('checker.slotText', { index: index + 1 })} {index === 0 ? t('checker.required') : t('checker.optional')}
+                      </span>
                     )}
                   </div>
                 ))}
@@ -226,7 +232,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
                    <input 
                      type="text" 
                      className="drug-input"
-                     placeholder="e.g. Ibuprofen"
+                     placeholder={t('checker.placeholder')}
                      value={inputDrug}
                      disabled={loading}
                      onChange={(e) => setInputDrug(e.target.value)}
@@ -249,7 +255,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
                    onClick={checkInteractions}
                    disabled={loading}
                  >
-                   {loading ? <><RefreshCw className="spinner" size={20} /> Analyzing...</> : 'Generate Full Report'}
+                   {loading ? <><RefreshCw className="spinner" size={20} /> {t('checker.analysing')}</> : t('checker.generateBtn')}
                  </button>
                )}
              </div>
@@ -269,13 +275,13 @@ const InteractionChecker = ({ onOpenAuth }) => {
                     <div className="interaction-report glass-card border-top-purple">
                       <div className="report-header">
                         <Pill className="header-icon purple" />
-                        <h3>API Drug Interactions</h3>
+                        <h3>{t('checker.apiInteractions')}</h3>
                       </div>
                       
                       {reportData.interactions.length === 0 ? (
                         <div className="clear-status">
                           <CheckCircle2 size={32} className="status-icon green" />
-                          <p>No major interactions found in the clinical proxy database between your inputs and baseline epilepsy medications. Always consult your provider.</p>
+                          <p>{t('checker.noInteractions')}</p>
                         </div>
                       ) : (
                         <div className="report-list">
@@ -285,11 +291,13 @@ const InteractionChecker = ({ onOpenAuth }) => {
                                 {getSeverityIcon(inter.severity)}
                               </div>
                               <div className="card-content">
-                                <span className={`severity-badge ${getSeverityClass(inter.severity)}`}>{inter.severity} Risk</span>
+                                <span className={`severity-badge ${getSeverityClass(inter.severity)}`}>
+                                  {t('checker.riskLevel', { level: inter.severity })}
+                                </span>
                                 <h4>{inter.drugA} + {inter.drugB}</h4>
                                 <div className="card-details">
-                                  <p><strong>Description:</strong> {inter.description}</p>
-                                  <p className="physician-note"><strong>Note:</strong> {inter.recommendation}</p>
+                                  <p><strong>{t('checker.description')}</strong> {inter.description}</p>
+                                  <p className="physician-note"><strong>{t('checker.note')}</strong> {inter.recommendation}</p>
                                 </div>
                               </div>
                             </div>
@@ -302,13 +310,13 @@ const InteractionChecker = ({ onOpenAuth }) => {
                     <div className="interaction-report glass-card border-top-amber mt-6">
                       <div className="report-header">
                         <Coffee className="header-icon amber" />
-                        <h3>Food & Lifestyle Alerts</h3>
+                        <h3>{t('checker.foodAlerts')}</h3>
                       </div>
                       
                       {reportData.foodWarnings.length === 0 ? (
                         <div className="clear-status">
                           <Info size={32} className="status-icon muted" />
-                          <p>No major food or lifestyle restrictions identified in OpenFDA or local clinical protocols for these medications.</p>
+                          <p>{t('checker.noFoodWarnings')}</p>
                         </div>
                       ) : (
                         <div className="report-list">
@@ -318,7 +326,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
                               
                               {warning.avoidFoods && warning.avoidFoods.length > 0 && (
                                 <div className="food-detail">
-                                  <strong>Must Avoid:</strong>
+                                  <strong>{t('checker.mustAvoid')}</strong>
                                   <ul>
                                     {warning.avoidFoods.map((f, i) => <li key={i}>{f}</li>)}
                                   </ul>
@@ -326,17 +334,17 @@ const InteractionChecker = ({ onOpenAuth }) => {
                               )}
                               {warning.timing && (
                                 <div className="food-detail">
-                                  <strong>Administration Timing:</strong>
+                                  <strong>{t('checker.timing')}</strong>
                                   <p>{warning.timing}</p>
                                 </div>
                               )}
                               {warning.instructions && (
                                 <div className="food-detail">
-                                  <strong>Clinical Instruction:</strong>
+                                  <strong>{t('checker.instruction')}</strong>
                                   <p>{warning.instructions}</p>
                                 </div>
                               )}
-                              <div className="source-note">Source: {warning.source}</div>
+                              <div className="source-note">{t('checker.source')} {warning.source}</div>
                             </div>
                           ))}
                         </div>
@@ -345,15 +353,15 @@ const InteractionChecker = ({ onOpenAuth }) => {
                     
                     {/* Disclaimer */}
                     <div className="disclaimer-box mt-6">
-                      <strong>Medical Disclaimer:</strong> This application relies on NIH RxNav and OpenFDA APIs strictly for educational purposes. Drug interactions are complex and dependent on your specific health history. Do not alter your medication regiment without consulting your doctor or pharmacist.
+                      <strong>{t('checker.disclaimerTitle')}</strong> {t('checker.disclaimerDesc')}
                     </div>
 
                  </div>
                ) : (
                  <div className="empty-state-board">
                    <Shield size={64} className="empty-icon" />
-                   <h3>Awaiting Analysis</h3>
-                   <p>Enter your prescriptions and click generate to retrieve safety protocols across multiple health databases.</p>
+                   <h3>{t('checker.awaitingTitle')}</h3>
+                   <p>{t('checker.awaitingDesc')}</p>
                  </div>
                )}
              </div>
@@ -364,24 +372,24 @@ const InteractionChecker = ({ onOpenAuth }) => {
             {!currentUser ? (
               <div className="auth-prompt">
                 <Shield size={48} className="auth-icon" />
-                <h3>Access Your Archive</h3>
-                <p>Log in to save drugs across sessions.</p>
-                <button className="btn btn-premium mt-4" onClick={onOpenAuth}>Log In Securely</button>
+                <h3>{t('checker.archiveTitle')}</h3>
+                <p>{t('checker.archiveDesc')}</p>
+                <button className="btn btn-premium mt-4" onClick={onOpenAuth}>{t('checker.loginBtn')}</button>
               </div>
             ) : (
               <div className="archive-view">
-                <h3>Saved Prescriptions</h3>
+                <h3>{t('checker.savedTitle')}</h3>
                 <div className="archive-grid mt-6">
                   {savedMeds.length > 0 ? savedMeds.map((m, i) => (
                     <div key={i} className="archive-card">
                       <div className="archive-info">
                         <strong>{m.name}</strong>
-                        <span>Archived: {new Date(m.addedAt).toLocaleDateString()}</span>
+                        <span>{t('checker.archivedAt', { date: new Date(m.addedAt).toLocaleDateString() })}</span>
                       </div>
                       <Pill size={20} className="archive-card-icon" />
                     </div>
                   )) : (
-                    <div className="archive-empty">No medications saved to your profile yet.</div>
+                    <div className="archive-empty">{t('checker.noSavedMeds')}</div>
                   )}
                 </div>
               </div>
@@ -424,17 +432,17 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .slot-name { flex: 1; font-weight: 700; color: var(--text-main); }
         .slot-remove { color: var(--text-muted); background: none; border: none; cursor: pointer; transition: color 0.2s; }
         .slot-remove:hover { color: #ef4444; }
-        .slot-empty-text { color: var(--text-muted); padding-left: 0.5rem; font-size: 0.95rem; }
+        .slot-empty-text { color: var(--text-muted); padding-inline-start: 0.5rem; font-size: 0.95rem; }
 
         .drug-search-form { position: relative; }
-        .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .search-icon { position: absolute; inset-inline-start: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
         .drug-input {
-          width: 100%; height: 56px; padding: 0 4rem 0 3rem; border-radius: 12px;
+          width: 100%; height: 56px; padding-inline-start: 3rem; padding-inline-end: 4rem; border-radius: 12px;
           border: 2px solid var(--border); font-size: 1rem; font-weight: 600; outline: none; transition: border-color 0.2s;
         }
         .drug-input:focus { border-color: var(--primary); }
         .btn-add {
-          position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);
+          position: absolute; inset-inline-end: 0.5rem; top: 50%; transform: translateY(-50%);
           width: 40px; height: 40px; background: var(--primary); color: white; border: none; border-radius: 8px;
           display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s;
         }
@@ -481,29 +489,30 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .clear-status p { margin: 0; color: #166534; font-weight: 500; line-height: 1.5; }
 
         .report-list { display: flex; flex-direction: column; gap: 1rem; }
-        .interaction-card { padding: 1.5rem; border-radius: 12px; border-left: 5px solid; display: flex; gap: 1rem; }
+        .interaction-card { padding: 1.5rem; border-radius: 12px; border-inline-start: 5px solid; display: flex; gap: 1rem; }
         .interaction-card.sev-high { background: #fef2f2; border-color: #ef4444; }
         .interaction-card.sev-mod { background: #fff7ed; border-color: #f97316; }
         .interaction-card.sev-low { background: #f0fdf4; border-color: #22c55e; }
         
         .icon-high { color: #dc2626; } .icon-mod { color: #ea580c; } .icon-low { color: #16a34a; }
         
-        .card-content h4 { font-size: 1.25rem; font-weight: 800; margin: 0.5rem 0; color: var(--text-main); }
-        .severity-badge { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card-content { flex: 1; }
+        .card-content h4 { font-size: 1.25rem; font-weight: 800; margin: 0.5rem 0; color: var(--text-main); text-align: inherit; }
+        .severity-badge { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: block; text-align: inherit; }
         .severity-badge.sev-high { color: #b91c1c; } .severity-badge.sev-mod { color: #c2410c; } .severity-badge.sev-low { color: #15803d; }
         
-        .card-details p { margin: 0 0 0.5rem 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem; }
-        .physician-note { background: rgba(255,255,255,0.6); padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem !important; }
+        .card-details p { margin: 0 0 0.5rem 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem; text-align: inherit; }
+        .physician-note { background: rgba(255,255,255,0.6); padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem !important; text-align: inherit; }
 
         .food-card { flex-direction: column; background: #fffbeb !important; border-color: #fcd34d !important; gap: 0.5rem; }
-        .food-card h4 { font-size: 1.25rem; font-weight: 800; color: #92400e; margin: 0 0 0.5rem 0; border-bottom: 1px solid #fde68a; padding-bottom: 0.5rem; }
-        .food-detail { margin-bottom: 0.75rem; }
+        .food-card h4 { font-size: 1.25rem; font-weight: 800; color: #92400e; margin: 0 0 0.5rem 0; border-bottom: 1px solid #fde68a; padding-bottom: 0.5rem; text-align: inherit; }
+        .food-detail { margin-bottom: 0.75rem; text-align: inherit; }
         .food-detail strong { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #b45309; margin-bottom: 0.25rem; }
-        .food-detail ul { margin: 0; padding-left: 1.25rem; color: var(--text-main); font-size: 0.95rem; }
+        .food-detail ul { margin: 0; padding-inline-start: 1.25rem; color: var(--text-main); font-size: 0.95rem; }
         .food-detail p { margin: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.5; }
-        .source-note { font-size: 0.8rem; color: #d97706; border-top: 1px solid #fde68a; padding-top: 0.5rem; margin-top: 0.5rem; font-style: italic; }
+        .source-note { font-size: 0.8rem; color: #d97706; border-top: 1px solid #fde68a; padding-top: 0.5rem; margin-top: 0.5rem; font-style: italic; text-align: inherit; }
 
-        .disclaimer-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 1.25rem; border-radius: 12px; color: #1e40af; font-size: 0.9rem; line-height: 1.6; }
+        .disclaimer-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 1.25rem; border-radius: 12px; color: #1e40af; font-size: 0.9rem; line-height: 1.6; text-align: inherit; }
 
         .padding-large { padding: 3rem; }
         .auth-prompt { text-align: center; max-width: 400px; margin: 0 auto; }
@@ -511,10 +520,11 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .auth-prompt h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
         .auth-prompt p { color: var(--text-secondary); margin-bottom: 1.5rem; }
         
-        .archive-view h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; }
+        .archive-view h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; text-align: inherit; }
         .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
         .archive-card { padding: 1.5rem; border: 1px solid var(--border); border-radius: 12px; background: white; display: flex; align-items: center; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; }
         .archive-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: rgba(126, 34, 206, 0.3); }
+        .archive-info { text-align: inherit; }
         .archive-info strong { display: block; font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.25rem; }
         .archive-info span { font-size: 0.85rem; color: var(--text-muted); }
         .archive-card-icon { color: var(--primary); opacity: 0.5; }

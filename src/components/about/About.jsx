@@ -1,60 +1,33 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { GraduationCap } from 'lucide-react';
 import { TeamMemberCard } from './TeamMemberCard';
 import '../../styles/about.css';
 
-// Using the team members defined in your project
-const teamMembers = [
-    { id: 1, name: "Seveen Mohamed Ahmed Fouad Elsayoufy", role: "Team Leader", isLeader: true, bio: "Coordinates clinical integration and leads the pharmacy presentation board structure." },
-    { id: 2, name: "Ahmed Ezzat Osman Tantawy", role: "Clinical Pharmacist", isLeader: false, bio: "Specializes in antiepileptic drug interactions and metabolic profiling." },
-    { id: 3, name: "Diana Yasser AbdAlazim Mohamed Salama", role: "Clinical Pharmacist", isLeader: false, bio: "Focuses on patient compliance and seizure trigger correlation data." },
-    { id: 4, name: "Mina Talat Shaker Wassef", role: "Clinical Pharmacist", isLeader: false, bio: "Ensures the accuracy of the Interaction Checker API integration." },
-    { id: 5, name: "Moustafa Khalid Mohamed Taha Bahr", role: "Clinical Pharmacist", isLeader: false, bio: "Develops the seizure pattern algorithms used in the Seizure Check tool." },
-    { id: 6, name: "Nada Mohammed Kamal Abieah", role: "Clinical Pharmacist", isLeader: false, bio: "Curates the medical terminology and user instructions for clarity." },
-    { id: 7, name: "Zeinab Hamdy Hassab tayeeb", role: "Clinical Pharmacist", isLeader: false, bio: "Evaluates application usability against pharmacy standards." },
-    { id: 8, name: "Abdalla Abouelscoud Hassan Hassoub Soliman", role: "Clinical Pharmacist", isLeader: false, bio: "Researches up-to-date medication interactions and contraindications." },
-    { id: 9, name: "Yassein Mohamed Mohamed Ali Almaghrabi", role: "Clinical Pharmacist", isLeader: false, bio: "Structures the medical history tracking and compliance database logic." },
-    { id: 10, name: "Ahmed Mohamed Ahmed Elgashy", role: "Clinical Pharmacist", isLeader: false, bio: "Validates final clinical safety recommendations for the graduation board." }
-];
-
 const About = () => {
+    const { t, i18n } = useTranslation();
+    const isRTL = i18n.language === 'ar';
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-    const leader = teamMembers.find((m) => m.isLeader);
-    const members = teamMembers; // Mapping the full list now
-
-    const values = [
-        {
-            title: "Evidence-Based",
-            description: "All our diagnostic tools and interaction verifications are grounded in active pharmacological research and medical databases.",
-        },
-        {
-            title: "Transparent",
-            description: "We provide clear, un-biased interpretations of medical interactions without hidden agendas.",
-        },
-        {
-            title: "Patient Centric",
-            description: "The interface respects that tracking seizures and medications can be stressful, focusing on a calm and reassuring design.",
-        },
-        {
-            title: "Safety First",
-            description: "The primary outcome of every feature in SeizureSafe is to prevent dangerous contraindications.",
-        },
-    ];
+    // Get team members from translations
+    // We cast to array if it's not already, though t returns the array from json
+    const members = t('about.team', { returnObjects: true }) || [];
+    const values = t('about.values', { returnObjects: true }) || [];
 
     return (
-        <div className="about-page container">
+        <div className="about-page container" dir={isRTL ? 'rtl' : 'ltr'}>
 
             {/* ── Header ─────────────────────────────────────────────────── */}
             <div className="about-header-wrapper animate-fade-in">
                 <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
-                    <span className="about-subtitle">The Clinical Team</span>
-                    <h1 className="about-title">Meet the Pharmacists Behind SeizureSafe</h1>
-                    <p className="about-desc">We are a dedicated group of pharmacy students committed to improving epilepsy care through technological intervention.</p>
+                    <span className="about-subtitle">{t('about.subtitle')}</span>
+                    <h1 className="about-title">{t('about.title')}</h1>
+                    <p className="about-desc">{t('about.desc')}</p>
                 </div>
             </div>
 
@@ -88,18 +61,16 @@ const About = () => {
                             animation: 'border-glow 2.8s ease-in-out infinite', padding: '20px'
                         }}
                     >
-                        <img src="/team/mti_logo.jpeg" alt="MTI University Logo" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+                        <img src="/team/mti_logo.jpeg" alt={t('about.mti')} style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
                     </div>
                 </div>
-                <h3 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.5rem' }}>MTI University</h3>
-                <p style={{ maxWidth: '500px', color: 'var(--text-muted)' }}>Faculty of Pharmacy Medical Graduation Project 2026</p>
+                <h3 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.5rem' }}>{t('about.mti')}</h3>
+                <p style={{ maxWidth: '500px', color: 'var(--text-muted)' }}>{t('about.project')}</p>
             </motion.div>
-
-            {/* ── Removed Separate Leader Section to merge into Grid ─────────────────────────────────────────── */}
 
             {/* ── Team Grid ──────────────────────────────────────────────── */}
             <div className="team-grid-about">
-                {members.map((member, i) => (
+                {Array.isArray(members) && members.map((member, i) => (
                     <TeamMemberCard key={member.id} member={member} index={i} />
                 ))}
             </div>
@@ -111,17 +82,17 @@ const About = () => {
                 viewport={{ once: true }}
                 className="mission-box"
             >
-                <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'rgba(157, 141, 241, 0.1)', filter: 'blur(100px)', borderRadius: '50%', transform: 'translate(30%, -30%)' }} />
+                <div style={{ position: 'absolute', top: 0, [isRTL ? 'left' : 'right']: 0, width: '300px', height: '300px', background: 'rgba(157, 141, 241, 0.1)', filter: 'blur(100px)', borderRadius: '50%', transform: `translate(${isRTL ? '-30%' : '30%'}, -30%)` }} />
 
                 <div style={{ position: 'relative', zIndex: 10 }}>
-                    <span className="mission-label">Our Mission</span>
-                    <h2 className="mission-title">Bridging Pharmacy & Technology</h2>
+                    <span className="mission-label">{t('about.missionLabel')}</span>
+                    <h2 className="mission-title">{t('about.missionTitle')}</h2>
                     <div className="mission-divider" />
                     <p className="mission-text">
-                        We noticed that navigating the complexities of epilepsy treatment—from recognizing seizure patterns to tracking potential drug interactions—can be overwhelming for patients without constant professional supervision.
+                        {t('about.missionText1')}
                     </p>
                     <p className="mission-text">
-                        That is why we created SeizureSafe. An accessible tool that empowers patients with immediate, reliable pharmacological checks and symptom logging, functioning as your personal clinical pharmacist counterpart.
+                        {t('about.missionText2')}
                     </p>
                 </div>
             </motion.div>
@@ -134,12 +105,12 @@ const About = () => {
                 style={{ marginBottom: '6rem' }}
             >
                 <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                    <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--primary)', fontWeight: 800 }}>Core Foundations</span>
-                    <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-main)' }}>Our Clinical Values</h2>
+                    <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--primary)', fontWeight: 800 }}>{t('about.valuesSubtitle')}</span>
+                    <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-main)' }}>{t('about.valuesTitle')}</h2>
                 </div>
 
                 <div className="values-grid">
-                    {values.map((value, i) => (
+                    {Array.isArray(values) && values.map((value, i) => (
                         <motion.div
                             key={i}
                             initial={{ opacity: 0, y: 16 }}
@@ -153,7 +124,7 @@ const About = () => {
                                 ✦
                             </div>
                             <h4 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '1rem' }}>{value.title}</h4>
-                            <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, fontSize: '0.95rem' }}>{value.description}</p>
+                            <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, fontSize: '0.95rem' }}>{value.desc}</p>
                         </motion.div>
                     ))}
                 </div>
@@ -167,13 +138,13 @@ const About = () => {
                 className="survey-box"
             >
                 <div style={{ position: 'relative', zIndex: 10 }}>
-                    <span className="survey-label">Take Action</span>
-                    <h3 className="survey-title">Try the Seizure Check</h3>
+                    <span className="survey-label">{t('about.ctaLabel')}</span>
+                    <h3 className="survey-title">{t('about.ctaTitle')}</h3>
                     <p className="survey-text">
-                        Access our expert system designed to help identify the patterns of epileptic episodes to prepare comprehensive reports for your doctor.
+                        {t('about.ctaText')}
                     </p>
                     <Link to="/questionnaire" className="btn-white-solid" style={{ display: 'inline-block', padding: '14px 28px', textDecoration: 'none' }}>
-                        Start the Diagnostic Tools
+                        {t('about.ctaBtn')}
                     </Link>
                 </div>
             </motion.div>

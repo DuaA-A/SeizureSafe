@@ -1,22 +1,29 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Baby, UserCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import '../../styles/about.css'; // Inheriting global header classes
 
 const SpecialWarnings = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const pediatric = t('specialWarnings.pediatric', { returnObjects: true });
+  const elderly = t('specialWarnings.elderly', { returnObjects: true });
+
   return (
-    <div className="special-warnings-page container">
+    <div className="special-warnings-page container" dir={isRTL ? 'rtl' : 'ltr'}>
 
       {/* ── Standardized Header ─────────────────────────────────────────────────── */}
       <div className="about-header-wrapper animate-fade-in">
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
-            <span className="about-subtitle">Vulnerable Populations</span>
-            <h1 className="about-title">Special Population Warnings</h1>
-            <p className="about-desc">Pharmacokinetics can vary significantly across different age groups. Extra clinical vigilance is required for children and the elderly when administering antiepileptic therapy.</p>
+            <span className="about-subtitle">{t('specialWarnings.subtitle')}</span>
+            <h1 className="about-title">{t('specialWarnings.title')}</h1>
+            <p className="about-desc">{t('specialWarnings.desc')}</p>
         </div>
       </div>
 
@@ -26,34 +33,24 @@ const SpecialWarnings = () => {
         <section className="warning-section">
           <div className="section-title-wrap">
             <div className="title-icon pediatric-icon"><Baby size={40} /></div>
-            <h2>Pediatric Patients</h2>
+            <h2>{pediatric.title}</h2>
             <div className="title-divider pediatric-divider"></div>
           </div>
           
           <div className="warning-cards-grid">
-            <motion.div 
-              className="glass-card warning-card border-pediatric"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            >
-              <h3>Dosage Sensitivity</h3>
-              <p>Children metabolize drugs differently than adults. They often require higher doses per kilogram of body weight, but they are also more susceptible to cognitive side effects.</p>
-            </motion.div>
-            
-            <motion.div 
-              className="glass-card warning-card border-pediatric"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            >
-              <h3>Behavioral Monitoring</h3>
-              <p>Certain drugs (like Levetiracetam or Phenobarbital) can cause paradoxical hyperactivity, aggression, or learning difficulties in children. Parents and teachers must monitor school performance closely.</p>
-            </motion.div>
-
-            <motion.div 
-              className="glass-card warning-card border-pediatric"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-            >
-              <h3>Growth Considerations</h3>
-              <p>Dosages need frequent readjustment as the child grows and gains weight to maintain therapeutic blood levels.</p>
-            </motion.div>
+            {pediatric.items.map((item, idx) => (
+              <motion.div 
+                key={idx}
+                className="glass-card warning-card border-pediatric"
+                initial={{ opacity: 0, y: 20 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+              >
+                <h3>{item.title}</h3>
+                <p>{item.content}</p>
+              </motion.div>
+            ))}
           </div>
         </section>
 
@@ -61,34 +58,24 @@ const SpecialWarnings = () => {
         <section className="warning-section" style={{ marginTop: '5rem' }}>
           <div className="section-title-wrap">
             <div className="title-icon elderly-icon"><UserCircle size={40} /></div>
-            <h2>Elderly Patients</h2>
+            <h2>{elderly.title}</h2>
             <div className="title-divider elderly-divider"></div>
           </div>
           
           <div className="warning-cards-grid">
-            <motion.div 
-              className="glass-card warning-card border-elderly"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            >
-              <h3>Slower Metabolism</h3>
-              <p>Decreased renal and hepatic clearance means drugs stay in the system longer. Elderly patients typically require lower starting doses (“start low, go slow”).</p>
-            </motion.div>
-            
-            <motion.div 
-              className="glass-card warning-card border-elderly"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            >
-              <h3>High Interaction Risk</h3>
-              <p>Older adults often take multiple medications for other conditions (hypertension, diabetes), drastically increasing the risk of adverse drug-drug interactions with AEDs.</p>
-            </motion.div>
-
-            <motion.div 
-              className="glass-card warning-card border-elderly"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-            >
-              <h3>Fall & Bone Risks</h3>
-              <p>Enzyme-inducing AEDs (like Phenytoin or Carbamazepine) can reduce bone density. Dizziness and sedation from meds also greatly increase the risk of dangerous falls.</p>
-            </motion.div>
+            {elderly.items.map((item, idx) => (
+              <motion.div 
+                key={idx}
+                className="glass-card warning-card border-elderly"
+                initial={{ opacity: 0, y: 20 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                viewport={{ once: true }} 
+                transition={{ delay: idx * 0.1 }}
+              >
+                <h3>{item.title}</h3>
+                <p>{item.content}</p>
+              </motion.div>
+            ))}
           </div>
         </section>
 
@@ -170,6 +157,7 @@ const SpecialWarnings = () => {
           font-weight: 800;
           color: var(--text-main);
           margin-bottom: 1rem;
+          text-align: inherit;
         }
         
         .border-pediatric h3 { color: #1e40af; }
@@ -180,6 +168,7 @@ const SpecialWarnings = () => {
           line-height: 1.6;
           font-size: 1.05rem;
           margin: 0;
+          text-align: inherit;
         }
       `}</style>
     </div>

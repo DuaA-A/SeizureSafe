@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import {
   Shield,
@@ -10,7 +11,8 @@ import {
   Menu,
   X,
   CreditCard,
-  BookOpen
+  BookOpen,
+  Languages
 } from 'lucide-react';
 
 const Navbar = ({ onOpenAuth }) => {
@@ -18,9 +20,16 @@ const Navbar = ({ onOpenAuth }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
 
   const isHome = location.pathname === '/';
   const isActive = (path) => location.pathname === path;
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'ar' ? 'en' : 'ar';
+    i18n.changeLanguage(newLang);
+  };
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -31,7 +40,7 @@ const Navbar = ({ onOpenAuth }) => {
   }, []);
 
   return (
-    <nav className={`navbar fixed-top ${scrolled || !isHome ? 'navbar-scrolled' : 'navbar-transparent'}`}>
+    <nav className={`navbar fixed-top ${scrolled || !isHome ? 'navbar-scrolled' : 'navbar-transparent'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="container nav-content">
         <Link to="/" className="nav-logo">
           <img src="/logo.png" alt="SeizureSafe Logo" className="logo-img" />
@@ -44,36 +53,43 @@ const Navbar = ({ onOpenAuth }) => {
         <div className="nav-links">
           <div className="nav-dropdown-group">
             <span className={`nav-link ${!scrolled && isHome ? 'white-link' : ''}`}>
-              <BookOpen size={18} /> Education
+              <BookOpen size={18} /> {t('common.education')}
             </span>
-            <div className="nav-dropdown-content animate-fade-in glass-card">
-              <Link to="/about-epilepsy" className="dropdown-item">About Epilepsy</Link>
-              <Link to="/first-aid" className="dropdown-item">Emergency First Aid</Link>
-              <Link to="/myths-facts" className="dropdown-item">Myths & Facts</Link>
-              <Link to="/special-warnings" className="dropdown-item">Special Warnings</Link>
+            <div className={`nav-dropdown-content animate-fade-in glass-card ${isRTL ? 'dropdown-rtl' : ''}`}>
+              <Link to="/about-epilepsy" className="dropdown-item">{t('common.aboutEpilepsy')}</Link>
+              <Link to="/first-aid" className="dropdown-item">{t('common.emergencyFirstAid')}</Link>
+              <Link to="/myths-facts" className="dropdown-item">{t('common.mythsFacts')}</Link>
+              <Link to="/special-warnings" className="dropdown-item">{t('common.specialWarnings')}</Link>
             </div>
           </div>
           <Link to="/checker" className={`nav-link ${isActive('/checker') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
-            <Pill size={18} /> Interaction Checker
+            <Pill size={18} /> {t('common.interactionChecker')}
           </Link>
           <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
-            About the Team
+            {t('common.aboutTeam')}
           </Link>
+
+          <div className="nav-divider"></div>
+
+          <button onClick={toggleLanguage} className={`lang-toggle-btn ${!scrolled && isHome ? 'white-link' : ''}`}>
+            <Languages size={18} />
+            <span className="lang-code">{i18n.language === 'ar' ? 'EN' : 'AR'}</span>
+          </button>
 
           <div className="nav-divider"></div>
 
           {currentUser ? (
             <div className="user-menu">
               <Link to="/profile" className={`nav-link profile-link ${isActive('/profile') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
-                <User size={18} /> My Dashboard
+                <User size={18} /> {t('common.myDashboard')}
               </Link>
-              <button onClick={logout} className={`btn-icon ${!scrolled && isHome ? 'white-link' : ''}`} title="Logout">
+              <button onClick={logout} className={`btn-icon ${!scrolled && isHome ? 'white-link' : ''}`} title={t('common.logout')}>
                 <LogOut size={18} />
               </button>
             </div>
           ) : (
             <button onClick={onOpenAuth} className={`btn ${!scrolled && isHome ? 'btn-white' : 'btn-primary'} btn-sm`}>
-              Sign In
+              {t('common.signIn')}
             </button>
           )}
         </div>
@@ -86,22 +102,27 @@ const Navbar = ({ onOpenAuth }) => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="mobile-menu animate-fade-in">
+        <div className="mobile-menu animate-fade-in" dir={isRTL ? 'rtl' : 'ltr'}>
           <div className="mobile-education-links">
-            <strong>Education</strong>
-            <Link to="/about-epilepsy" onClick={() => setIsOpen(false)}>About Epilepsy</Link>
-            <Link to="/first-aid" onClick={() => setIsOpen(false)}>Emergency First Aid</Link>
-            <Link to="/myths-facts" onClick={() => setIsOpen(false)}>Myths & Facts</Link>
-            <Link to="/special-warnings" onClick={() => setIsOpen(false)}>Special Warnings</Link>
+            <strong style={{ textAlign: isRTL ? 'right' : 'left' }}>{t('common.education')}</strong>
+            <Link to="/about-epilepsy" onClick={() => setIsOpen(false)}>{t('common.aboutEpilepsy')}</Link>
+            <Link to="/first-aid" onClick={() => setIsOpen(false)}>{t('common.emergencyFirstAid')}</Link>
+            <Link to="/myths-facts" onClick={() => setIsOpen(false)}>{t('common.mythsFacts')}</Link>
+            <Link to="/special-warnings" onClick={() => setIsOpen(false)}>{t('common.specialWarnings')}</Link>
           </div>
-          <Link to="/checker" onClick={() => setIsOpen(false)}>Interaction Checker</Link>
+          <Link to="/checker" onClick={() => setIsOpen(false)}>{t('common.interactionChecker')}</Link>
+          
+          <button onClick={toggleLanguage} className="mobile-lang-btn">
+            <Languages size={20} /> {i18n.language === 'ar' ? 'Switch to English' : 'تغيير للغة العربية'}
+          </button>
+
           {currentUser ? (
             <>
-              <Link to="/profile" onClick={() => setIsOpen(false)}>My Dashboard</Link>
-              <button onClick={() => { logout(); setIsOpen(false); }}>Logout</button>
+              <Link to="/profile" onClick={() => setIsOpen(false)}>{t('common.myDashboard')}</Link>
+              <button onClick={() => { logout(); setIsOpen(false); }} className="mobile-logout-btn">{t('common.logout')}</button>
             </>
           ) : (
-            <button className="btn btn-mobile-signin" onClick={() => { onOpenAuth(); setIsOpen(false); }}>Sign In</button>
+            <button className="btn btn-mobile-signin" onClick={() => { onOpenAuth(); setIsOpen(false); }}>{t('common.signIn')}</button>
           )}
         </div>
       )}
@@ -172,6 +193,22 @@ const Navbar = ({ onOpenAuth }) => {
         .nav-divider { width: 1px; height: 24px; background: var(--border); }
         .navbar-transparent .nav-divider { background: rgba(255, 255, 255, 0.2); }
         
+        .lang-toggle-btn {
+          background: none;
+          border: none;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          cursor: pointer;
+          font-weight: 700;
+          color: var(--text-muted);
+          padding: 6px 12px;
+          border-radius: 20px;
+          transition: all 0.2s;
+        }
+        .lang-toggle-btn:hover { background: rgba(126, 34, 206, 0.05); color: var(--primary); }
+        .lang-code { font-size: 0.8rem; }
+
         .user-menu { display: flex; align-items: center; gap: 1.5rem; }
         .btn-icon {
           background: none; border: none; color: var(--text-muted); cursor: pointer;
@@ -188,14 +225,26 @@ const Navbar = ({ onOpenAuth }) => {
           box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid var(--border);
           opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 1000;
         }
+        .dropdown-rtl { left: auto !important; right: 0 !important; }
+        
         .dropdown-item { padding: 10px 16px; color: var(--text-main); text-decoration: none; font-weight: 600; border-radius: 8px; transition: background 0.2s; }
         .dropdown-item:hover { background: rgba(126, 34, 206, 0.05); color: var(--primary); }
         
         .mobile-education-links { display: flex; flex-direction: column; gap: 1rem; border-left: 2px solid var(--border); padding-left: 1rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .mobile-menu[dir="rtl"] .mobile-education-links { border-left: none; border-right: 2px solid var(--border); padding-left: 0; padding-right: 1rem; }
         .mobile-education-links strong { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
         
         .mobile-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--text-main); }
         
+        .mobile-lang-btn {
+          display: flex; align-items: center; gap: 10px; background: rgba(126, 34, 206, 0.05);
+          border: 1px solid rgba(126, 34, 206, 0.1); padding: 12px; border-radius: 12px;
+          cursor: pointer; font-weight: 600; color: var(--primary);
+        }
+        
+        .mobile-logout-btn { background: none; border: none; padding: 0; font: inherit; color: var(--error) !important; cursor: pointer; text-align: left; }
+        .mobile-menu[dir="rtl"] .mobile-logout-btn { text-align: right; }
+
         .btn-sm { padding: 10px 24px; font-size: 0.9rem; }
         .btn-white { background: white; color: var(--primary); }
         .btn-white:hover { background: #f8f9fa; transform: translateY(-2px); }

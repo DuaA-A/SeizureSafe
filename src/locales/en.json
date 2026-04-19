@@ -1,0 +1,336 @@
+{
+  "common": {
+    "education": "Education",
+    "aboutEpilepsy": "About Epilepsy",
+    "emergencyFirstAid": "Emergency First Aid",
+    "mythsFacts": "Myths & Facts",
+    "specialWarnings": "Special Warnings",
+    "interactionChecker": "Interaction Checker",
+    "aboutTeam": "About the Team",
+    "myDashboard": "My Dashboard",
+    "signIn": "Sign In",
+    "logout": "Logout",
+    "learnMore": "Learn More",
+    "checkDrugs": "Check Drugs",
+    "viewHistory": "View History",
+    "registerNow": "Register Now"
+  },
+  "firstAid": {
+    "subtitle": "ACT FAST",
+    "title": "Emergency First Aid",
+    "desc": "If someone is having a seizure, stay calm. Follow these standardized steps based on guidelines from the CDC and the Epilepsy Foundation.",
+    "step1Title": "1. Time It",
+    "step1Desc": "Note the exact time the seizure starts. If it lasts longer than 5 minutes, call an ambulance immediately.",
+    "step2Title": "2. Keep Them Safe",
+    "step2Desc": "Move hard or sharp objects out of the way. Place something soft, like a folded jacket, under their head.",
+    "step3Title": "3. Roll on Side",
+    "step3Desc": "Once the jerking stops, gently roll the person onto their side. This helps keep their airway clear.",
+    "doTitle": "DO",
+    "doList": [
+      "Stay with the person until the seizure ends and they are fully awake.",
+      "Loosen anything around their neck (like a tie or collar).",
+      "Reassure them gently once they wake up; they may be confused.",
+      "Check if they have a medical ID bracelet."
+    ],
+    "dontTitle": "DON'T",
+    "dontList": [
+      "Do not hold the person down or try to stop their movements.",
+      "Do not put anything in their mouth. It can injure their teeth or jaw.",
+      "Do not give them water, food, or pills until fully alert.",
+      "Do not perform CPR unless they stop breathing after the seizure stops."
+    ],
+    "emergencyTitle": "When to call an ambulance (911)",
+    "emergencyList": [
+      "The seizure lasts longer than 5 minutes.",
+      "The person has difficulty breathing after the seizure.",
+      "They have another seizure immediately after the first.",
+      "They get injured during the seizure.",
+      "The person is pregnant, sick, or has diabetes.",
+      "It is the person's first ever seizure."
+    ]
+  },
+  "aboutEpilepsy": {
+    "subtitle": "LEARN",
+    "title": "What is Epilepsy?",
+    "desc": "Epilepsy is more than just symptoms; it is a neurological condition that involves recurrent, unprovoked seizures. Understanding the classification is the first step toward effective management.",
+    "classTitle": "Clinical Classifications",
+    "classSubtitle": "Select a type to view detailed clinical observation patterns and safety notes.",
+    "clickDetails": "Click for Details",
+    "modalBadge": "Clinical Classification Detail",
+    "indicators": "Primary Indicators:",
+    "pharmacistNote": "Pharmacist Note",
+    "sections": {
+      "what": {
+        "title": "What is Epilepsy?",
+        "content": "Epilepsy is a chronic noncommunicable disease of the brain that affects around 50 million people worldwide. It is characterized by recurrent seizures, which are brief episodes of involuntary movement that may involve a part of the body (partial) or the entire body (generalized), and are sometimes accompanied by loss of consciousness and control of bowel or bladder function."
+      },
+      "causes": {
+        "title": "Causes of Epilepsy",
+        "content": "Epilepsy is not contagious. Although many underlying disease mechanisms can lead to epilepsy, the cause of the disease is still unknown in about 50% of cases globally. The causes of epilepsy are divided into the following categories: structural, genetic, infectious, metabolic, immune and unknown. Examples include brain damage from prenatal or perinatal causes, congenital abnormalities, stroke, head trauma, and infections such as meningitis or encephalitis."
+      },
+      "diagnosis": {
+        "title": "Diagnosis & Treatment",
+        "content": "A doctor will review your symptoms and medical history. Tests like an electroencephalogram (EEG) or neurological scans (MRI, CT) are commonly used to diagnose the specific type of epilepsy. \n\nThe disease can be successfully treated in up to 70% of cases with anti-seizure medications (AEDs). For those who do not respond to medication, surgery, neurostimulation, or dietary changes (like the ketogenic diet) might be considered."
+      }
+    },
+    "details": {
+      "gtc": {
+        "name": "Generalized Tonic-Clonic",
+        "title": "Tonic-Clonic",
+        "description": "A major generalized seizure characterized by sudden loss of consciousness, body stiffening (tonic phase), followed by rhythmic jerking (clonic phase).",
+        "symptoms": ["Loss of consciousness", "Full body rhythmic jerking", "Vocalizations or tongue biting", "Confusion after episode"],
+        "note": "Ensure the environment is clear of sharp objects. Do not place anything in the mouth."
+      },
+      "focalAware": {
+        "name": "Focal Aware Seizure",
+        "title": "Focal Aware",
+        "description": "Starts in one area of the brain. The person remains fully aware and can usually describe the event in detail after it finishes.",
+        "symptoms": ["Localized twitching (hand/face)", "Strange smells or tastes", "Intense feelings of fear/joy", "Numbness or tingling"],
+        "note": "Observe carefully to see if it progresses. Documentation of precise feelings is vital for diagnosis."
+      },
+      "absence": {
+        "name": "Absence Seizure",
+        "title": "Absence",
+        "description": "A brief lapse in consciousness that looks like staring into space. Commonly seen in children and lasts only a few seconds.",
+        "symptoms": ["Sudden blank stare", "Eyes rolling upward", "Rapid blinking", "Immediate return to normal awareness"],
+        "note": "Easily missed in school settings. Frequent \"daydreaming\" should be medically investigated."
+      },
+      "focalImpaired": {
+        "name": "Focal Impaired Awareness",
+        "title": "Focal Impaired",
+        "description": "A focal seizure where awareness is altered or lost. The person may appear conscious but is not fully responsive.",
+        "symptoms": ["Automatisms (lip smacking, chewing)", "Repetitive movements", "Aimless walking", "No memory of the event"],
+        "note": "Guide the individual away from danger gently; do not restrain them forcefully."
+      },
+      "atonic": {
+        "name": "Atonic Seizure (Drop Attacks)",
+        "title": "Atonic",
+        "description": "Sudden loss of muscle tone causing the person to collapse or fall forward. Also known as \"drop attacks\".",
+        "symptoms": ["Sudden limpness", "Head dropping forward", "Immediate collapse", "Brief duration"],
+        "note": "Risk of head injury is high. Protective headgear is often recommended for frequent events."
+      },
+      "myoclonic": {
+        "name": "Myoclonic Seizure",
+        "title": "Myoclonic",
+        "description": "Brief, shock-like jerks of a muscle or group of muscles. Usually occurring on both sides of the body.",
+        "symptoms": ["Sudden muscle contractions", "Shock-like jerks", "Commonly occurs in the morning", "Brief (1-2 seconds)"],
+        "note": "Often occurs shortly after waking. Can interfere with holding objects or eating."
+      }
+    }
+  },
+  "mythsFacts": {
+    "subtitle": "CLARITY",
+    "title": "Myths & Facts",
+    "desc": "There is a lot of misinformation surrounding epilepsy. We are here to clear the air with evidence-based facts to reduce stigma and promote understanding.",
+    "mythLabel": "Myth",
+    "factLabel": "Fact",
+    "items": [
+      {
+        "myth": "You should put a spoon in the mouth of someone having a seizure.",
+        "fact": "NEVER put anything in the mouth. It can break teeth or block the airway. It is an old myth that people can swallow their tongue; they cannot."
+      },
+      {
+        "myth": "Epilepsy is contagious.",
+        "fact": "Epilepsy is a neurological condition, not an infection. You cannot 'catch' epilepsy from someone else."
+      },
+      {
+        "myth": "People with epilepsy are mentally ill.",
+        "fact": "Epilepsy is a physical condition characterized by electrical disturbances in the brain. It is not a mental illness or a sign of low intelligence."
+      },
+      {
+        "myth": "Only children get epilepsy.",
+        "fact": "While it is common in children, epilepsy can develop at any age, especially in seniors due to stroke or other health conditions."
+      },
+      {
+        "myth": "You should hold down a person having a seizure.",
+        "fact": "Never hold a person down to try and stop their movements. This can result in bone fractures or muscle tearing. Just clear the area of hard objects."
+      },
+      {
+        "myth": "During a seizure, a person can swallow their tongue.",
+        "fact": "It is physically impossible to swallow your tongue. However, a person's airway can become blocked, which is why rolling them on their side is important."
+      },
+      {
+        "myth": "A seizure is always a medical emergency.",
+        "fact": "Actually, most seizures last a short time and stop on their own. You only need to call 911 if it lasts longer than 5 minutes, or under specific criteria."
+      }
+    ]
+  },
+  "specialWarnings": {
+    "subtitle": "Vulnerable Populations",
+    "title": "Special Population Warnings",
+    "desc": "Pharmacokinetics can vary significantly across different age groups. Extra clinical vigilance is required for children and the elderly when administering antiepileptic therapy.",
+    "pediatric": {
+      "title": "Pediatric Patients",
+      "items": [
+        {
+          "title": "Dosage Sensitivity",
+          "content": "Children metabolize drugs differently than adults. They often require higher doses per kilogram of body weight, but they are also more susceptible to cognitive side effects."
+        },
+        {
+          "title": "Behavioral Monitoring",
+          "content": "Certain drugs (like Levetiracetam or Phenobarbital) can cause paradoxical hyperactivity, aggression, or learning difficulties in children. Parents and teachers must monitor school performance closely."
+        },
+        {
+          "title": "Growth Considerations",
+          "content": "Dosages need frequent readjustment as the child grows and gains weight to maintain therapeutic blood levels."
+        }
+      ]
+    },
+    "elderly": {
+      "title": "Elderly Patients",
+      "items": [
+        {
+          "title": "Slower Metabolism",
+          "content": "Decreased renal and hepatic clearance means drugs stay in the system longer. Elderly patients typically require lower starting doses (“start low, go slow”)."
+        },
+        {
+          "title": "High Interaction Risk",
+          "content": "Older adults often take multiple medications for other conditions (hypertension, diabetes), drastically increasing the risk of adverse drug-drug interactions with AEDs."
+        },
+        {
+          "title": "Fall & Bone Risks",
+          "content": "Enzyme-inducing AEDs (like Phenytoin or Carbamazepine) can reduce bone density. Dizziness and sedation from meds also greatly increase the risk of dangerous falls."
+        }
+      ]
+    }
+  },
+  "checker": {
+    "subtitle": "Live Validation",
+    "title": "Medication Safety Center",
+    "desc": "Live dynamic validation checking your prescriptions against epilepsy therapies and food interactions via NIH RxNav.",
+    "tabSafety": "Safety Analyzer",
+    "tabArchive": "My Archive",
+    "buildTitle": "Build Regimen",
+    "buildDesc": "Add drugs below. We automatically cross-reference these against baseline epilepsy treatments.",
+    "slotText": "Slot {{index}}",
+    "required": "(Required)",
+    "optional": "(Optional)",
+    "placeholder": "e.g. Ibuprofen",
+    "analysing": "Analyzing...",
+    "generateBtn": "Generate Full Report",
+    "awaitingTitle": "Awaiting Analysis",
+    "awaitingDesc": "Enter your prescriptions and click generate to retrieve safety protocols across multiple health databases.",
+    "apiInteractions": "API Drug Interactions",
+    "noInteractions": "No major interactions found in the clinical proxy database between your inputs and baseline epilepsy medications. Always consult your provider.",
+    "riskLevel": "{{level}} Risk",
+    "description": "Description:",
+    "note": "Note:",
+    "foodAlerts": "Food & Lifestyle Alerts",
+    "noFoodWarnings": "No major food or lifestyle restrictions identified in OpenFDA or local clinical protocols for these medications.",
+    "mustAvoid": "Must Avoid:",
+    "timing": "Administration Timing:",
+    "instruction": "Clinical Instruction:",
+    "source": "Source:",
+    "disclaimerTitle": "Medical Disclaimer:",
+    "disclaimerDesc": "This application relies on NIH RxNav and OpenFDA APIs strictly for educational purposes. Drug interactions are complex and dependent on your specific health history. Do not alter your medication regiment without consulting your doctor or pharmacist.",
+    "archiveTitle": "Access Your Archive",
+    "archiveDesc": "Log in to save drugs across sessions.",
+    "loginBtn": "Log In Securely",
+    "savedTitle": "Saved Prescriptions",
+    "archivedAt": "Archived: {{date}}",
+    "noSavedMeds": "No medications saved to your profile yet.",
+    "errors": {
+      "maxDrugs": "Maximum {{max}} medications allowed.",
+      "alreadyAdded": "\"{{name}}\" is already added.",
+      "notFound": "\"{{name}}\" not found in RxNav database. Check spelling.",
+      "network": "Network error connecting to drug database.",
+      "addOne": "Please add at least 1 medication to check.",
+      "apiDown": "Failed to generate complete interaction report. The API service may be down."
+    }
+  },
+  "dashboard": {
+    "secureTitle": "Secure Dashboard",
+    "secureDesc": "Please log in to view your seizure history and medication list.",
+    "returnHome": "Return Home",
+    "previewMode": "Preview Mode",
+    "drugsArchive": "Drugs Archive",
+    "myMeds": "My Current Medications",
+    "addPlaceholder": "Add a new drug...",
+    "noMeds": "No medications added.",
+    "logout": "Logout"
+  },
+  "auth": {
+    "loginTitle": "Welcome Back",
+    "signupTitle": "Join SeizureSafe",
+    "loginDesc": "Access your secure dashboard",
+    "signupDesc": "Your safe space for epilepsy care",
+    "fullName": "Full Name",
+    "email": "Email address",
+    "password": "Password",
+    "processing": "Processing...",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "createAccount": "Create Account",
+    "newTo": "New to SeizureSafe?",
+    "alreadyMember": "Already a member?"
+  },
+  "about": {
+    "subtitle": "The Clinical Team",
+    "title": "Meet the Pharmacists Behind SeizureSafe",
+    "desc": "We are a dedicated group of pharmacy students committed to improving epilepsy care through technological intervention.",
+    "mti": "MTI University",
+    "project": "Faculty of Pharmacy Medical Graduation Project 2026",
+    "missionLabel": "Our Mission",
+    "missionTitle": "Bridging Pharmacy & Technology",
+    "missionText1": "We noticed that navigating the complexities of epilepsy treatment—from recognizing seizure patterns to tracking potential drug interactions—can be overwhelming for patients without constant professional supervision.",
+    "missionText2": "That is why we created SeizureSafe. An accessible tool that empowers patients with immediate, reliable pharmacological checks and symptom logging, functioning as your personal clinical pharmacist counterpart.",
+    "valuesSubtitle": "Core Foundations",
+    "valuesTitle": "Our Clinical Values",
+    "values": [
+      {
+        "title": "Evidence-Based",
+        "desc": "All our diagnostic tools and interaction verifications are grounded in active pharmacological research and medical databases."
+      },
+      {
+        "title": "Transparent",
+        "desc": "We provide clear, un-biased interpretations of medical interactions without hidden agendas."
+      },
+      {
+        "title": "Patient Centric",
+        "desc": "The interface respects that tracking seizures and medications can be stressful, focusing on a calm and reassuring design."
+      },
+      {
+        "title": "Safety First",
+        "desc": "The primary outcome of every feature in SeizureSafe is to prevent dangerous contraindications."
+      }
+    ],
+    "ctaLabel": "Take Action",
+    "ctaTitle": "Try the Seizure Check",
+    "ctaText": "Access our expert system designed to help identify the patterns of epileptic episodes to prepare comprehensive reports for your doctor.",
+    "ctaBtn": "Start the Diagnostic Tools",
+    "team": [
+      { "id": 1, "name": "Seveen Mohamed Ahmed Fouad Elsayoufy", "role": "Team Leader", "bio": "Coordinates clinical integration and leads the pharmacy presentation board structure." },
+      { "id": 2, "name": "Ahmed Ezzat Osman Tantawy", "role": "Clinical Pharmacist", "bio": "Specializes in antiepileptic drug interactions and metabolic profiling." },
+      { "id": 3, "name": "Diana Yasser AbdAlazim Mohamed Salama", "role": "Clinical Pharmacist", "bio": "Focuses on patient compliance and seizure trigger correlation data." },
+      { "id": 4, "name": "Mina Talat Shaker Wassef", "role": "Clinical Pharmacist", "bio": "Ensures the accuracy of the Interaction Checker API integration." },
+      { "id": 5, "name": "Moustafa Khalid Mohamed Taha Bahr", "role": "Clinical Pharmacist", "bio": "Develops the seizure pattern algorithms used in the Seizure Check tool." },
+      { "id": 6, "name": "Nada Mohammed Kamal Abieah", "role": "Clinical Pharmacist", "bio": "Curates the medical terminology and user instructions for clarity." },
+      { "id": 7, "name": "Zeinab Hamdy Hassab tayeeb", "role": "Clinical Pharmacist", "bio": "Evaluates application usability against pharmacy standards." },
+      { "id": 8, "name": "Abdalla Abouelscoud Hassan Hassoub Soliman", "role": "Clinical Pharmacist", "bio": "Researches up-to-date medication interactions and contraindications." },
+      { "id": 9, "name": "Yassein Mohamed Mohamed Ali Almaghrabi", "role": "Clinical Pharmacist", "bio": "Structures the medical history tracking and compliance database logic." },
+      { "id": 10, "name": "Ahmed Mohamed Ahmed Elgashy", "role": "Clinical Pharmacist", "bio": "Validates final clinical safety recommendations for the graduation board." }
+    ]
+  },
+  "home": {
+    "heroBadge": "Empowering Caregivers Every Day",
+    "heroTitle": "Your Loved One’s Safety Is Our Priority",
+    "heroDescription": "We bridge the gap between medical complexity and compassionate care. Identify seizure patterns with precision and check drug interactions with pharmacist-backed tools designed for the people you care for most.",
+    "understandingTitle": "Understanding Epilepsy",
+    "understandingDescription": "Epilepsy is a chronic noncommunicable disease of the brain that affects people of all ages. Knowing the specific type of seizure is vital for providing the correct pharmaceutical treatment.",
+    "understandingBtn": "Learn More About Epilepsy Types",
+    "servicesTitle": "Clinical Support Tools",
+    "servicesSubtitle": "Everything you need for safe pharmacological management.",
+    "eduTitle": "Epilepsy Education",
+    "eduDesc": "Comprehensive guide on what to do during a seizure, common myths, and facts to empower caregivers.",
+    "checkerTitle": "Interaction Checker",
+    "checkerDesc": "High-accuracy safety tool utilizing global RxNav standard data to cross-verify prescriptions.",
+    "archivesTitle": "Medical Archives",
+    "archivesDesc": "Securely store their medication history and ongoing medical assessments in your personal dashboard.",
+    "ctaTitle": "Ready to take control?",
+    "ctaDesc": "Join SeizureSafe today to build a secure, pharmacist-approved archive for your loved ones."
+  },
+  "footer": {
+    "copyright": "© 2026 SeizureSafe. MTI University Pharmacy Graduation Project.",
+    "disclaimer": "Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosages, consult your physician."
+  }
+}

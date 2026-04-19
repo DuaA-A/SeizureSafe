@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import Navbar from './components/common/Navbar';
 import AuthWindow from './components/auth/AuthWindow';
 import InteractionChecker from './components/checker/InteractionChecker';
@@ -12,34 +13,33 @@ import MythsFacts from './components/education/MythsFacts';
 import SpecialWarnings from './components/education/SpecialWarnings';
 import { Shield, Activity, Pill, User, ChevronRight, Heart, ClipboardList, ArrowRight, ShieldCheck, FileText, X, Info } from 'lucide-react';
 
-
-
 const Home = ({ onOpenAuth }) => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
   return (
     <div className="home-container animate-fade-in">
 
       {/* Hero Section */}
       <section className="full-screen-section modern-hero">
         <div className="hero-content container">
-          <div className="hero-flex-wrapper">
-            <div className="hero-text-side">
-              <div className="active-badge mb-4">Empowering Caregivers Every Day</div> <br />
+          <div className="hero-flex-wrapper" style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}>
+            <div className="hero-text-side" style={{ textAlign: isRTL ? 'right' : 'left', paddingRight: isRTL ? '0' : '4rem', paddingLeft: isRTL ? '4rem' : '0' }}>
+              <div className="active-badge mb-4">{t('home.heroBadge')}</div> <br />
               <h1 className="hero-title white-text">
-                Your Loved One’s Safety <br />
-                <span className="text-glow italic" style={{ color: '#eebef1' }}>Is Our Priority</span>
+                {t('home.heroTitle').split(' ').slice(0, -3).join(' ')} <br />
+                <span className="text-glow italic" style={{ color: '#eebef1' }}>{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
               </h1>
               <p className="hero-description white-text">
-                We bridge the gap between clinical complexity and compassionate care.
-                Identify seizure patterns accurately and verify drug interactions with pharmacist-backed tools
-                designed for the people you care about most.
+                {t('home.heroDescription')}
               </p>
 
               <div className="hero-cta-group">
                 <Link to="/first-aid" className="btn-white-dark">
-                  Emergency First Aid <ChevronRight size={20} />
+                  {t('common.emergencyFirstAid')} {isRTL ? <ChevronRight size={20} style={{ transform: 'rotate(180deg)' }} /> : <ChevronRight size={20} />}
                 </Link>
                 <Link to="/checker" className="btn btn-outline-white">
-                  Drug Interaction Checker
+                  {t('common.interactionChecker')}
                 </Link>
               </div>
             </div>
@@ -81,9 +81,9 @@ const Home = ({ onOpenAuth }) => {
       <section className="section-spacing bg-unified text-center">
         <div className="container">
           <div className="section-header centered-header">
-            <h2>Understanding Epilepsy</h2>
-            <p>Epilepsy is a chronic noncommunicable disease of the brain that affects people of all ages. Knowing the specific type of seizure is critical for providing the right pharmacological treatment.</p>
-            <Link to="/about-epilepsy" className="btn btn-premium mt-8">Learn More About Epilepsy Types</Link>
+            <h2>{t('home.understandingTitle')}</h2>
+            <p>{t('home.understandingDescription')}</p>
+            <Link to="/about-epilepsy" className="btn btn-premium mt-8">{t('home.understandingBtn')}</Link>
           </div>
         </div>
       </section>
@@ -92,27 +92,27 @@ const Home = ({ onOpenAuth }) => {
       <section className="section-spacing bg-unified text-center">
         <div className="container">
           <div className="section-header centered-header">
-            <h2>Clinical Support Tools</h2>
-            <p>Everything you need for safe pharmacological management.</p>
+            <h2>{t('home.servicesTitle')}</h2>
+            <p>{t('home.servicesSubtitle')}</p>
           </div>
           <div className="services-grid mt-12">
             <motion.div whileHover={{ y: -6 }} className="service-card glass-card">
               <div className="service-icon"><Activity size={40} /></div>
-              <h3>Epilepsy Education</h3>
-              <p>Comprehensive guide on what to do during a seizure, common myths, and facts to empower caregivers.</p>
-              <Link to="/first-aid" className="btn btn-premium mt-4">Learn More</Link>
+              <h3>{t('home.eduTitle')}</h3>
+              <p>{t('home.eduDesc')}</p>
+              <Link to="/first-aid" className="btn btn-premium mt-4">{t('common.learnMore')}</Link>
             </motion.div>
             <motion.div whileHover={{ y: -6 }} className="service-card glass-card">
               <div className="service-icon"><Pill size={40} /></div>
-              <h3>Interaction Screening</h3>
-              <p>High-precision API safety tool leveraging global RxNav standard data to check their prescriptions.</p>
-              <Link to="/checker" className="btn btn-premium mt-4">Check Drugs</Link>
+              <h3>{t('home.checkerTitle')}</h3>
+              <p>{t('home.checkerDesc')}</p>
+              <Link to="/checker" className="btn btn-premium mt-4">{t('common.checkDrugs')}</Link>
             </motion.div>
             <motion.div whileHover={{ y: -6 }} className="service-card glass-card">
               <div className="service-icon"><FileText size={40} /></div>
-              <h3>Medical Archives</h3>
-              <p>Securely store their pharmacological history and ongoing medical assessments in your private dashboard.</p>
-              <Link to="/profile" className="btn btn-premium mt-4">View History</Link>
+              <h3>{t('home.archivesTitle')}</h3>
+              <p>{t('home.archivesDesc')}</p>
+              <Link to="/profile" className="btn btn-premium mt-4">{t('common.viewHistory')}</Link>
             </motion.div>
           </div>
         </div>
@@ -127,11 +127,11 @@ const Home = ({ onOpenAuth }) => {
             viewport={{ once: true }}
             className="cta-glass-card glass-card animate-fade-in"
           >
-            <h2>Ready to Take Control?</h2>
-            <p>Join SeizureSafe today to build a secure, pharmacist-verified archive for your loved one.</p>
+            <h2>{t('home.ctaTitle')}</h2>
+            <p>{t('home.ctaDesc')}</p>
             <div className="cta-buttons mt-8">
-              <button className="btn-white-solid" onClick={onOpenAuth}>Register Now</button>
-              <Link to="/about" className="btn-outline-white">Learn More</Link>
+              <button className="btn-white-solid" onClick={onOpenAuth}>{t('common.registerNow')}</button>
+              <Link to="/about" className="btn-outline-white">{t('common.learnMore')}</Link>
             </div>
           </motion.div>
         </div>
@@ -332,9 +332,15 @@ const Home = ({ onOpenAuth }) => {
 
 const App = () => {
   const [showAuth, setShowAuth] = useState(false);
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    document.documentElement.lang = i18n.language;
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${i18n.language === 'ar' ? 'rtl-mode' : ''}`}>
       <Navbar onOpenAuth={() => setShowAuth(true)} />
 
       {showAuth && <AuthWindow onClose={() => setShowAuth(false)} />}
@@ -354,8 +360,8 @@ const App = () => {
 
       <footer className="footer dark-footer">
         <div className="footer-content">
-          <p>© 2026 SeizureSafe. Pharmacy Graduation Project • MTI University.</p>
-          <p className="disclaimer">Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosage, consult your doctor.</p>
+          <p>{t('footer.copyright')}</p>
+          <p className="disclaimer">{t('footer.disclaimer')}</p>
         </div>
       </footer>
 
@@ -365,6 +371,9 @@ const App = () => {
         .dark-footer { margin-top: auto; padding: 3rem 2rem; text-align: center; background: #1e1b4b; color: white; position: relative; z-index: 1; }
         .footer-content { max-width: 800px; margin: 0 auto; }
         .disclaimer { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); margin-top: 1rem; line-height: 1.6; }
+        
+        /* RTL Mode Overrides */
+        .rtl-mode { font-family: 'Cairo', 'Inter', sans-serif !important; }
       `}</style>
     </div>
   );

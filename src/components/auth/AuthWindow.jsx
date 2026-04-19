@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { Mail, Lock, User, X, Shield } from 'lucide-react';
 
 const AuthWindow = ({ onClose }) => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+  
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +34,7 @@ const AuthWindow = ({ onClose }) => {
   };
 
   return (
-    <div className="auth-overlay">
+    <div className="auth-overlay" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="auth-modal glass-card animate-fade-in">
         <button className="btn-close" onClick={onClose}><X size={20} /></button>
         
@@ -38,8 +42,8 @@ const AuthWindow = ({ onClose }) => {
           <div className="auth-logo">
             <Shield size={32} className="logo-icon" />
           </div>
-          <h2>{isLogin ? 'Welcome Back' : 'Join SeizureSafe'}</h2>
-          <p>{isLogin ? 'Access your secure dashboard' : 'Your safe space for epilepsy care'}</p>
+          <h2>{isLogin ? t('auth.loginTitle') : t('auth.signupTitle')}</h2>
+          <p>{isLogin ? t('auth.loginDesc') : t('auth.signupDesc')}</p>
         </div>
 
         {error && <div className="error-message">{error}</div>}
@@ -51,7 +55,7 @@ const AuthWindow = ({ onClose }) => {
               <input 
                 type="text" 
                 className="input-field" 
-                placeholder="Full Name" 
+                placeholder={t('auth.fullName')} 
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 required
@@ -63,7 +67,7 @@ const AuthWindow = ({ onClose }) => {
             <input 
               type="email" 
               className="input-field" 
-              placeholder="Email address" 
+              placeholder={t('auth.email')} 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -74,7 +78,7 @@ const AuthWindow = ({ onClose }) => {
             <input 
               type="password" 
               className="input-field" 
-              placeholder="Password" 
+              placeholder={t('auth.password')} 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -82,14 +86,14 @@ const AuthWindow = ({ onClose }) => {
           </div>
 
           <button type="submit" className="btn btn-premium w-full" disabled={loading}>
-            {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
+            {loading ? t('auth.processing') : (isLogin ? t('auth.signIn') : t('auth.createAccount'))}
           </button>
         </form>
 
         <div className="auth-footer">
-          <span>{isLogin ? "New to SeizureSafe?" : "Already a member?"}</span>
+          <span>{isLogin ? t('auth.newTo') : t('auth.alreadyMember')}</span>
           <button className="btn-text" onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? 'Sign Up' : 'Sign In'}
+            {isLogin ? t('auth.signUp') : t('auth.signIn')}
           </button>
         </div>
       </div>
@@ -117,7 +121,7 @@ const AuthWindow = ({ onClose }) => {
         .btn-close {
           position: absolute;
           top: 1.5rem;
-          right: 1.5rem;
+          inset-inline-end: 1.5rem;
           background: none;
           border: none;
           color: var(--text-muted);
@@ -159,13 +163,13 @@ const AuthWindow = ({ onClose }) => {
         }
         .input-icon {
           position: absolute;
-          left: 1.25rem;
+          inset-inline-start: 1.25rem;
           top: 50%;
           transform: translateY(-50%);
           color: var(--text-muted);
         }
         .input-group .input-field {
-          padding-left: 3.5rem;
+          padding-inline-start: 3.5rem;
         }
         .w-full {
           width: 100%;
@@ -193,7 +197,7 @@ const AuthWindow = ({ onClose }) => {
           color: var(--primary);
           font-weight: 700;
           cursor: pointer;
-          margin-left: 0.5rem;
+          margin-inline-start: 0.5rem;
         }
         .btn-text:hover {
           text-decoration: underline;

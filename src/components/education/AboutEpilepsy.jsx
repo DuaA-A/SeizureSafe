@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Brain, Activity, HeartPulse, Stethoscope, ChevronDown, ChevronUp, X, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../../styles/about.css'; // Make sure to use existing header wrapper
 
 const TypeDetailModal = ({ type, onClose }) => {
+  const { t, i18n } = useTranslation();
   if (!type) return null;
+  const isRTL = i18n.language === 'ar';
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={onClose} dir={isRTL ? 'rtl' : 'ltr'}>
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -20,14 +24,14 @@ const TypeDetailModal = ({ type, onClose }) => {
             <img src={type.image} alt={type.name} />
           </div>
           <div className="modal-info">
-            <div className="modal-badge mb-3">Clinical Classification Detail</div>
+            <div className="modal-badge mb-3">{t('aboutEpilepsy.modalBadge')}</div>
             <h2>{type.name}</h2>
             <div className="modal-desc-wrapper">
               <p className="modal-desc">{type.description}</p>
             </div>
             <div className="modal-details-grid mt-6">
               <div className="symptoms-box">
-                <h4><Activity size={18} className="icon-purple" /> Primary Indicators:</h4>
+                <h4><Activity size={18} className="icon-purple" /> {t('aboutEpilepsy.indicators')}</h4>
                 <ul>
                   {type.symptoms.map((s, i) => <li key={i}>{s}</li>)}
                 </ul>
@@ -35,7 +39,7 @@ const TypeDetailModal = ({ type, onClose }) => {
               <div className="medical-note-box">
                 <div className="note-header">
                   <Info size={18} className="icon-purple" />
-                  <strong>Pharmacist Note</strong>
+                  <strong>{t('aboutEpilepsy.pharmacistNote')}</strong>
                 </div>
                 <p>{type.note}</p>
               </div>
@@ -47,102 +51,41 @@ const TypeDetailModal = ({ type, onClose }) => {
   );
 };
 
-const EPILEPSY_DETAILS = [
-  {
-    id: 'gtc',
-    name: 'Generalized Tonic-Clonic',
-    title: 'Tonic-Clonic',
-    image: '/tonic-clonic.jpg',
-    description: 'A major generalized seizure characterized by sudden loss of consciousness, body stiffening (tonic phase), followed by rhythmic jerking (clonic phase).',
-    symptoms: ['Loss of consciousness', 'Full body rhythmic jerking', 'Vocalizations or tongue biting', 'Confusion after episode'],
-    note: 'Ensure the environment is clear of sharp objects. Do not place anything in the mouth.'
-  },
-  {
-    id: 'focal-aware',
-    name: 'Focal Aware Seizure',
-    title: 'Focal Aware',
-    image: '/focal Aware.jpg',
-    description: 'Starts in one area of the brain. The person remains fully aware and can usually describe the event in detail after it finishes.',
-    symptoms: ['Localized twitching (hand/face)', 'Strange smells or tastes', 'Intense feelings of fear/joy', 'Numbness or tingling'],
-    note: 'Observe carefully to see if it progresses. Documentation of precise feelings is vital for diagnosis.'
-  },
-  {
-    id: 'absence',
-    name: 'Absence Seizure',
-    title: 'Absence',
-    image: '/absence.jpg',
-    description: 'A brief lapse in consciousness that looks like staring into space. Commonly seen in children and lasts only a few seconds.',
-    symptoms: ['Sudden blank stare', 'Eyes rolling upward', 'Rapid blinking', 'Immediate return to normal awareness'],
-    note: 'Easily missed in school settings. Frequent "daydreaming" should be medically investigated.'
-  },
-  {
-    id: 'focal-impaired',
-    name: 'Focal Impaired Awareness',
-    title: 'Focal Impaired',
-    image: '/focal impaired.jpg',
-    description: 'A focal seizure where awareness is altered or lost. The person may appear conscious but is not fully responsive.',
-    symptoms: ['Automatisms (lip smacking, chewing)', 'Repetitive movements', 'Aimless walking', 'No memory of the event'],
-    note: 'Guide the individual away from danger gently; do not restrain them forcefully.'
-  },
-  {
-    id: 'atonic',
-    name: 'Atonic Seizure (Drop Attacks)',
-    title: 'Atonic',
-    image: '/atonic.jpg',
-    description: 'Sudden loss of muscle tone causing the person to collapse or fall forward. Also known as "drop attacks".',
-    symptoms: ['Sudden limpness', 'Head dropping forward', 'Immediate collapse', 'Brief duration'],
-    note: 'Risk of head injury is high. Protective headgear is often recommended for frequent events.'
-  },
-  {
-    id: 'myoclonic',
-    name: 'Myoclonic Seizure',
-    title: 'Myoclonic',
-    image: '/myoclonic.jpg',
-    description: 'Brief, shock-like jerks of a muscle or group of muscles. Usually occurring on both sides of the body.',
-    symptoms: ['Sudden muscle contractions', 'Shock-like jerks', 'Commonly occurs in the morning', 'Brief (1-2 seconds)'],
-    note: 'Often occurs shortly after waking. Can interfere with holding objects or eating.'
-  }
-];
-
 const AboutEpilepsy = () => {
   const [openSection, setOpenSection] = useState('what');
   const [selectedType, setSelectedType] = useState(null);
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const EPILEPSY_DETAILS = [
+    { id: 'gtc', ...t('aboutEpilepsy.details.gtc', { returnObjects: true }), image: '/tonic-clonic.jpg' },
+    { id: 'focal-aware', ...t('aboutEpilepsy.details.focalAware', { returnObjects: true }), image: '/focal Aware.jpg' },
+    { id: 'absence', ...t('aboutEpilepsy.details.absence', { returnObjects: true }), image: '/absence.jpg' },
+    { id: 'focal-impaired', ...t('aboutEpilepsy.details.focalImpaired', { returnObjects: true }), image: '/focal impaired.jpg' },
+    { id: 'atonic', ...t('aboutEpilepsy.details.atonic', { returnObjects: true }), image: '/atonic.jpg' },
+    { id: 'myoclonic', ...t('aboutEpilepsy.details.myoclonic', { returnObjects: true }), image: '/myoclonic.jpg' }
+  ];
+
   const sections = [
-    {
-      id: 'what',
-      icon: <Brain />,
-      title: 'What is Epilepsy?',
-      content: 'Epilepsy is a chronic noncommunicable disease of the brain that affects around 50 million people worldwide. It is characterized by recurrent seizures, which are brief episodes of involuntary movement that may involve a part of the body (partial) or the entire body (generalized), and are sometimes accompanied by loss of consciousness and control of bowel or bladder function.',
-    },
-    {
-      id: 'causes',
-      icon: <Activity />,
-      title: 'Causes of Epilepsy',
-      content: 'Epilepsy is not contagious. Although many underlying disease mechanisms can lead to epilepsy, the cause of the disease is still unknown in about 50% of cases globally. The causes of epilepsy are divided into the following categories: structural, genetic, infectious, metabolic, immune and unknown. Examples include brain damage from prenatal or perinatal causes, congenital abnormalities, stroke, head trauma, and infections such as meningitis or encephalitis.',
-    },
-    {
-      id: 'diagnosis',
-      icon: <Stethoscope />,
-      title: 'Diagnosis & Treatment',
-      content: 'A doctor will review your symptoms and medical history. Tests like an electroencephalogram (EEG) or neurological scans (MRI, CT) are commonly used to diagnose the specific type of epilepsy. \\n\\nThe disease can be successfully treated in up to 70% of cases with anti-seizure medications (AEDs). For those who do not respond to medication, surgery, neurostimulation, or dietary changes (like the ketogenic diet) might be considered.',
-    }
+    { id: 'what', icon: <Brain />, ...t('aboutEpilepsy.sections.what', { returnObjects: true }) },
+    { id: 'causes', icon: <Activity />, ...t('aboutEpilepsy.sections.causes', { returnObjects: true }) },
+    { id: 'diagnosis', icon: <Stethoscope />, ...t('aboutEpilepsy.sections.diagnosis', { returnObjects: true }) }
   ];
 
   return (
-    <div className="about-epilepsy-page container">
+    <div className="about-epilepsy-page container" dir={isRTL ? 'rtl' : 'ltr'}>
       <TypeDetailModal type={selectedType} onClose={() => setSelectedType(null)} />
 
       {/* ── Standardized Header ─────────────────────────────────────────────────── */}
       <div className="about-header-wrapper animate-fade-in">
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
-            <span className="about-subtitle">Knowledge is Power</span>
-            <h1 className="about-title">Understanding Epilepsy</h1>
-            <p className="about-desc">Empathetic, scientifically accurate information based on the World Health Organization (WHO) and the CDC.</p>
+            <span className="about-subtitle">{t('aboutEpilepsy.subtitle')}</span>
+            <h1 className="about-title">{t('aboutEpilepsy.title')}</h1>
+            <p className="about-desc">{t('aboutEpilepsy.desc')}</p>
         </div>
       </div>
 
@@ -155,6 +98,7 @@ const AboutEpilepsy = () => {
               <button
                 className="faq-button"
                 onClick={() => setOpenSection(openSection === section.id ? null : section.id)}
+                style={{ textAlign: isRTL ? 'right' : 'left' }}
               >
                 <div className="faq-title-wrap">
                   <div className={`faq-icon ${openSection === section.id ? 'active' : ''}`}>
@@ -193,8 +137,8 @@ const AboutEpilepsy = () => {
       <section className="section-spacing bg-unified epilepsy-types-section">
         <div className="container epilepsy-types-container">
           <div className="section-header epilepsy-section-header">
-            <h2>Clinical Classifications</h2>
-            <p>Select a type to view detailed clinical observation patterns and safety notes.</p>
+            <h2>{t('aboutEpilepsy.classTitle')}</h2>
+            <p>{t('aboutEpilepsy.classSubtitle')}</p>
           </div>
           <div className="types-full-grid">
             {EPILEPSY_DETAILS.map((type) => (
@@ -207,7 +151,7 @@ const AboutEpilepsy = () => {
                 <div className="type-card-img">
                   <img src={type.image} alt={type.name} />
                   <div className="type-card-overlay">
-                    <span className="view-details">Click for Details</span>
+                    <span className="view-details">{t('aboutEpilepsy.clickDetails')}</span>
                   </div>
                 </div>
                 <div className="type-card-info">
@@ -274,7 +218,6 @@ const AboutEpilepsy = () => {
           background: none;
           border: none;
           cursor: pointer;
-          text-align: left;
         }
 
         .faq-title-wrap {
@@ -472,7 +415,7 @@ const AboutEpilepsy = () => {
         }
 
         .symptoms-box ul {
-          padding-left: 1.25rem;
+          padding-inline-start: 1.25rem;
           margin: 0.5rem 0 0;
         }
 
@@ -490,7 +433,7 @@ const AboutEpilepsy = () => {
         .close-btn {
           position: absolute;
           top: 1rem;
-          right: 1rem;
+          inset-inline-end: 1rem;
           border: 1px solid var(--border);
           border-radius: 999px;
           background: white;

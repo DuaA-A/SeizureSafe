@@ -69,13 +69,7 @@
 }
 
 /* Layout Grid */
-.team-grid-about {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-  margin-bottom: 6rem;
-}
+.mobile-education-links { display: flex; flex-direction: column; gap: 1rem; border-inline-start: 2px solid var(--border); padding-inline-start: 1rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
 
 /* Luxury Card for Members */
 .luxury-card {
@@ -163,8 +157,8 @@
 .leader-badge-wrapper-top {
   position: absolute;
   top: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  inset-inline-start: 50%;
+  transform: translateX(calc(var(--dir-sign, 1) * -50%));
   z-index: 20;
 }
 
@@ -203,8 +197,8 @@
 .leader-badge-wrapper {
   position: absolute;
   top: 1.25rem;
-  left: 50%;
-  transform: translateX(-50%);
+  inset-inline-start: 50%;
+  transform: translateX(calc(var(--dir-sign, 1) * -50%));
   z-index: 20;
 }
 
@@ -260,25 +254,25 @@
 .aura-1 {
   position: absolute;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   width: 250px;
   height: 250px;
   background: rgba(157, 141, 241, 0.3);
   filter: blur(60px);
   border-radius: 50%;
-  transform: translate(50%, -50%);
+  transform: translate(calc(var(--dir-sign, 1) * 50%), -50%);
 }
 
 .aura-2 {
   position: absolute;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 250px;
   height: 250px;
   background: rgba(96, 165, 250, 0.3);
   filter: blur(60px);
   border-radius: 50%;
-  transform: translate(-30%, 30%);
+  transform: translate(calc(var(--dir-sign, 1) * -30%), 30%);
 }
 
 /* Sections */

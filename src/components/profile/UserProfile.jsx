@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { db, isPreviewMode } from '../../firebase/config';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -19,6 +20,9 @@ import { getRxCUI } from '../../services/rxnav';
 
 const UserProfile = () => {
   const { currentUser, logout } = useAuth();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+  
   const [medications, setMedications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [medInput, setMedInput] = useState('');
@@ -100,17 +104,17 @@ const UserProfile = () => {
 
   if (!currentUser) {
     return (
-      <div className="container section-padding text-center">
+      <div className="container section-padding text-center" dir={isRTL ? 'rtl' : 'ltr'}>
         <Shield size={64} className="icon-muted mb-4" />
-        <h1>Secure Dashboard</h1>
-        <p>Please log in to view your seizure history and medication list.</p>
-        <button onClick={() => navigate('/')} className="btn btn-primary mt-4">Return Home</button>
+        <h1>{t('dashboard.secureTitle')}</h1>
+        <p>{t('dashboard.secureDesc')}</p>
+        <button onClick={() => navigate('/')} className="btn btn-primary mt-4">{t('dashboard.returnHome')}</button>
       </div>
     );
   }
 
   return (
-    <div className="profile-page container section-padding animate-fade-in">
+    <div className="profile-page container section-padding animate-fade-in" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="dashboard-grid">
         {/* Sidebar */}
         <aside className="profile-sidebar">
@@ -118,15 +122,15 @@ const UserProfile = () => {
             <div className="avatar">{currentUser.email[0].toUpperCase()}</div>
             <h2>{currentUser.displayName || currentUser.email.split('@')[0]}</h2>
             <p className="email">{currentUser.email}</p>
-            {isPreviewMode && <span className="badge badge-warning">Preview Mode</span>}
+            {isPreviewMode && <span className="badge badge-warning">{t('dashboard.previewMode')}</span>}
             <div className="profile-stats">
               <div className="stat">
                 <strong>{medications.length}</strong>
-                <span>Drugs Archive</span>
+                <span>{t('dashboard.drugsArchive')}</span>
               </div>
             </div>
             <button onClick={logout} className="btn btn-ghost full-width logout-btn">
-              <LogOut size={18} /> Logout
+              <LogOut size={18} /> {t('dashboard.logout')}
             </button>
           </div>
         </aside>
@@ -137,7 +141,7 @@ const UserProfile = () => {
 
           <section className="dashboard-section">
             <div className="section-header">
-              <h3><Pill size={20} /> My Current Medications</h3>
+              <h3><Pill size={20} /> {t('dashboard.myMeds')}</h3>
             </div>
             <div className="med-manager-card glass-card">
               <form onSubmit={handleAddMed} className="med-input-compact">
@@ -145,7 +149,7 @@ const UserProfile = () => {
                   type="text" 
                   value={medInput}
                   onChange={(e) => setMedInput(e.target.value)}
-                  placeholder="Add a new drug..."
+                  placeholder={t('dashboard.addPlaceholder')}
                   disabled={addingMed}
                 />
                 <button type="submit" disabled={addingMed}>
@@ -158,7 +162,7 @@ const UserProfile = () => {
                     <span>{med.name}</span>
                     <button onClick={() => removeMed(i)}><Trash2 size={16} /></button>
                   </div>
-                )) : <p className="empty-mini">No medications added.</p>}
+                )) : <p className="empty-mini">{t('dashboard.noMeds')}</p>}
               </div>
             </div>
           </section>

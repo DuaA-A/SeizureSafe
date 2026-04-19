@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShieldAlert, Phone, Clock, Hand as HandStop, CheckCircle, XCircle } from 'lucide-react';
 import '../../styles/about.css'; // Inheriting global header classes
 
 const FirstAid = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -13,9 +17,9 @@ const FirstAid = () => {
       {/* ── Standardized Header ─────────────────────────────────────────────────── */}
       <div className="about-header-wrapper animate-fade-in">
         <div className="header-content-inner" style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
-            <span className="about-subtitle">ACT FAST</span>
-            <h1 className="about-title">Emergency First Aid</h1>
-            <p className="about-desc">If someone is having a seizure, stay calm. Follow these standardized steps based on guidelines from the CDC and the Epilepsy Foundation.</p>
+            <span className="about-subtitle">{t('firstAid.subtitle')}</span>
+            <h1 className="about-title">{t('firstAid.title')}</h1>
+            <p className="about-desc">{t('firstAid.desc')}</p>
         </div>
       </div>
 
@@ -25,18 +29,18 @@ const FirstAid = () => {
         <div className="core-steps-grid">
           <div className="glass-card step-card">
             <Clock size={36} className="icon-primary" />
-            <h3>1. Time It</h3>
-            <p>Note the exact time the seizure starts. If it lasts longer than 5 minutes, call an ambulance immediately.</p>
+            <h3>{t('firstAid.step1Title')}</h3>
+            <p>{t('firstAid.step1Desc')}</p>
           </div>
           <div className="glass-card step-card">
             <ShieldAlert size={36} className="icon-primary" />
-            <h3>2. Keep Them Safe</h3>
-            <p>Move hard or sharp objects out of the way. Place something soft, like a folded jacket, under their head.</p>
+            <h3>{t('firstAid.step2Title')}</h3>
+            <p>{t('firstAid.step2Desc')}</p>
           </div>
           <div className="glass-card step-card">
             <HandStop size={36} className="icon-primary" />
-            <h3>3. Roll on Side</h3>
-            <p>Once the jerking stops, gently roll the person onto their side. This helps keep their airway clear.</p>
+            <h3>{t('firstAid.step3Title')}</h3>
+            <p>{t('firstAid.step3Desc')}</p>
           </div>
         </div>
 
@@ -44,25 +48,23 @@ const FirstAid = () => {
         <div className="split-action-layout">
           <div className="glass-card do-card">
             <h3 className="do-title">
-              <CheckCircle /> DO
+              <CheckCircle /> {t('firstAid.doTitle')}
             </h3>
             <ul className="action-list do-list">
-              <li>Stay with the person until the seizure ends and they are fully awake.</li>
-              <li>Loosen anything around their neck (like a tie or collar).</li>
-              <li>Reassure them gently once they wake up; they may be confused.</li>
-              <li>Check if they have a medical ID bracelet.</li>
+              {t('firstAid.doList', { returnObjects: true }).map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
             </ul>
           </div>
 
           <div className="glass-card dont-card">
             <h3 className="dont-title">
-              <XCircle /> DON'T
+              <XCircle /> {t('firstAid.dontTitle')}
             </h3>
             <ul className="action-list dont-list">
-              <li>Do <strong>not</strong> hold the person down or try to stop their movements.</li>
-              <li>Do <strong>not</strong> put anything in their mouth. It can injure their teeth or jaw.</li>
-              <li>Do <strong>not</strong> give them water, food, or pills until fully alert.</li>
-              <li>Do <strong>not</strong> perform CPR unless they stop breathing after the seizure stops.</li>
+              {t('firstAid.dontList', { returnObjects: true }).map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -73,15 +75,12 @@ const FirstAid = () => {
             <div className="emergency-icon-wrap">
               <Phone size={24} />
             </div>
-            <h2>When to call an ambulance (911)</h2>
+            <h2>{t('firstAid.emergencyTitle')}</h2>
           </div>
           <ul className="emergency-criteria-list">
-            <li>The seizure lasts longer than 5 minutes.</li>
-            <li>The person has difficulty breathing after the seizure.</li>
-            <li>They have another seizure immediately after the first.</li>
-            <li>They get injured during the seizure.</li>
-            <li>The person is pregnant, sick, or has diabetes.</li>
-            <li>It is the person's first ever seizure.</li>
+            {t('firstAid.emergencyList', { returnObjects: true }).map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
           </ul>
         </div>
       </div>
@@ -99,8 +98,8 @@ const FirstAid = () => {
           gap: 2rem;
           margin-bottom: 4rem;
           max-width: 1000px;
-          margin-left: auto;
-          margin-right: auto;
+          margin-inline-start: auto;
+          margin-inline-end: auto;
         }
         @media (min-width: 768px) {
           .core-steps-grid { grid-template-columns: repeat(3, 1fr); }
@@ -133,8 +132,8 @@ const FirstAid = () => {
           gap: 2rem;
           margin-bottom: 4rem;
           max-width: 1200px;
-          margin-left: auto;
-          margin-right: auto;
+          margin-inline-start: auto;
+          margin-inline-end: auto;
         }
         @media (min-width: 850px) {
           .split-action-layout { grid-template-columns: 1fr 1fr; }
@@ -180,7 +179,7 @@ const FirstAid = () => {
         }
         .action-list li {
           position: relative;
-          padding-left: 1.5rem;
+          padding-inline-start: 1.5rem;
           font-size: 1.1rem;
           line-height: 1.6;
           color: var(--text-secondary);
@@ -188,7 +187,7 @@ const FirstAid = () => {
         .action-list li::before {
           content: '•';
           position: absolute;
-          left: 0;
+          inset-inline-start: 0;
           font-weight: 900;
           font-size: 1.5rem;
           line-height: 1;
@@ -197,7 +196,7 @@ const FirstAid = () => {
         .dont-list li::before { color: #ef4444; }
 
         .emergency-box {
-          border-left: 8px solid #ef4444;
+          border-inline-start: 8px solid #ef4444;
           background-color: rgba(254, 226, 226, 0.6);
           padding: 2.5rem;
           max-width: 900px;
@@ -230,12 +229,18 @@ const FirstAid = () => {
           display: grid;
           grid-template-columns: 1fr;
           gap: 1rem;
-          margin-left: 4.5rem;
+          padding-inline-start: ${isRTL ? '0' : '4.5rem'};
+          margin-inline-start: ${isRTL ? '0' : '0'};
           font-size: 1.15rem;
           color: #7f1d1d;
+          list-style: disc; /* simpler for RTL if margin is weird */
         }
         @media (min-width: 600px) {
           .emergency-criteria-list { grid-template-columns: 1fr 1fr; }
+        }
+        
+        .first-aid-page[dir="rtl"] .emergency-criteria-list {
+           padding-inline-start: 1.5rem;
         }
       `}</style>
     </div>
