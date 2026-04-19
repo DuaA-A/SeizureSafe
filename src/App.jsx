@@ -23,8 +23,8 @@ const Home = ({ onOpenAuth }) => {
       {/* Hero Section */}
       <section className="full-screen-section modern-hero">
         <div className="hero-content container">
-          <div className="hero-flex-wrapper" style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}>
-            <div className="hero-text-side" style={{ textAlign: isRTL ? 'right' : 'left', paddingRight: isRTL ? '0' : '4rem', paddingLeft: isRTL ? '4rem' : '0' }}>
+          <div className="hero-flex-wrapper" style={{ flexDirection: 'row' }}>
+            <div className="hero-text-side" style={{ textAlign: 'start' }}>
               <div className="active-badge mb-4">{t('home.heroBadge')}</div> <br />
               <h1 className="hero-title white-text">
                 {t('home.heroTitle').split(' ').slice(0, -3).join(' ')} <br />
@@ -157,9 +157,10 @@ const Home = ({ onOpenAuth }) => {
           overflow: hidden;
         }
         .hero-flex-wrapper { display: flex; align-items: center; gap: 0; width: 100%; min-height: calc(100vh - 80px); }
-        .hero-text-side { flex: 1; z-index: 10; text-align: left; padding-right: 4rem; }
+        .hero-text-side { flex: 1; z-index: 10; text-align: start; padding-inline-end: 4rem; }
         .hero-image-side { flex: 1; display: flex; justify-content: flex-end; align-items: center; z-index: 5; }
         .hero-img-container { position: relative; display: flex; justify-content: center; align-items: center; width: 100%; }
+        [dir="rtl"] .hero-img-container { transform: scaleX(-1); }
         .hero-main-img { width: 100%; max-width: 600px; height: auto; z-index: 2; mix-blend-mode: screen; }
 
         /* Modal Overhaul */
@@ -308,7 +309,7 @@ const Home = ({ onOpenAuth }) => {
           
           .modern-hero { background: #1e1b4b; padding-top: 0; }
           .hero-flex-wrapper { flex-direction: column; text-align: center; justify-content: stretch; height: 85vh; padding-top: 1rem; padding-bottom: 4rem; position: relative; gap: 0; }
-          .hero-text-side { padding-right: 0; margin-bottom: 0; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center !important; }
+          .hero-text-side { padding-inline-end: 0; margin-bottom: 0; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center !important; }
           .hero-title { font-size: 2.6rem; color: #ffffff !important; font-weight: 900; margin-top: 0; margin-bottom: auto; line-height: 1.1; }
           .hero-description { color: #f8fafc !important; font-size: 1.05rem; font-weight: 500; margin-bottom: 2rem; max-width: 90%; }
           .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; align-items: center; }
