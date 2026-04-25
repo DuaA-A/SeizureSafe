@@ -1,10 +1,20 @@
 export const FOOD_INTERACTIONS = {
   "carbamazepine": {
-    avoidFoods: ["Grapefruit", "Grapefruit Juice"],
+    avoidFoods: ["Grapefruit", "Grapefruit Juice", "Alcohol", "Caffeine (High doses)"],
     timing: "Take with food",
-    instructions: "Avoid grapefruit juice as it significantly increases the level of carbamazepine in your blood, increasing the risk of side effects. Take with meals to avoid stomach upset."
+    instructions: "Strictly forbidden with grapefruit (causes acute toxicity). Alcohol is an absolute contraindication (causes severe respiratory depression). High caffeine lowers seizure threshold."
+  },
+  "tegretol": {
+    avoidFoods: ["Grapefruit", "Grapefruit Juice", "Alcohol", "Caffeine (High doses)"],
+    timing: "Take with food",
+    instructions: "Strictly forbidden with grapefruit (causes acute toxicity). Alcohol is an absolute contraindication (causes severe respiratory depression). High caffeine lowers seizure threshold."
   },
   "phenytoin": {
+    avoidFoods: ["Alcohol"],
+    timing: "Consistent timing with meals",
+    instructions: "If you take it with food, always take it with food. Consistency is key to maintain steady blood levels. Avoid alcohol as it can change medication levels."
+  },
+  "epanutin": {
     avoidFoods: ["Alcohol"],
     timing: "Consistent timing with meals",
     instructions: "If you take it with food, always take it with food. Consistency is key to maintain steady blood levels. Avoid alcohol as it can change medication levels."
@@ -12,19 +22,44 @@ export const FOOD_INTERACTIONS = {
   "valproate": {
     avoidFoods: ["Alcohol"],
     timing: "Take with or right after food",
-    instructions: "Taking with food helps prevent stomach irritation."
+    instructions: "Absolute contraindication with alcohol. Causes severe respiratory depression and profound sedation."
+  },
+  "valproic acid": {
+    avoidFoods: ["Alcohol"],
+    timing: "Take with or right after food",
+    instructions: "Absolute contraindication with alcohol. Causes severe respiratory depression and profound sedation."
+  },
+  "depakine": {
+    avoidFoods: ["Alcohol"],
+    timing: "Take with or right after food",
+    instructions: "Absolute contraindication with alcohol. Causes severe respiratory depression and profound sedation."
   },
   "lamotrigine": {
-    avoidFoods: [],
+    avoidFoods: ["Alcohol"],
     timing: "With or without food",
-    instructions: "Swallow whole, do not chew."
+    instructions: "Absolute contraindication with alcohol. Causes severe respiratory depression and profound sedation."
+  },
+  "lamictal": {
+    avoidFoods: ["Alcohol"],
+    timing: "With or without food",
+    instructions: "Absolute contraindication with alcohol. Causes severe respiratory depression and profound sedation."
   },
   "levetiracetam": {
-    avoidFoods: [],
+    avoidFoods: ["Alcohol"],
     timing: "With or without food",
-    instructions: "Take it at the exact same times every day spaced evenly."
+    instructions: "Absolute contraindication with alcohol. Causes severe respiratory depression and profound sedation."
+  },
+  "keppra": {
+    avoidFoods: ["Alcohol"],
+    timing: "With or without food",
+    instructions: "Absolute contraindication with alcohol. Causes severe respiratory depression and profound sedation."
   },
   "topiramate": {
+    avoidFoods: ["Ketogenic Diet without supervision", "Alcohol"],
+    timing: "Drink plenty of fluids",
+    instructions: "Drink plenty of water throughout the day to prevent kidney stones."
+  },
+  "topamax": {
     avoidFoods: ["Ketogenic Diet without supervision", "Alcohol"],
     timing: "Drink plenty of fluids",
     instructions: "Drink plenty of water throughout the day to prevent kidney stones."
