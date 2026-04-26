@@ -289,7 +289,16 @@
     "myMeds": "My Current Medications",
     "addPlaceholder": "Add a new drug...",
     "noMeds": "No medications added.",
-    "logout": "Logout"
+    "logout": "Logout",
+    "patientName": "Patient Name",
+    "patientAge": "Age",
+    "patientGender": "Gender",
+    "pregnant": "Pregnant",
+    "child": "Child",
+    "adult": "Adult",
+    "senior": "Senior",
+    "yes": "Yes",
+    "no": "No"
   },
   "auth": {
     "loginTitle": "Welcome Back",
@@ -304,7 +313,15 @@
     "signUp": "Sign Up",
     "createAccount": "Create Account",
     "newTo": "New to SeizureSafe?",
-    "alreadyMember": "Already a member?"
+    "alreadyMember": "Already a member?",
+    "accountSection": "Account Info",
+    "patientSection": "Patient Info",
+    "patientName": "Patient Name",
+    "age": "Age",
+    "selectGender": "Select Gender",
+    "male": "Male",
+    "female": "Female",
+    "isPregnant": "Patient is pregnant"
   },
   "about": {
     "subtitle": "The Clinical Team",
@@ -438,7 +455,18 @@
       "increasedLevels": "Increases levels of the other drug to potentially toxic heights.",
       "aspirinValproate": "Aspirin increases Valproate levels, risking hepatotoxicity.",
       "oldGenGeneric": "This is an older generation AED heavily metabolized in the liver.",
-      "newGenGeneric": "Newer generation AED, generally safe with most medications."
+      "newGenGeneric": "Newer generation AED, generally safe with most medications.",
+      "tramadolAED": "Strictly contraindicated for epilepsy patients: Tramadol directly lowers the seizure threshold and causes sudden Grand Mal seizures.",
+      "metoclopramideAED": "Primperan (Metoclopramide) directly provokes seizures and causes involuntary muscle spasms.",
+      "ssriAED": "SSRI antidepressants raise AED levels to toxic concentrations.",
+      "azoleAED": "Azole antifungals acutely raise Phenytoin/Carbamazepine to neurotoxic levels.",
+      "statinAED": "AEDs destroy statins before they work, secretly raising cholesterol and causing sudden cardiac events.",
+      "immunoAED": "AEDs destroy immunosuppressants, risking transplant rejection or severe autoimmune relapse.",
+      "contraAED": "AEDs make hormonal birth control fail, causing unwanted and potentially malformed pregnancy.",
+      "thyroxineAED": "AEDs accelerate breakdown of thyroid hormone (Levothyroxine), causing hypothyroidism.",
+      "allopurinolAED": "Gout drug inhibits AED clearance, gradually raising AED levels.",
+      "carbapenemValp": "Carbapenem antibiotics wipe Valproate from blood within 24 hours, triggering continuous seizures.",
+      "valpLamot": "Valproate doubles Lamotrigine levels, causing potentially lethal Stevens-Johnson Syndrome."
     },
     "mechanism": {
       "ccbCarba": "These BP drugs completely disable liver enzymes (CYP3A4), raising Tegretol blood levels to toxic levels.",
@@ -449,7 +477,18 @@
       "psyCarba": "Both Carbamazepine and Clozapine cause bone marrow suppression as a lethal side effect.",
       "diuAED": "These AEDs cause low sodium, and adding diuretics leads to dehydration and acute brain salt depletion.",
       "oldGenGeneric": "Significantly impacts liver enzymes (CYP450) either by inhibition or induction.",
-      "newGenGeneric": "Excreted mostly via kidneys and does not interfere with standard liver metabolic pathways."
+      "newGenGeneric": "Excreted mostly via kidneys and does not interfere with standard liver metabolic pathways.",
+      "tramadolAED": "Tramadol inhibits serotonin and norepinephrine reuptake and binds opioid receptors in the brain, directly reducing seizure threshold regardless of AED therapy.",
+      "metoclopramideAED": "Blocks dopamine receptors in the CNS, lowering the seizure threshold and causing extrapyramidal symptoms.",
+      "ssriAED": "Inhibits CYP2C9 and CYP2C19 enzymes in the liver, preventing breakdown of Phenytoin and Carbamazepine, raising their levels.",
+      "azoleAED": "Potently inhibits CYP2C9 and CYP3A4, rapidly preventing AED breakdown and raising levels.",
+      "statinAED": "Old-gen AEDs are strong CYP3A4 inducers, accelerating statin breakdown before reaching therapeutic levels.",
+      "immunoAED": "AEDs (Enzyme Inducers) stimulate CYP3A4 liver enzymes, destroying immunosuppressants before they work.",
+      "contraAED": "AEDs stimulate CYP3A4, accelerating breakdown of estrogen and progesterone in hormonal contraceptives.",
+      "thyroxineAED": "AEDs accelerate conversion of active T4 to T3 and its degradation, requiring higher Levothyroxine doses.",
+      "allopurinolAED": "Allopurinol inhibits Xanthine Oxidase, affecting the metabolic pathways of some AEDs like Carbamazepine.",
+      "carbapenemValp": "Activates UGT enzyme to rapidly convert Valproate to inactive metabolites, crashing drug levels to zero.",
+      "valpLamot": "Valproate inhibits UGT responsible for Lamotrigine breakdown, doubling Lamotrigine blood levels."
     },
     "demo": {
       "ccbCarba": {
@@ -488,6 +527,48 @@
       },
       "newGenGeneric": {
         "senior": "Seniors: Impacted only by kidney function. Monitor renal clearance."
+      },
+      "tramadolAED": {
+        "general": "Tramadol is absolutely contraindicated for epilepsy patients. It directly lowers the seizure threshold in the brain and causes sudden Grand Mal seizures.",
+        "senior": "Seniors: Causes immediate coma and severe cardiovascular collapse.",
+        "pregnant": "Pregnant: Crosses placenta, causes in-utero seizures and neonatal respiratory depression."
+      },
+      "metoclopramideAED": {
+        "child": "Children: Causes involuntary muscle spasms (Extrapyramidal Symptoms) mistaken for seizures, and triggers real epileptic seizures.",
+        "pregnant": "Pregnant: Used for nausea but can destabilize seizure control in epilepsy patients."
+      },
+      "ssriAED": {
+        "female": "Females: Common for postpartum depression/PMS. Raises AED levels causing neurotoxicity (ataxia, double vision, mouth sores)."
+      },
+      "azoleAED": {
+        "female": "Females: Fluconazole is widely used for vaginal infections. A single capsule can raise Phenytoin to toxic neurological levels. Use topical alternatives.",
+        "senior": "Seniors: Risk of drug accumulation due to slower hepatic clearance."
+      },
+      "statinAED": {
+        "senior": "Seniors/Males: AED destroys the statin, secretly raising cholesterol and causing sudden cardiac events.",
+        "general": "Switch to Rosuvastatin (Crestor) — less affected by liver enzyme inducers."
+      },
+      "immunoAED": {
+        "child": "Children/Adults (organ transplant): AED destroys immunosuppressant, risking transplant rejection.",
+        "general": "Autoimmune disease patients (Lupus, Rheumatoid): Risk of severe relapse."
+      },
+      "contraAED": {
+        "female": "Females: Birth control failure = malformed pregnancy. Use higher hormone doses or non-hormonal contraception."
+      },
+      "thyroxineAED": {
+        "female": "Females (thyroid patients): AED destroys Eltroxin, causing severe hypothyroidism (obesity, hair loss, depression). Regularly increase Eltroxin dose."
+      },
+      "allopurinolAED": {
+        "male": "Males (most affected by gout): Inhibits AED clearance, requires dose reduction of the AED.",
+        "senior": "Seniors: Risk of hepatotoxicity if AED dose is not adjusted."
+      },
+      "carbapenemValp": {
+        "child": "Children: The antibiotic wipes Valproate from blood within 24 hours causing continuous lethal seizures.",
+        "general": "Adults: Risk of acute Status Epilepticus. Alternative: Aztreonam does not interact with Valproate."
+      },
+      "valpLamot": {
+        "child": "Children: Risk of Stevens-Johnson Syndrome (skin blistering). Requires micro-dosing protocol with very slow dose escalation over weeks.",
+        "female": "Females: Combination requires close medical supervision and weekly drug level monitoring."
       }
     },
     "emergency": {
@@ -498,7 +579,18 @@
       "inhAED": "Respiratory and neurological emergency; immediate cessation and IV fluid support.",
       "psyCarba": "Contraindicated globally. Go to ICU immediately if fever or severe sore throat occurs.",
       "diuAED": "Go to the ER for blood sodium measurement. Treated with slow infusion of hypertonic saline.",
-      "oldGenGeneric": "If unusual symptoms or skin rash occur, see your doctor immediately for liver function tests."
+      "oldGenGeneric": "If unusual symptoms or skin rash occur, see your doctor immediately for liver function tests.",
+      "tramadolAED": "Go to the ER immediately if you took Tramadol. There is no safe dose for an epilepsy patient. Inform the doctor of all your AEDs.",
+      "metoclopramideAED": "Stop immediately. If muscle spasms or seizures occur, call an ambulance. Safe alternative: Ondansetron (Zofran) for nausea.",
+      "ssriAED": "If toxicity symptoms appear (ataxia, double vision), go to ER. Monitor AED levels weekly when starting an SSRI.",
+      "azoleAED": "Use topical alternatives (creams/pessaries) instead of oral pills. If you took a Fluconazole tablet, watch for neurotoxicity symptoms and go to ER if they appear.",
+      "statinAED": "Do not stop cholesterol medication abruptly. Ask your doctor to switch to Rosuvastatin and monitor cholesterol every 3 months.",
+      "immunoAED": "Medical emergency! If you are a transplant patient taking an AED, notify your doctor immediately to increase your immunosuppressant dose.",
+      "contraAED": "Consult your doctor immediately. Alternatives: Higher-dose hormonal pills, IUD, or barrier methods.",
+      "thyroxineAED": "Monitor hypothyroid symptoms (weight gain, fatigue, depression). Ask your doctor to raise Eltroxin dose and check TSH every 6 months.",
+      "allopurinolAED": "Consult your doctor to reduce AED dose or find a gout drug alternative that does not interact with liver enzymes.",
+      "carbapenemValp": "Critical emergency! If Meropenem is necessary, inform the doctor to temporarily replace Valproate with another AED or give an additional IV dose.",
+      "valpLamot": "If a rash or redness appears, go to the ER immediately. SJS develops within 24-48 hours. Never ignore any rash."
     },
     "comment": {
       "ccbCarba": "Critical risk! BP drugs raise Tegretol to toxic levels. Go to ER immediately.",
@@ -512,7 +604,18 @@
       "bloodThinners": "Risk of blood clots as drug reduces blood thinner efficacy.",
       "lamotrigineSJS": "Risk of lethal skin rash (SJS). Seek ER immediately if rash appears.",
       "oldGenGeneric": "Expect 90% interaction rate with other hepatic drugs. Monitoring required.",
-      "newGenGeneric": "This drug is 95% safe and unaffected by liver function."
+      "newGenGeneric": "This drug is 95% safe and unaffected by liver function.",
+      "tramadolAED": "Strictly contraindicated! Tramadol directly causes seizures. No safe dose for epilepsy patients.",
+      "metoclopramideAED": "High risk! Primperan triggers seizures. Safe alternative: Ondansetron.",
+      "ssriAED": "High risk! Raises AED levels to toxic concentration. Monitor levels weekly.",
+      "azoleAED": "Critical risk! One pill can cause acute neurotoxicity. Use topical alternatives.",
+      "statinAED": "High risk! AED destroys the statin. Switch to Rosuvastatin.",
+      "immunoAED": "Critical risk! May cause transplant rejection. Notify your doctor immediately.",
+      "contraAED": "Critical risk for females! Birth control failure and risk of malformed pregnancy.",
+      "thyroxineAED": "High risk! Hidden hypothyroidism. Regularly increase Eltroxin dose.",
+      "allopurinolAED": "Moderate risk. Monitor AED levels and reduce dose if necessary.",
+      "carbapenemValp": "Critical risk! Antibiotic erases AED from blood. Replace AED temporarily.",
+      "valpLamot": "Critical risk! Any rash = go to ER immediately."
     }
   }
 }

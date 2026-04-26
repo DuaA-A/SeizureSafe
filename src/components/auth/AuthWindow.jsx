@@ -11,6 +11,7 @@ const AuthWindow = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [patientName, setPatientName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [isPregnant, setIsPregnant] = useState(false);
@@ -26,7 +27,7 @@ const AuthWindow = ({ onClose }) => {
       if (isLogin) {
         await login(email, password);
       } else {
-        await signup(email, password, displayName, { age, gender, isPregnant });
+        await signup(email, password, displayName, { patientName, age, gender, isPregnant });
       }
       onClose();
     } catch (err) {
@@ -54,6 +55,8 @@ const AuthWindow = ({ onClose }) => {
         <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
             <>
+              {/* User Account */}
+              <div className="form-section-label">{t('auth.accountSection')}</div>
               <div className="input-group">
                 <User className="input-icon" size={18} />
                 <input 
@@ -65,11 +68,25 @@ const AuthWindow = ({ onClose }) => {
                   required
                 />
               </div>
+
+              {/* Patient Info */}
+              <div className="form-section-label">{t('auth.patientSection')}</div>
+              <div className="input-group">
+                <User className="input-icon" size={18} />
+                <input 
+                  type="text" 
+                  className="input-field" 
+                  placeholder={t('auth.patientName')} 
+                  value={patientName}
+                  onChange={(e) => setPatientName(e.target.value)}
+                  required
+                />
+              </div>
               <div className="input-group">
                 <input 
                   type="number" 
                   className="input-field full-pad" 
-                  placeholder="Age" 
+                  placeholder={t('auth.age')} 
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
                   required
@@ -87,9 +104,9 @@ const AuthWindow = ({ onClose }) => {
                   }}
                   required
                 >
-                  <option value="" disabled>Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="" disabled>{t('auth.selectGender')}</option>
+                  <option value="male">{t('auth.male')}</option>
+                  <option value="female">{t('auth.female')}</option>
                 </select>
               </div>
               {gender === 'female' && (
@@ -100,7 +117,7 @@ const AuthWindow = ({ onClose }) => {
                     checked={isPregnant}
                     onChange={(e) => setIsPregnant(e.target.checked)}
                   />
-                  <label htmlFor="pregnant">Patient is pregnant</label>
+                  <label htmlFor="pregnant">{t('auth.isPregnant')}</label>
                 </div>
               )}
             </>
@@ -253,6 +270,16 @@ const AuthWindow = ({ onClose }) => {
             width: 95%;
             padding: 2.5rem 1.5rem;
           }
+        }
+        .form-section-label {
+          font-size: 0.8rem;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: var(--primary);
+          margin-top: 0.5rem;
+          padding-bottom: 0.25rem;
+          border-bottom: 2px solid rgba(126, 34, 206, 0.1);
         }
       `}</style>
     </div>

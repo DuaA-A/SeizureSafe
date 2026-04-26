@@ -134,10 +134,13 @@ const UserProfile = () => {
             
             {userData && (
               <div className="profile-details-box mt-4">
-                <div className="detail-item"><strong>Age:</strong> {userData.age} ({parseInt(userData.age) < 18 ? 'Child' : 'Adult'})</div>
-                <div className="detail-item"><strong>Gender:</strong> {userData.gender?.charAt(0).toUpperCase() + userData.gender?.slice(1)}</div>
+                {userData.patientName && (
+                  <div className="detail-item"><strong>{t('dashboard.patientName')}:</strong> {userData.patientName}</div>
+                )}
+                <div className="detail-item"><strong>{t('dashboard.patientAge')}:</strong> {userData.age} ({parseInt(userData.age) < 12 ? t('dashboard.child') : parseInt(userData.age) >= 60 ? t('dashboard.senior') : t('dashboard.adult')})</div>
+                <div className="detail-item"><strong>{t('dashboard.patientGender')}:</strong> {userData.gender === 'male' ? t('auth.male') : t('auth.female')}</div>
                 {userData.gender === 'female' && (
-                  <div className="detail-item"><strong>Pregnant:</strong> {userData.isPregnant ? 'Yes' : 'No'}</div>
+                  <div className="detail-item"><strong>{t('dashboard.pregnant')}:</strong> {userData.isPregnant ? t('dashboard.yes') : t('dashboard.no')}</div>
                 )}
               </div>
             )}

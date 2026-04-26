@@ -170,16 +170,20 @@ const InteractionChecker = ({ onOpenAuth }) => {
 
   const getSeverityIcon = (sev) => {
     const s = sev?.toLowerCase() || '';
+    if (s.includes('critical') || s.includes('severe')) return <AlertTriangle className="icon-critical" size={24} />;
     if (s.includes('high') || s.includes('major')) return <AlertTriangle className="icon-high" size={24} />;
     if (s.includes('moderate')) return <AlertTriangle className="icon-mod" size={24} />;
-    return <Info className="icon-low" size={24} />;
+    if (s.includes('low')) return <Info className="icon-low" size={24} />;
+    return <AlertTriangle className="icon-high" size={24} />;
   };
 
   const getSeverityClass = (sev) => {
     const s = sev?.toLowerCase() || '';
+    if (s.includes('critical') || s.includes('severe')) return 'sev-critical';
     if (s.includes('high') || s.includes('major')) return 'sev-high';
     if (s.includes('moderate')) return 'sev-mod';
-    return 'sev-low';
+    if (s.includes('low')) return 'sev-low';
+    return 'sev-high';
   };
 
   return (
@@ -552,16 +556,17 @@ const InteractionChecker = ({ onOpenAuth }) => {
 
         .report-list { display: flex; flex-direction: column; gap: 1rem; }
         .interaction-card { padding: 1.5rem; border-radius: 12px; border-inline-start: 5px solid; display: flex; gap: 1rem; }
+        .interaction-card.sev-critical { background: #fef2f2; border-color: #991b1b; box-shadow: 0 0 15px rgba(153,27,27,0.15); }
         .interaction-card.sev-high { background: #fef2f2; border-color: #ef4444; }
         .interaction-card.sev-mod { background: #fff7ed; border-color: #f97316; }
         .interaction-card.sev-low { background: #f0fdf4; border-color: #22c55e; }
         
-        .icon-high { color: #dc2626; } .icon-mod { color: #ea580c; } .icon-low { color: #16a34a; }
+        .icon-critical { color: #991b1b; } .icon-high { color: #dc2626; } .icon-mod { color: #ea580c; } .icon-low { color: #16a34a; }
         
         .card-content { flex: 1; }
         .card-content h4 { font-size: 1.25rem; font-weight: 800; margin: 0.5rem 0; color: var(--text-main); text-align: inherit; }
         .severity-badge { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: block; text-align: inherit; }
-        .severity-badge.sev-high { color: #b91c1c; } .severity-badge.sev-mod { color: #c2410c; } .severity-badge.sev-low { color: #15803d; }
+        .severity-badge.sev-critical { color: #991b1b; background: #fee2e2; padding: 2px 10px; border-radius: 6px; display: inline-block; } .severity-badge.sev-high { color: #b91c1c; } .severity-badge.sev-mod { color: #c2410c; } .severity-badge.sev-low { color: #15803d; }
         
         .action-required-tag { background: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; display: inline-block; }
 
