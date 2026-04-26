@@ -24,6 +24,7 @@ const UserProfile = () => {
   const isRTL = i18n.language === 'ar';
   
   const [medications, setMedications] = useState([]);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [medInput, setMedInput] = useState('');
   const [addingMed, setAddingMed] = useState(false);
@@ -41,11 +42,18 @@ const UserProfile = () => {
       if (isPreviewMode) {
         const meds = JSON.parse(localStorage.getItem('preview_meds') || '[]');
         setMedications(meds);
+        const udata = JSON.parse(localStorage.getItem('preview_user_data') || '{}');
+        setUserData(udata);
       } else {
         const medRef = doc(db, 'user_medications', currentUser.uid);
         const medSnap = await getDoc(medRef);
         if (medSnap.exists()) {
           setMedications(medSnap.data().medications || []);
+        }
+        const profileRef = doc(db, 'user_profiles', currentUser.uid);
+        const profileSnap = await getDoc(profileRef);
+        if (profileSnap.exists()) {
+          setUserData(profileSnap.data());
         }
       }
     } catch (err) {
@@ -123,6 +131,17 @@ const UserProfile = () => {
             <h2>{currentUser.displayName || currentUser.email.split('@')[0]}</h2>
             <p className="email">{currentUser.email}</p>
             {isPreviewMode && <span className="badge badge-warning">{t('dashboard.previewMode')}</span>}
+            
+            {userData && (
+              <div className="profile-details-box mt-4">
+                <div className="detail-item"><strong>Age:</strong> {userData.age} ({parseInt(userData.age) < 18 ? 'Child' : 'Adult'})</div>
+                <div className="detail-item"><strong>Gender:</strong> {userData.gender?.charAt(0).toUpperCase() + userData.gender?.slice(1)}</div>
+                {userData.gender === 'female' && (
+                  <div className="detail-item"><strong>Pregnant:</strong> {userData.isPregnant ? 'Yes' : 'No'}</div>
+                )}
+              </div>
+            )}
+
             <div className="profile-stats">
               <div className="stat">
                 <strong>{medications.length}</strong>
@@ -138,6 +157,41 @@ const UserProfile = () => {
         {/* Main */}
         <main className="dashboard-main">
 
+          {/* Summarization Section */}
+          <section className="dashboard-section summary-section">
+            <div className="glass-card summary-card bg-gradient">
+              <h3>{t('dashboard.overviewTitle', 'Patient Overview')}</h3>
+              <p>
+                <strong>{currentUser.displayName || 'Patient'}</strong> is a {userData ? (parseInt(userData.age) < 18 ? 'child' : 'adult') : 'patient'} managing their regimen. 
+                They currently have {medications.length} medication(s) registered. 
+                {userData?.isPregnant ? ' Note: Patient is pregnant. Extra caution required for AEDs.' : ''}
+              </p>
+            </div>
+          </section>
+
+          {/* Scheduled Drugs Section */}
+          <section className="dashboard-section">
+            <div className="section-header">
+              <h3><Calendar size={20} /> {t('dashboard.scheduledDrugs', 'Scheduled Regimen')}</h3>
+            </div>
+            <div className="glass-card">
+              {medications.length > 0 ? (
+                <div className="scheduled-list">
+                  {medications.map((med, i) => (
+                    <div key={i} className="schedule-item">
+                      <div className="time-badge">08:00 AM</div>
+                      <div className="schedule-details">
+                        <h4>{med.name}</h4>
+                        <p>Take 1 pill as prescribed</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-mini">{t('dashboard.noMeds')}</p>
+              )}
+            </div>
+          </section>
 
           <section className="dashboard-section">
             <div className="section-header">
@@ -189,8 +243,21 @@ const UserProfile = () => {
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .section-header h3 { display: flex; align-items: center; gap: 10px; font-size: 1.15rem; }
         
-
+        .profile-details-box { background: rgba(0,0,0,0.03); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: left; }
+        .detail-item { font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-secondary); }
+        .detail-item strong { color: var(--text-main); }
         
+        .summary-card { padding: 1.5rem 2rem; background: linear-gradient(135deg, rgba(126, 34, 206, 0.05), rgba(79, 70, 229, 0.05)); border-inline-start: 4px solid var(--primary); }
+        .summary-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--text-main); }
+        .summary-card p { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; }
+
+        .scheduled-list { display: flex; flex-direction: column; gap: 1rem; padding: 1.5rem; }
+        .schedule-item { display: flex; align-items: center; gap: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .schedule-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .time-badge { background: #f0fdf4; color: #166534; font-weight: 800; font-size: 0.9rem; padding: 8px 12px; border-radius: 8px; border: 1px solid #bbf7d0; white-space: nowrap; }
+        .schedule-details h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text-main); }
+        .schedule-details p { font-size: 0.9rem; color: var(--text-muted); }
+
         .med-manager-card { padding: 2rem; }
         .med-input-compact { display: flex; gap: 8px; margin-bottom: 1.5rem; }
         .med-input-compact input { flex: 1; height: 44px; border: 1.5px solid var(--border); border-radius: 8px; padding: 0 1rem; }

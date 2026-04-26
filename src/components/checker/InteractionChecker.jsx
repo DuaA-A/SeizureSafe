@@ -285,20 +285,34 @@ const InteractionChecker = ({ onOpenAuth }) => {
                         </div>
                       ) : (
                         <div className="report-list">
-                          {reportData.interactions.map((inter, idx) => (
-                            <div key={idx} className={`interaction-card ${getSeverityClass(inter.severity)}`}>
-                              <div className="card-icon-wrap">
-                                {getSeverityIcon(inter.severity)}
-                              </div>
-                              <div className="card-content">
-                                <span className={`severity-badge ${getSeverityClass(inter.severity)}`}>
-                                  {t('checker.riskLevel', { level: inter.severity })}
-                                </span>
-                                <h4>{inter.drugA} + {inter.drugB}</h4>
-                                <div className="card-details">
-                                  <p><strong>{t('checker.description')}</strong> {inter.description}</p>
-                                  <p className="physician-note"><strong>{t('checker.note')}</strong> {inter.recommendation}</p>
-                                </div>
+                          {Object.entries(
+                            reportData.interactions.reduce((acc, inter) => {
+                              const key = inter.drugA;
+                              if (!acc[key]) acc[key] = [];
+                              acc[key].push(inter);
+                              return acc;
+                            }, {})
+                          ).map(([baseDrug, interactionsGroup], gIdx) => (
+                            <div key={gIdx} className="interaction-group-card">
+                              <h3 className="group-title">{baseDrug} Interactions ({interactionsGroup.length})</h3>
+                              <div className="group-interactions">
+                                {interactionsGroup.map((inter, idx) => (
+                                  <div key={idx} className={`interaction-card ${getSeverityClass(inter.severity)}`}>
+                                    <div className="card-icon-wrap">
+                                      {getSeverityIcon(inter.severity)}
+                                    </div>
+                                    <div className="card-content">
+                                      <span className={`severity-badge ${getSeverityClass(inter.severity)}`}>
+                                        {t('checker.riskLevel', { level: inter.severity })}
+                                      </span>
+                                      <h4>+ {inter.drugB}</h4>
+                                      <div className="card-details">
+                                        <p><strong>{t('checker.description')}</strong> {inter.description}</p>
+                                        <p className="physician-note"><strong>{t('checker.note')}</strong> {inter.recommendation}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           ))}
@@ -503,6 +517,10 @@ const InteractionChecker = ({ onOpenAuth }) => {
         
         .card-details p { margin: 0 0 0.5rem 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem; text-align: inherit; }
         .physician-note { background: rgba(255,255,255,0.6); padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem !important; text-align: inherit; }
+
+        .interaction-group-card { margin-bottom: 2rem; background: rgba(255,255,255,0.5); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border); }
+        .group-title { font-size: 1.4rem; font-weight: 800; color: var(--primary); margin-bottom: 1rem; border-bottom: 2px solid rgba(126, 34, 206, 0.2); padding-bottom: 0.5rem; text-align: inherit; }
+        .group-interactions { display: flex; flex-direction: column; gap: 1rem; }
 
         .food-card { flex-direction: column; background: #fffbeb !important; border-color: #fcd34d !important; gap: 0.5rem; }
         .food-card h4 { font-size: 1.25rem; font-weight: 800; color: #92400e; margin: 0 0 0.5rem 0; border-bottom: 1px solid #fde68a; padding-bottom: 0.5rem; text-align: inherit; }

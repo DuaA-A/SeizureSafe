@@ -11,6 +11,9 @@ const AuthWindow = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [isPregnant, setIsPregnant] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login, signup } = useAuth();
@@ -23,7 +26,7 @@ const AuthWindow = ({ onClose }) => {
       if (isLogin) {
         await login(email, password);
       } else {
-        await signup(email, password, displayName);
+        await signup(email, password, displayName, { age, gender, isPregnant });
       }
       onClose();
     } catch (err) {
@@ -50,17 +53,57 @@ const AuthWindow = ({ onClose }) => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
-            <div className="input-group">
-              <User className="input-icon" size={18} />
-              <input 
-                type="text" 
-                className="input-field" 
-                placeholder={t('auth.fullName')} 
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                required
-              />
-            </div>
+            <>
+              <div className="input-group">
+                <User className="input-icon" size={18} />
+                <input 
+                  type="text" 
+                  className="input-field" 
+                  placeholder={t('auth.fullName')} 
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="input-group">
+                <input 
+                  type="number" 
+                  className="input-field full-pad" 
+                  placeholder="Age" 
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  required
+                  min="0"
+                  max="120"
+                />
+              </div>
+              <div className="input-group">
+                <select 
+                  className="input-field full-pad" 
+                  value={gender}
+                  onChange={(e) => {
+                    setGender(e.target.value);
+                    if (e.target.value !== 'female') setIsPregnant(false);
+                  }}
+                  required
+                >
+                  <option value="" disabled>Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              {gender === 'female' && (
+                <div className="checkbox-group" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0 10px', fontSize: '0.9rem' }}>
+                  <input 
+                    type="checkbox" 
+                    id="pregnant"
+                    checked={isPregnant}
+                    onChange={(e) => setIsPregnant(e.target.checked)}
+                  />
+                  <label htmlFor="pregnant">Patient is pregnant</label>
+                </div>
+              )}
+            </>
           )}
           <div className="input-group">
             <Mail className="input-icon" size={18} />
@@ -170,6 +213,9 @@ const AuthWindow = ({ onClose }) => {
         }
         .input-group .input-field {
           padding-inline-start: 3.5rem;
+        }
+        .input-group .input-field.full-pad {
+          padding-inline-start: 1.25rem;
         }
         .w-full {
           width: 100%;
