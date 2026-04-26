@@ -78,42 +78,72 @@
         "name": "Generalized Tonic-Clonic",
         "title": "Tonic-Clonic",
         "description": "A major generalized seizure characterized by sudden loss of consciousness, body stiffening (tonic phase), followed by rhythmic jerking (clonic phase).",
-        "symptoms": ["Loss of consciousness", "Full body rhythmic jerking", "Vocalizations or tongue biting", "Confusion after episode"],
+        "symptoms": [
+          "Loss of consciousness",
+          "Full body rhythmic jerking",
+          "Vocalizations or tongue biting",
+          "Confusion after episode"
+        ],
         "note": "Ensure the environment is clear of sharp objects. Do not place anything in the mouth."
       },
       "focalAware": {
         "name": "Focal Aware Seizure",
         "title": "Focal Aware",
         "description": "Starts in one area of the brain. The person remains fully aware and can usually describe the event in detail after it finishes.",
-        "symptoms": ["Localized twitching (hand/face)", "Strange smells or tastes", "Intense feelings of fear/joy", "Numbness or tingling"],
+        "symptoms": [
+          "Localized twitching (hand/face)",
+          "Strange smells or tastes",
+          "Intense feelings of fear/joy",
+          "Numbness or tingling"
+        ],
         "note": "Observe carefully to see if it progresses. Documentation of precise feelings is vital for diagnosis."
       },
       "absence": {
         "name": "Absence Seizure",
         "title": "Absence",
         "description": "A brief lapse in consciousness that looks like staring into space. Commonly seen in children and lasts only a few seconds.",
-        "symptoms": ["Sudden blank stare", "Eyes rolling upward", "Rapid blinking", "Immediate return to normal awareness"],
+        "symptoms": [
+          "Sudden blank stare",
+          "Eyes rolling upward",
+          "Rapid blinking",
+          "Immediate return to normal awareness"
+        ],
         "note": "Easily missed in school settings. Frequent \"daydreaming\" should be medically investigated."
       },
       "focalImpaired": {
         "name": "Focal Impaired Awareness",
         "title": "Focal Impaired",
         "description": "A focal seizure where awareness is altered or lost. The person may appear conscious but is not fully responsive.",
-        "symptoms": ["Automatisms (lip smacking, chewing)", "Repetitive movements", "Aimless walking", "No memory of the event"],
+        "symptoms": [
+          "Automatisms (lip smacking, chewing)",
+          "Repetitive movements",
+          "Aimless walking",
+          "No memory of the event"
+        ],
         "note": "Guide the individual away from danger gently; do not restrain them forcefully."
       },
       "atonic": {
         "name": "Atonic Seizure (Drop Attacks)",
         "title": "Atonic",
         "description": "Sudden loss of muscle tone causing the person to collapse or fall forward. Also known as \"drop attacks\".",
-        "symptoms": ["Sudden limpness", "Head dropping forward", "Immediate collapse", "Brief duration"],
+        "symptoms": [
+          "Sudden limpness",
+          "Head dropping forward",
+          "Immediate collapse",
+          "Brief duration"
+        ],
         "note": "Risk of head injury is high. Protective headgear is often recommended for frequent events."
       },
       "myoclonic": {
         "name": "Myoclonic Seizure",
         "title": "Myoclonic",
         "description": "Brief, shock-like jerks of a muscle or group of muscles. Usually occurring on both sides of the body.",
-        "symptoms": ["Sudden muscle contractions", "Shock-like jerks", "Commonly occurs in the morning", "Brief (1-2 seconds)"],
+        "symptoms": [
+          "Sudden muscle contractions",
+          "Shock-like jerks",
+          "Commonly occurs in the morning",
+          "Brief (1-2 seconds)"
+        ],
         "note": "Often occurs shortly after waking. Can interfere with holding objects or eating."
       }
     }
@@ -236,7 +266,19 @@
       "network": "Network error connecting to drug database.",
       "addOne": "Please add at least 1 medication to check.",
       "apiDown": "Failed to generate complete interaction report. The API service may be down."
-    }
+    },
+    "emergency": {
+      "label": "Emergency Protocol (Error Handling):",
+      "title": "Emergency Protocol: What to do if you already took the drug?",
+      "steps": [
+        "DO NOT stop taking any epilepsy medication abruptly without medical consultation; sudden withdrawal can trigger life-threatening status epilepticus.",
+        "Contact your treating physician or pharmacist immediately to report the interaction and discuss safe alternatives.",
+        "Monitor for toxicity symptoms: double vision, severe dizziness, persistent vomiting, or sudden rash.",
+        "In case of a 'Critical' (Severe) interaction, go to the nearest emergency department and bring your medication packages."
+      ]
+    },
+    "mechanism": "Interaction Mechanism:",
+    "demographics": "Demographic Details (Age & Gender):"
   },
   "dashboard": {
     "secureTitle": "Secure Dashboard",
@@ -299,16 +341,66 @@
     "ctaText": "Access our expert system designed to help identify the patterns of epileptic episodes to prepare comprehensive reports for your doctor.",
     "ctaBtn": "Start the Diagnostic Tools",
     "team": [
-      { "id": 1, "name": "Seveen Mohamed Ahmed Fouad Elsayoufy", "role": "Team Leader", "bio": "Coordinates clinical integration and leads the pharmacy presentation board structure." },
-      { "id": 2, "name": "Ahmed Ezzat Osman Tantawy", "role": "Clinical Pharmacist", "bio": "Specializes in antiepileptic drug interactions and metabolic profiling." },
-      { "id": 3, "name": "Diana Yasser AbdAlazim Mohamed Salama", "role": "Clinical Pharmacist", "bio": "Focuses on patient compliance and seizure trigger correlation data." },
-      { "id": 4, "name": "Mina Talat Shaker Wassef", "role": "Clinical Pharmacist", "bio": "Ensures the accuracy of the Interaction Checker API integration." },
-      { "id": 5, "name": "Moustafa Khalid Mohamed Taha Bahr", "role": "Clinical Pharmacist", "bio": "Develops the seizure pattern algorithms used in the Seizure Check tool." },
-      { "id": 6, "name": "Nada Mohammed Kamal Abieah", "role": "Clinical Pharmacist", "bio": "Curates the medical terminology and user instructions for clarity." },
-      { "id": 7, "name": "Zeinab Hamdy Hassab tayeeb", "role": "Clinical Pharmacist", "bio": "Evaluates application usability against pharmacy standards." },
-      { "id": 8, "name": "Abdalla Abouelscoud Hassan Hassoub Soliman", "role": "Clinical Pharmacist", "bio": "Researches up-to-date medication interactions and contraindications." },
-      { "id": 9, "name": "Yassein Mohamed Mohamed Ali Almaghrabi", "role": "Clinical Pharmacist", "bio": "Structures the medical history tracking and compliance database logic." },
-      { "id": 10, "name": "Ahmed Mohamed Ahmed Elgashy", "role": "Clinical Pharmacist", "bio": "Validates final clinical safety recommendations for the graduation board." }
+      {
+        "id": 1,
+        "name": "Seveen Mohamed Ahmed Fouad Elsayoufy",
+        "role": "Team Leader",
+        "bio": "Coordinates clinical integration and leads the pharmacy presentation board structure."
+      },
+      {
+        "id": 2,
+        "name": "Ahmed Ezzat Osman Tantawy",
+        "role": "Clinical Pharmacist",
+        "bio": "Specializes in antiepileptic drug interactions and metabolic profiling."
+      },
+      {
+        "id": 3,
+        "name": "Diana Yasser AbdAlazim Mohamed Salama",
+        "role": "Clinical Pharmacist",
+        "bio": "Focuses on patient compliance and seizure trigger correlation data."
+      },
+      {
+        "id": 4,
+        "name": "Mina Talat Shaker Wassef",
+        "role": "Clinical Pharmacist",
+        "bio": "Ensures the accuracy of the Interaction Checker API integration."
+      },
+      {
+        "id": 5,
+        "name": "Moustafa Khalid Mohamed Taha Bahr",
+        "role": "Clinical Pharmacist",
+        "bio": "Develops the seizure pattern algorithms used in the Seizure Check tool."
+      },
+      {
+        "id": 6,
+        "name": "Nada Mohammed Kamal Abieah",
+        "role": "Clinical Pharmacist",
+        "bio": "Curates the medical terminology and user instructions for clarity."
+      },
+      {
+        "id": 7,
+        "name": "Zeinab Hamdy Hassab tayeeb",
+        "role": "Clinical Pharmacist",
+        "bio": "Evaluates application usability against pharmacy standards."
+      },
+      {
+        "id": 8,
+        "name": "Abdalla Abouelscoud Hassan Hassoub Soliman",
+        "role": "Clinical Pharmacist",
+        "bio": "Researches up-to-date medication interactions and contraindications."
+      },
+      {
+        "id": 9,
+        "name": "Yassein Mohamed Mohamed Ali Almaghrabi",
+        "role": "Clinical Pharmacist",
+        "bio": "Structures the medical history tracking and compliance database logic."
+      },
+      {
+        "id": 10,
+        "name": "Ahmed Mohamed Ahmed Elgashy",
+        "role": "Clinical Pharmacist",
+        "bio": "Validates final clinical safety recommendations for the graduation board."
+      }
     ]
   },
   "home": {
@@ -332,5 +424,95 @@
   "footer": {
     "copyright": "© 2026 SeizureSafe. MTI University Pharmacy Graduation Project.",
     "disclaimer": "Medical Disclaimer: All recommendations are for medical knowledge only and not a substitute for professional medical advice. For dosages, consult your physician."
+  },
+  "interactions": {
+    "desc": {
+      "ccbCarba": "Severe Toxicity Risk: Blood pressure drugs raise Tegretol levels to toxic levels within 48 hours.",
+      "stJohnsAED": "St. John's Wort triggers liver enzymes, destroying the efficacy of AEDs and birth control pills.",
+      "theoAED": "Epilepsy drugs accelerate the breakdown of asthma drugs (Theophylline) before they can treat the lungs.",
+      "metroPheny": "Flagyl prevents the liver from clearing Phenytoin (Epanutin), leading to toxic accumulation.",
+      "inhAED": "Very strong enzyme inhibitor that raises epilepsy drug levels to dangerous heights.",
+      "psyCarba": "Bone Marrow Suppression: Combination completely destroys white blood cells.",
+      "diuAED": "Risk of acute Hyponatremia (low sodium) and brain salt imbalance.",
+      "reducedEfficacy": "Significantly reduces the efficacy of the other drug.",
+      "increasedLevels": "Increases levels of the other drug to potentially toxic heights.",
+      "aspirinValproate": "Aspirin increases Valproate levels, risking hepatotoxicity.",
+      "oldGenGeneric": "This is an older generation AED heavily metabolized in the liver.",
+      "newGenGeneric": "Newer generation AED, generally safe with most medications."
+    },
+    "mechanism": {
+      "ccbCarba": "These BP drugs completely disable liver enzymes (CYP3A4), raising Tegretol blood levels to toxic levels.",
+      "stJohnsAED": "This herb is a fierce inducer of liver enzymes, effectively cleaning AEDs out of the blood.",
+      "theoAED": "Classic AEDs break down asthma drugs too rapidly for them to exert a therapeutic effect.",
+      "metroPheny": "Flagyl inhibits the metabolism of Phenytoin, causing it to accumulate in the blood.",
+      "inhAED": "INH is a potent enzyme inhibitor; interaction depends on the patient's genetics (Slow Acetylators).",
+      "psyCarba": "Both Carbamazepine and Clozapine cause bone marrow suppression as a lethal side effect.",
+      "diuAED": "These AEDs cause low sodium, and adding diuretics leads to dehydration and acute brain salt depletion.",
+      "oldGenGeneric": "Significantly impacts liver enzymes (CYP450) either by inhibition or induction.",
+      "newGenGeneric": "Excreted mostly via kidneys and does not interfere with standard liver metabolic pathways."
+    },
+    "demo": {
+      "ccbCarba": {
+        "female": "Females/Pregnancy: May cause neurological toxicity in mothers and oxygen deprivation in fetuses.",
+        "senior": "Seniors: Severe Bradycardia (low heart rate), coma, and lethal falls.",
+        "child": "Children: Rapid heart and respiratory failure in case of accidental ingestion."
+      },
+      "stJohnsAED": {
+        "female": "Females: Double risk; seizures due to AED failure and unplanned pregnancy due to birth control failure.",
+        "male": "Males: Reduced efficacy of AEDs and recurrence of seizures.",
+        "pregnant": "Pregnancy: Causes uterine contractions and loss of seizure control."
+      },
+      "theoAED": {
+        "child": "Children: Acute asthma attacks and nocturnal suffocation due to rapid drug breakdown.",
+        "senior": "Seniors: COPD patients will suffer respiratory failure as the lung medication fails.",
+        "pregnant": "Pregnancy: Oxygen deprivation due to asthma attacks directly threatens the fetus."
+      },
+      "metroPheny": {
+        "child": "Children: Neurological toxicity (staggering, unable to walk) due to Phenytoin accumulation.",
+        "pregnant": "Pregnancy: Increased Phenytoin levels raise the risk of fetal malformations."
+      },
+      "inhAED": {
+        "genetic": "Genetics: Slow Acetylators are prone to lethal toxicity within days.",
+        "child": "Children: Requires medical isolation and daily monitoring of drug levels in the hospital."
+      },
+      "psyCarba": {
+        "general": "Everyone: Agranulocytosis syndrome; complete loss of immunity, minor microbes become lethal.",
+        "senior": "Seniors: Rapid death from infection or pneumonia due to lack of immunity."
+      },
+      "diuAED": {
+        "senior": "Seniors: Severe low sodium causes brain swelling, coma, and continuous seizures.",
+        "female": "Females: More prone to electrolyte imbalance due to cyclic hormonal changes."
+      },
+      "oldGenGeneric": {
+        "general": "Expect a 90% interaction rate with any other hepatic drug."
+      },
+      "newGenGeneric": {
+        "senior": "Seniors: Impacted only by kidney function. Monitor renal clearance."
+      }
+    },
+    "emergency": {
+      "ccbCarba": "Go to the ER immediately for an ECG and Tegretol level measurement. Switch to Amlodipine.",
+      "stJohnsAED": "Stop the supplement immediately. In case of seizures, go to the hospital for an IV rescue dose.",
+      "theoAED": "Use topical inhalers instead of tablets as they do not interact with AEDs via the liver.",
+      "metroPheny": "Use antibacterials that do not interact with the liver, or reduce the dose with close monitoring.",
+      "inhAED": "Respiratory and neurological emergency; immediate cessation and IV fluid support.",
+      "psyCarba": "Contraindicated globally. Go to ICU immediately if fever or severe sore throat occurs.",
+      "diuAED": "Go to the ER for blood sodium measurement. Treated with slow infusion of hypertonic saline.",
+      "oldGenGeneric": "If unusual symptoms or skin rash occur, see your doctor immediately for liver function tests."
+    },
+    "comment": {
+      "ccbCarba": "Critical risk! BP drugs raise Tegretol to toxic levels. Go to ER immediately.",
+      "stJohnsAED": "High risk! Herb destroys AED and birth control efficacy. Stop immediately.",
+      "theoAED": "High risk! AED disables asthma drug. Use topical inhalers.",
+      "metroPheny": "High risk! Flagyl causes toxic Phenytoin accumulation. Consult doctor for alternative.",
+      "inhAED": "Critical risk! TB drugs raise AED levels to lethal heights.",
+      "psyCarba": "Lethal combination! Destroys immune cells in bone marrow. Strictly contraindicated.",
+      "diuAED": "High risk! Causes acute low sodium and brain swelling. Monitor electrolytes.",
+      "contraceptives": "Risk of unplanned pregnancy as drug reduces contraceptive efficacy.",
+      "bloodThinners": "Risk of blood clots as drug reduces blood thinner efficacy.",
+      "lamotrigineSJS": "Risk of lethal skin rash (SJS). Seek ER immediately if rash appears.",
+      "oldGenGeneric": "Expect 90% interaction rate with other hepatic drugs. Monitoring required.",
+      "newGenGeneric": "This drug is 95% safe and unaffected by liver function."
+    }
   }
 }

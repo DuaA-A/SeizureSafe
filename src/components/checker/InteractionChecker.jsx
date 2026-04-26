@@ -307,8 +307,40 @@ const InteractionChecker = ({ onOpenAuth }) => {
                                       </span>
                                       <h4>+ {inter.drugB}</h4>
                                       <div className="card-details">
-                                        <p><strong>{t('checker.description')}</strong> {inter.description}</p>
-                                        <p className="physician-note"><strong>{t('checker.note')}</strong> {inter.recommendation}</p>
+                                        <div className="detail-section">
+                                          <label>{t('checker.description')}</label>
+                                          <p>{inter.description ? t(inter.description) : ''}</p>
+                                        </div>
+
+                                        {inter.mechanism && (
+                                          <div className="detail-section">
+                                            <label>{t('checker.mechanism')}</label>
+                                            <p>{t(inter.mechanism)}</p>
+                                          </div>
+                                        )}
+
+                                        {inter.demographics && Object.keys(inter.demographics).length > 0 && (
+                                          <div className="detail-section demo-warning-box">
+                                            <label>{t('checker.demographics')}</label>
+                                            <ul className="demo-list">
+                                              {Object.entries(inter.demographics).map(([key, val]) => (
+                                                <li key={key}>{t(val)}</li>
+                                              ))}
+                                            </ul>
+                                          </div>
+                                        )}
+
+                                        {inter.emergency && (
+                                          <div className="detail-section emergency-box-inner">
+                                            <label className="text-red">{t('checker.emergency.label') || t('checker.emergency')}</label>
+                                            <p className="emergency-text">{t(inter.emergency)}</p>
+                                          </div>
+                                        )}
+
+                                        <div className="detail-section physician-note">
+                                          <label>{t('checker.note')}</label>
+                                          <p>{inter.recommendation ? t(inter.recommendation) : ''}</p>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -316,6 +348,22 @@ const InteractionChecker = ({ onOpenAuth }) => {
                               </div>
                             </div>
                           ))}
+
+                          {reportData.interactions.length > 0 && (
+                            <div className="emergency-protocol-card glass-card animate-slide-up mt-8">
+                               <div className="emergency-header">
+                                 <AlertTriangle size={32} className="emergency-icon" />
+                                 <h3>{t('checker.emergency.title')}</h3>
+                               </div>
+                               <div className="emergency-content">
+                                 <ul className="emergency-steps-list">
+                                   {(t('checker.emergency.steps', { returnObjects: true }) || []).map((step, i) => (
+                                     <li key={i}>{step}</li>
+                                   ))}
+                                 </ul>
+                               </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -515,8 +563,34 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .severity-badge { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: block; text-align: inherit; }
         .severity-badge.sev-high { color: #b91c1c; } .severity-badge.sev-mod { color: #c2410c; } .severity-badge.sev-low { color: #15803d; }
         
-        .card-details p { margin: 0 0 0.5rem 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem; text-align: inherit; }
-        .physician-note { background: rgba(255,255,255,0.6); padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem !important; text-align: inherit; }
+        .action-required-tag { background: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; display: inline-block; }
+
+        .card-details { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1rem; }
+        .detail-section label { display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+        .detail-section p { margin: 0; line-height: 1.6; color: var(--text-secondary); font-size: 1.05rem; }
+        
+        .physician-note { background: rgba(0,0,0,0.03); padding: 1.25rem; border-radius: 12px; border: 1px dashed rgba(0,0,0,0.1); }
+        .physician-note p { color: var(--text-main); font-weight: 500; }
+
+        .demo-warning-box { background: rgba(59, 130, 246, 0.05); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.1); }
+        .demo-list { margin: 0; padding-inline-start: 1.25rem; list-style-type: square; }
+        .demo-list li { margin-bottom: 0.5rem; font-size: 1rem; color: #1e40af; font-weight: 500; }
+        .demo-list li:last-child { margin-bottom: 0; }
+
+        .emergency-box-inner { background: #fef2f2; padding: 1.25rem; border-radius: 12px; border: 2px solid #fee2e2; }
+        .emergency-text { color: #b91c1c !important; font-weight: 800 !important; font-size: 1.1rem !important; }
+        .text-red { color: #dc2626 !important; }
+
+        /* Emergency Card */
+        .emergency-protocol-card { background: #fef2f2; border: 2px solid #ef4444; padding: 2.5rem; border-radius: 24px; position: relative; overflow: hidden; }
+        .emergency-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2rem; color: #b91c1c; }
+        .emergency-header h3 { font-size: 1.8rem; font-weight: 900; margin: 0; }
+        .emergency-icon { color: #ef4444; }
+        
+        .emergency-content { color: #991b1b; }
+        .emergency-steps-list { margin: 0; padding-inline-start: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+        .emergency-steps-list li { font-size: 1.15rem; font-weight: 600; line-height: 1.6; }
+        .emergency-steps-list li::marker { color: #ef4444; font-weight: 900; }
 
         .interaction-group-card { margin-bottom: 2rem; background: rgba(255,255,255,0.5); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border); }
         .group-title { font-size: 1.4rem; font-weight: 800; color: var(--primary); margin-bottom: 1rem; border-bottom: 2px solid rgba(126, 34, 206, 0.2); padding-bottom: 0.5rem; text-align: inherit; }
