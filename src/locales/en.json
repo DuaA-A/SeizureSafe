@@ -366,57 +366,57 @@
       },
       {
         "id": 2,
-        "name": "Ahmed Ezzat Osman Tantawy",
-        "role": "Clinical Pharmacist",
-        "bio": "Specializes in antiepileptic drug interactions and metabolic profiling."
-      },
-      {
-        "id": 3,
-        "name": "Diana Yasser AbdAlazim Mohamed Salama",
-        "role": "Clinical Pharmacist",
-        "bio": "Focuses on patient compliance and seizure trigger correlation data."
-      },
-      {
-        "id": 4,
-        "name": "Mina Talat Shaker Wassef",
-        "role": "Clinical Pharmacist",
-        "bio": "Ensures the accuracy of the Interaction Checker API integration."
-      },
-      {
-        "id": 5,
-        "name": "Moustafa Khalid Mohamed Taha Bahr",
-        "role": "Clinical Pharmacist",
-        "bio": "Develops the seizure pattern algorithms used in the Seizure Check tool."
-      },
-      {
-        "id": 6,
-        "name": "Nada Mohammed Kamal Abieah",
-        "role": "Clinical Pharmacist",
-        "bio": "Curates the medical terminology and user instructions for clarity."
-      },
-      {
-        "id": 7,
-        "name": "Zeinab Hamdy Hassab tayeeb",
-        "role": "Clinical Pharmacist",
-        "bio": "Evaluates application usability against pharmacy standards."
-      },
-      {
-        "id": 8,
-        "name": "Abdalla Abouelscoud Hassan Hassoub Soliman",
-        "role": "Clinical Pharmacist",
-        "bio": "Researches up-to-date medication interactions and contraindications."
-      },
-      {
-        "id": 9,
         "name": "Yassein Mohamed Mohamed Ali Almaghrabi",
         "role": "Clinical Pharmacist",
         "bio": "Structures the medical history tracking and compliance database logic."
       },
       {
-        "id": 10,
+        "id": 3,
+        "name": "Moustafa Khalid Mohamed Taha Bahr",
+        "role": "Clinical Pharmacist",
+        "bio": "Develops the seizure pattern algorithms used in the Seizure Check tool."
+      },
+      {
+        "id": 4,
+        "name": "Ahmed Ezzat Osman Tantawy",
+        "role": "Clinical Pharmacist",
+        "bio": "Specializes in antiepileptic drug interactions and metabolic profiling."
+      },
+      {
+        "id": 5,
+        "name": "Diana Yasser AbdAlazim Mohamed Salama",
+        "role": "Clinical Pharmacist",
+        "bio": "Focuses on patient compliance and seizure trigger correlation data."
+      },
+      {
+        "id": 6,
+        "name": "Mina Talat Shaker Wassef",
+        "role": "Clinical Pharmacist",
+        "bio": "Ensures the accuracy of the Interaction Checker API integration."
+      },
+      {
+        "id": 7,
+        "name": "Nada Mohammed Kamal Abieah",
+        "role": "Clinical Pharmacist",
+        "bio": "Curates the medical terminology and user instructions for clarity."
+      },
+      {
+        "id": 8,
+        "name": "Abdalla Abouelseoud Hassan Hassoub Soliman",
+        "role": "Clinical Pharmacist",
+        "bio": "Researches up-to-date medication interactions and contraindications."
+      },
+      {
+        "id": 9,
         "name": "Ahmed Mohamed Ahmed Elgashy",
         "role": "Clinical Pharmacist",
         "bio": "Validates final clinical safety recommendations for the graduation board."
+      },
+      {
+        "id": 10,
+        "name": "Zeinab Hamdy Hassab tayeeb",
+        "role": "Clinical Pharmacist",
+        "bio": "Evaluates application usability against pharmacy standards."
       }
     ]
   },

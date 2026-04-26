@@ -111,6 +111,7 @@ const Navbar = ({ onOpenAuth }) => {
             <Link to="/special-warnings" onClick={() => setIsOpen(false)}>{t('common.specialWarnings')}</Link>
           </div>
           <Link to="/checker" onClick={() => setIsOpen(false)}>{t('common.interactionChecker')}</Link>
+          <Link to="/about" onClick={() => setIsOpen(false)}>{t('common.aboutTeam')}</Link>
           
           <button onClick={toggleLanguage} className="mobile-lang-btn">
             <Languages size={20} /> {i18n.language === 'ar' ? 'Switch to English' : 'تغيير للغة العربية'}
